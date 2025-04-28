@@ -1,0 +1,786 @@
+{% extends 'base.html' %}
+
+{% block title %}Relatório de Avaliação - {{ assessment.title }} - CyberSecAssessment{% endblock %}
+
+{% block extra_css %}
+<style>
+    .recommendation-card.high {
+        border-left: 5px solid var(--danger);
+    }
+    .recommendation-card.medium {
+        border-left: 5px solid var(--warning);
+    }
+    .recommendation-card.low {
+        border-left: 5px solid var(--success);
+    }
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+    .status-badge.pending {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: var(--danger);
+    }
+    .status-badge.in_progress {
+        background-color: rgba(255, 193, 7, 0.1);
+        color: #d39e00;
+    }
+    .status-badge.implemented {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: var(--success);
+    }
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb" class="no-print">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('assessment.list_assessments') }}">Avaliações</a></li>
+                <li class="breadcrumb-item active">Relatório</li>
+            </ol>
+        </nav>
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="display-5 fw-bold">
+                <i class="fas fa-file-alt text-primary me-2"></i> Relatório de Avaliação
+            </h1>
+            <div class="no-print">
+                <button class="btn btn-outline-primary" onclick="window.print()">
+                    <i class="fas fa-print me-1"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cabeçalho do Relatório -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="mb-2">{{ assessment.title }}</h3>
+                <p class="text-muted mb-2">
+                    <i class="far fa-calendar-alt me-1"></i> Data: {{ assessment.created_at.strftime('%d/%m/%Y') }}
+                    <span class="mx-2">|</span>
+                    <i class="far fa-user me-1"></i> Responsável: {{ assessment.user.first_name }} {{ assessment.user.last_name }}
+                </p>
+                {% if assessment.description %}
+                <p class="mb-0">{{ assessment.description }}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="d-inline-block p-3 rounded-circle text-white 
+                     {% if assessment.total_score >= 80 %}bg-success
+                     {% elif assessment.total_score >= 60 %}bg-warning
+                     {% else %}bg-danger{% endif %}" 
+                     style="width: 120px; height: 120px">
+                    <div class="d-flex flex-column align-items-center justify-content-center h-100">
+                        <span class="fs-1 fw-bold">{{ assessment.total_score|round|int }}</span>
+                        <span class="small">Pontuação</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Resumo da Pontuação -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Resumo da Avaliação</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <canvas id="radarChart" height="300"></canvas>
+            </div>
+            <div class="col-lg-6">
+                <h5 class="mb-3">Pontuação por Categoria</h5>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Segurança de Rede</span>
+                        <span class="fw-bold">{{ assessment.score_network|round(1) }}%</span>
+                    </div>
+                    <div class="progress" style="height: 10px">
+                        <div class="progress-bar bg-primary" role="progressbar" 
+                             style="width: {{ assessment.score_network }}%" 
+                             aria-valuenow="{{ assessment.score_network }}" 
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Controle de Acesso</span>
+                        <span class="fw-bold">{{ assessment.score_credentials|round(1) }}%</span>
+                    </div>
+                    <div class="progress" style="height: 10px">
+                        <div class="progress-bar bg-primary" role="progressbar" 
+                             style="width: {{ assessment.score_credentials }}%" 
+                             aria-valuenow="{{ assessment.score_credentials }}" 
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Proteção contra Malware</span>
+                        <span class="fw-bold">{{ assessment.score_malware|round(1) }}%</span>
+                    </div>
+                    <div class="progress" style="height: 10px">
+                        <div class="progress-bar bg-primary" role="progressbar" 
+                             style="width: {{ assessment.score_malware }}%" 
+                             aria-valuenow="{{ assessment.score_malware }}" 
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Backup e Recuperação</span>
+                        <span class="fw-bold">{{ assessment.score_backup|round(1) }}%</span>
+                    </div>
+                    <div class="progress" style="height: 10px">
+                        <div class="progress-bar bg-primary" role="progressbar" 
+                             style="width: {{ assessment.score_backup }}%" 
+                             aria-valuenow="{{ assessment.score_backup }}" 
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Conformidade</span>
+                        <span class="fw-bold">{{ assessment.score_compliance|round(1) }}%</span>
+                    </div>
+                    <div class="progress" style="height: 10px">
+                        <div class="progress-bar bg-primary" role="progressbar" 
+                             style="width: {{ assessment.score_compliance }}%" 
+                             aria-valuenow="{{ assessment.score_compliance }}" 
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="fw-bold">Pontuação Total</span>
+                        <span class="fw-bold">{{ assessment.total_score|round(1) }}%</span>
+                    </div>
+                    <div class="progress" style="height: 15px">
+                        <div class="progress-bar 
+                                {% if assessment.total_score >= 80 %}bg-success
+                                {% elif assessment.total_score >= 60 %}bg-warning
+                                {% else %}bg-danger{% endif %}" 
+                             role="progressbar" 
+                             style="width: {{ assessment.total_score }}%" 
+                             aria-valuenow="{{ assessment.total_score }}" 
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="alert 
+                            {% if assessment.total_score >= 80 %}alert-success
+                            {% elif assessment.total_score >= 60 %}alert-warning
+                            {% else %}alert-danger{% endif %}">
+                    <h5 class="mb-1">
+                        <i class="fas 
+                               {% if assessment.total_score >= 80 %}fa-check-circle
+                               {% elif assessment.total_score >= 60 %}fa-exclamation-triangle
+                               {% else %}fa-exclamation-circle{% endif %} me-2"></i>
+                        Nível de Segurança:
+                        {% if assessment.total_score >= 80 %}Bom
+                        {% elif assessment.total_score >= 60 %}Moderado
+                        {% else %}Crítico{% endif %}
+                    </h5>
+                    <p class="mb-0">
+                        {% if assessment.total_score >= 80 %}
+                            Sua prefeitura possui um bom nível de segurança cibernética. Continue mantendo as práticas atuais e implemente melhorias contínuas.
+                        {% elif assessment.total_score >= 60 %}
+                            Sua prefeitura possui um nível moderado de segurança cibernética. Existem áreas importantes que precisam de atenção.
+                            {% else %}
+                                Sua prefeitura possui vulnerabilidades críticas que requerem atenção imediata. Priorize as recomendações de alta prioridade.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recomendações -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Recomendações Personalizadas</h5>
+            <span class="badge bg-primary">{{ recommendations|length }} recomendações</span>
+        </div>
+        <div class="card-body">
+            <!-- Recomendações de Alta Prioridade -->
+            <h5 class="mb-3">
+                <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+                Recomendações de Alta Prioridade
+            </h5>
+            
+            {% set high_priority_recs = recommendations|selectattr('priority', 'equalto', 'high')|list %}
+            
+            {% if high_priority_recs %}
+                {% for rec in high_priority_recs %}
+                <div class="card recommendation-card high mb-3">
+                    <div class="recommendation-header">
+                        <div>
+                            <h5 class="mb-0">{{ rec.title }}</h5>
+                            <small class="text-muted">
+                                Categoria: 
+                                {% if rec.category == 'network' %}
+                                    Segurança de Rede
+                                {% elif rec.category == 'credentials' %}
+                                    Controle de Acesso
+                                {% elif rec.category == 'malware' %}
+                                    Proteção contra Malware
+                                {% elif rec.category == 'backup' %}
+                                    Backup e Recuperação
+                                {% elif rec.category == 'compliance' %}
+                                    Conformidade
+                                {% endif %}
+                            </small>
+                        </div>
+                        <span id="recommendation-{{ rec.id }}-badge" class="status-badge {{ rec.status }}">
+                            {% if rec.status == 'pending' %}
+                                Pendente
+                            {% elif rec.status == 'in_progress' %}
+                                Em Progresso
+                            {% elif rec.status == 'implemented' %}
+                                Implementado
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="recommendation-body">
+                        <p>{{ rec.description }}</p>
+                        
+                        <div class="recommendation-steps">
+                            <h6><i class="fas fa-list-ol me-2"></i> Passos para Implementação:</h6>
+                            <ol>
+                                {% for step in rec.implementation_steps.split('\n') %}
+                                    <li>{{ step.lstrip('0123456789.- ') }}</li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                        
+                        {% if rec.resources %}
+                        <div class="recommendation-resources">
+                            <h6><i class="fas fa-external-link-alt me-2"></i> Recursos Úteis:</h6>
+                            <a href="{{ rec.resources }}" target="_blank" class="text-decoration-none">
+                                {{ rec.resources }}
+                                <i class="fas fa-external-link-alt ms-1 small"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mt-3 no-print">
+                            <label for="rec-status-{{ rec.id }}" class="form-label">Atualizar Status:</label>
+                            <select id="rec-status-{{ rec.id }}" class="form-select recommendation-status-update" 
+                                    data-recommendation-id="{{ rec.id }}" data-assessment-id="{{ assessment.id }}">
+                                <option value="pending" {% if rec.status == 'pending' %}selected{% endif %}>Pendente</option>
+                                <option value="in_progress" {% if rec.status == 'in_progress' %}selected{% endif %}>Em Progresso</option>
+                                <option value="implemented" {% if rec.status == 'implemented' %}selected{% endif %}>Implementado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhuma recomendação de alta prioridade encontrada.</p>
+            {% endif %}
+            
+            <!-- Recomendações de Média Prioridade -->
+            <h5 class="mb-3 mt-4">
+                <i class="fas fa-exclamation text-warning me-2"></i>
+                Recomendações de Média Prioridade
+            </h5>
+            
+            {% set medium_priority_recs = recommendations|selectattr('priority', 'equalto', 'medium')|list %}
+            
+            {% if medium_priority_recs %}
+                {% for rec in medium_priority_recs %}
+                <div class="card recommendation-card medium mb-3">
+                    <div class="recommendation-header">
+                        <div>
+                            <h5 class="mb-0">{{ rec.title }}</h5>
+                            <small class="text-muted">
+                                Categoria: 
+                                {% if rec.category == 'network' %}
+                                    Segurança de Rede
+                                {% elif rec.category == 'credentials' %}
+                                    Controle de Acesso
+                                {% elif rec.category == 'malware' %}
+                                    Proteção contra Malware
+                                {% elif rec.category == 'backup' %}
+                                    Backup e Recuperação
+                                {% elif rec.category == 'compliance' %}
+                                    Conformidade
+                                {% endif %}
+                            </small>
+                        </div>
+                        <span id="recommendation-{{ rec.id }}-badge" class="status-badge {{ rec.status }}">
+                            {% if rec.status == 'pending' %}
+                                Pendente
+                            {% elif rec.status == 'in_progress' %}
+                                Em Progresso
+                            {% elif rec.status == 'implemented' %}
+                                Implementado
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="recommendation-body">
+                        <p>{{ rec.description }}</p>
+                        
+                        <div class="recommendation-steps">
+                            <h6><i class="fas fa-list-ol me-2"></i> Passos para Implementação:</h6>
+                            <ol>
+                                {% for step in rec.implementation_steps.split('\n') %}
+                                    <li>{{ step.lstrip('0123456789.- ') }}</li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                        
+                        {% if rec.resources %}
+                        <div class="recommendation-resources">
+                            <h6><i class="fas fa-external-link-alt me-2"></i> Recursos Úteis:</h6>
+                            <a href="{{ rec.resources }}" target="_blank" class="text-decoration-none">
+                                {{ rec.resources }}
+                                <i class="fas fa-external-link-alt ms-1 small"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mt-3 no-print">
+                            <label for="rec-status-{{ rec.id }}" class="form-label">Atualizar Status:</label>
+                            <select id="rec-status-{{ rec.id }}" class="form-select recommendation-status-update" 
+                                    data-recommendation-id="{{ rec.id }}" data-assessment-id="{{ assessment.id }}">
+                                <option value="pending" {% if rec.status == 'pending' %}selected{% endif %}>Pendente</option>
+                                <option value="in_progress" {% if rec.status == 'in_progress' %}selected{% endif %}>Em Progresso</option>
+                                <option value="implemented" {% if rec.status == 'implemented' %}selected{% endif %}>Implementado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhuma recomendação de média prioridade encontrada.</p>
+            {% endif %}
+            
+            <!-- Recomendações de Baixa Prioridade -->
+            <h5 class="mb-3 mt-4">
+                <i class="fas fa-info-circle text-success me-2"></i>
+                Recomendações de Baixa Prioridade
+            </h5>
+            
+            {% set low_priority_recs = recommendations|selectattr('priority', 'equalto', 'low')|list %}
+            
+            {% if low_priority_recs %}
+                {% for rec in low_priority_recs %}
+                <div class="card recommendation-card low mb-3">
+                    <div class="recommendation-header">
+                        <div>
+                            <h5 class="mb-0">{{ rec.title }}</h5>
+                            <small class="text-muted">
+                                Categoria: 
+                                {% if rec.category == 'network' %}
+                                    Segurança de Rede
+                                {% elif rec.category == 'credentials' %}
+                                    Controle de Acesso
+                                {% elif rec.category == 'malware' %}
+                                    Proteção contra Malware
+                                {% elif rec.category == 'backup' %}
+                                    Backup e Recuperação
+                                {% elif rec.category == 'compliance' %}
+                                    Conformidade
+                                {% endif %}
+                            </small>
+                        </div>
+                        <span id="recommendation-{{ rec.id }}-badge" class="status-badge {{ rec.status }}">
+                            {% if rec.status == 'pending' %}
+                                Pendente
+                            {% elif rec.status == 'in_progress' %}
+                                Em Progresso
+                            {% elif rec.status == 'implemented' %}
+                                Implementado
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="recommendation-body">
+                        <p>{{ rec.description }}</p>
+                        
+                        <div class="recommendation-steps">
+                            <h6><i class="fas fa-list-ol me-2"></i> Passos para Implementação:</h6>
+                            <ol>
+                                {% for step in rec.implementation_steps.split('\n') %}
+                                    <li>{{ step.lstrip('0123456789.- ') }}</li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                        
+                        {% if rec.resources %}
+                        <div class="recommendation-resources">
+                            <h6><i class="fas fa-external-link-alt me-2"></i> Recursos Úteis:</h6>
+                            <a href="{{ rec.resources }}" target="_blank" class="text-decoration-none">
+                                {{ rec.resources }}
+                                <i class="fas fa-external-link-alt ms-1 small"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mt-3 no-print">
+                            <label for="rec-status-{{ rec.id }}" class="form-label">Atualizar Status:</label>
+                            <select id="rec-status-{{ rec.id }}" class="form-select recommendation-status-update" 
+                                    data-recommendation-id="{{ rec.id }}" data-assessment-id="{{ assessment.id }}">
+                                <option value="pending" {% if rec.status == 'pending' %}selected{% endif %}>Pendente</option>
+                                <option value="in_progress" {% if rec.status == 'in_progress' %}selected{% endif %}>Em Progresso</option>
+                                <option value="implemented" {% if rec.status == 'implemented' %}selected{% endif %}>Implementado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhuma recomendação de baixa prioridade encontrada.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Detalhes das Respostas -->
+    <div class="card shadow-sm mb-4 page-break">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Detalhes das Respostas</h5>
+        </div>
+        <div class="card-body">
+            <div class="accordion" id="accordionResponses">
+                <!-- Segurança de Rede -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-network">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-network" aria-expanded="false" aria-controls="collapse-network">
+                            Segurança de Rede e Infraestrutura
+                        </button>
+                    </h2>
+                    <div id="collapse-network" class="accordion-collapse collapse" data-bs-parent="#accordionResponses">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Questão</th>
+                                            <th width="100">Pontuação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for question in questions['network'] %}
+                                        <tr>
+                                            <td>{{ question.text }}</td>
+                                            <td class="text-center fw-bold">{{ responses.get(question.id, '0') }}/5</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Controle de Acesso -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-credentials">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-credentials" aria-expanded="false" aria-controls="collapse-credentials">
+                            Gerenciamento de Credenciais e Controle de Acesso
+                        </button>
+                    </h2>
+                    <div id="collapse-credentials" class="accordion-collapse collapse" data-bs-parent="#accordionResponses">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Questão</th>
+                                            <th width="100">Pontuação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for question in questions['credentials'] %}
+                                        <tr>
+                                            <td>{{ question.text }}</td>
+                                            <td class="text-center fw-bold">{{ responses.get(question.id, '0') }}/5</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proteção contra Malware -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-malware">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-malware" aria-expanded="false" aria-controls="collapse-malware">
+                            Proteção contra Malware e Ataques Cibernéticos
+                        </button>
+                    </h2>
+                    <div id="collapse-malware" class="accordion-collapse collapse" data-bs-parent="#accordionResponses">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Questão</th>
+                                            <th width="100">Pontuação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for question in questions['malware'] %}
+                                        <tr>
+                                            <td>{{ question.text }}</td>
+                                            <td class="text-center fw-bold">{{ responses.get(question.id, '0') }}/5</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Backup e Recuperação -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-backup">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-backup" aria-expanded="false" aria-controls="collapse-backup">
+                            Políticas de Backup e Recuperação de Desastres
+                        </button>
+                    </h2>
+                    <div id="collapse-backup" class="accordion-collapse collapse" data-bs-parent="#accordionResponses">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Questão</th>
+                                            <th width="100">Pontuação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for question in questions['backup'] %}
+                                        <tr>
+                                            <td>{{ question.text }}</td>
+                                            <td class="text-center fw-bold">{{ responses.get(question.id, '0') }}/5</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Conformidade -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-compliance">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-compliance" aria-expanded="false" aria-controls="collapse-compliance">
+                            Conformidade com Legislações de Proteção de Dados
+                        </button>
+                    </h2>
+                    <div id="collapse-compliance" class="accordion-collapse collapse" data-bs-parent="#accordionResponses">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Questão</th>
+                                            <th width="100">Pontuação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for question in questions['compliance'] %}
+                                        <tr>
+                                            <td>{{ question.text }}</td>
+                                            <td class="text-center fw-bold">{{ responses.get(question.id, '0') }}/5</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ações -->
+    <div class="card shadow-sm mb-4 no-print">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="{{ url_for('assessment.list_assessments') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Voltar para Lista
+                    </a>
+                    <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-primary ms-2">
+                        <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                    </a>
+                </div>
+                <div>
+                    <button class="btn btn-primary" onclick="window.print()">
+                        <i class="fas fa-print me-1"></i> Imprimir Relatório
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    
+    {% block extra_js %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar gráfico de radar
+        const ctxRadar = document.getElementById('radarChart');
+        if (ctxRadar) {
+            new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Segurança de Rede',
+                        'Controle de Acesso',
+                        'Proteção contra Malware',
+                        'Backup e Recuperação',
+                        'Conformidade'
+                    ],
+                    datasets: [{
+                        label: 'Pontuação (%)',
+                        data: [
+                            {{ assessment.score_network }},
+                            {{ assessment.score_credentials }},
+                            {{ assessment.score_malware }},
+                            {{ assessment.score_backup }},
+                            {{ assessment.score_compliance }}
+                        ],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        pointBackgroundColor: 'rgb(54, 162, 235)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(54, 162, 235)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Manipulador para atualização de status de recomendação
+        document.querySelectorAll('.recommendation-status-update').forEach(select => {
+            select.addEventListener('change', function() {
+                const recommendationId = this.dataset.recommendationId;
+                const assessmentId = this.dataset.assessmentId;
+                const status = this.value;
+                
+                fetch(`/assessment/assessments/${assessmentId}/recommendations/${recommendationId}/status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: status })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Atualizar badge de status
+                        const badge = document.querySelector(`#recommendation-${recommendationId}-badge`);
+                        if (badge) {
+                            // Remover classes de status anteriores
+                            badge.classList.remove('pending', 'in_progress', 'implemented');
+                            
+                            // Adicionar nova classe de status
+                            badge.classList.add(status);
+                            
+                            // Atualizar texto
+                            let statusText = '';
+                            if (status === 'pending') statusText = 'Pendente';
+                            else if (status === 'in_progress') statusText = 'Em Progresso';
+                            else if (status === 'implemented') statusText = 'Implementado';
+                            
+                            badge.textContent = statusText;
+                            
+                            // Mostrar notificação de sucesso
+                            showNotification('Status atualizado com sucesso!', 'success');
+                        }
+                    } else {
+                        // Mostrar erro
+                        showNotification('Erro ao atualizar status. Tente novamente.', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    showNotification('Erro de conexão. Verifique sua internet.', 'danger');
+                });
+            });
+        });
+        
+        // Função para mostrar notificação temporária
+        function showNotification(message, type = 'info') {
+            // Criar elemento de notificação
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Aplicar estilo
+            Object.assign(notification.style, {
+                top: '20px',
+                right: '20px',
+                zIndex: '9999',
+                minWidth: '300px',
+                boxShadow: '0 3px 10px rgba(0,0,0,0.15)',
+                borderRadius: '8px'
+            });
+            
+            // Adicionar ao corpo do documento
+            document.body.appendChild(notification);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+    });
+    </script>
+    {% endblock %}

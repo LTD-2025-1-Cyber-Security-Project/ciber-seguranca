@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Meu Perfil - CyberSecAssessment{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5 fw-bold">
+            <i class="fas fa-user-circle text-primary me-2"></i> Meu Perfil
+        </h1>
+        <p class="lead">Gerencie suas informações pessoais e credenciais de acesso.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form method="post">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="first_name" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ current_user.first_name }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="last_name" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ current_user.last_name }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="username" class="form-label">Nome de Usuário</label>
+                            <input type="text" class="form-control" id="username" value="{{ current_user.username }}" readonly disabled>
+                            <div class="form-text">O nome de usuário não pode ser alterado.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="password" class="form-label">Nova Senha (opcional)</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                            <div class="form-text">Deixe em branco para manter a senha atual.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="password_confirm" class="form-label">Confirmar Nova Senha</label>
+                            <input type="password" class="form-control" id="password_confirm" name="password_confirm">
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="department" class="form-label">Departamento</label>
+                            <input type="text" class="form-control" id="department" name="department" value="{{ current_user.department }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="position" class="form-label">Cargo</label>
+                            <input type="text" class="form-control" id="position" name="position" value="{{ current_user.position }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="municipality" class="form-label">Município</label>
+                        <input type="text" class="form-control" id="municipality" name="municipality" value="{{ current_user.municipality }}" readonly disabled>
+                        <div class="form-text">O município não pode ser alterado. Entre em contato com um administrador se precisar modificar este campo.</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Voltar para Dashboard
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Salvar Alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card bg-light border-0 mb-4">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle text-primary me-2"></i> Informações da Conta</h5>
+                <div class="mb-3">
+                    <strong>Tipo de Conta:</strong>
+                    {% if current_user.is_admin %}
+                    <span class="badge bg-danger ms-2">Administrador</span>
+                    {% else %}
+                    <span class="badge bg-secondary ms-2">Usuário</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <strong>Data de Cadastro:</strong>
+                    <span class="ms-2">{{ current_user.created_at.strftime('%d/%m/%Y') }}</span>
+                </div>
+                <div>
+                    <strong>Último Acesso:</strong>
+                    <span class="ms-2">
+                        {% if current_user.last_login %}
+                        {{ current_user.last_login.strftime('%d/%m/%Y %H:%M') }}
+                        {% else %}
+                        Primeira sessão
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card border-info mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-lock me-2"></i> Segurança</h5>
+            </div>
+            <div class="card-body">
+                <p>Recomendações para senhas seguras:</p>
+                <ul>
+                    <li>Mínimo de 8 caracteres</li>
+                    <li>Combinação de letras maiúsculas e minúsculas</li>
+                    <li>Inclusão de números e símbolos</li>
+                    <li>Evitar informações pessoais óbvias</li>
+                    <li>Não reutilizar senhas de outros sistemas</li>
+                </ul>
+                <p class="mb-0">Mantenha seus dados atualizados para garantir a segurança de sua conta.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Validação de senha
+    const password = document.getElementById('password');
+    const passwordConfirm = document.getElementById('password_confirm');
+    const form = document.querySelector('form');
+    
+    form.addEventListener('submit', function(event) {
+        // Só validar se uma nova senha foi informada
+        if (password.value) {
+            if (password.value !== passwordConfirm.value) {
+                event.preventDefault();
+                alert('As senhas não coincidem. Por favor, verifique.');
+                passwordConfirm.focus();
+                return;
+            }
+            
+            if (password.value.length < 8) {
+                event.preventDefault();
+                alert('A senha deve ter pelo menos 8 caracteres.');
+                password.focus();
+                return;
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

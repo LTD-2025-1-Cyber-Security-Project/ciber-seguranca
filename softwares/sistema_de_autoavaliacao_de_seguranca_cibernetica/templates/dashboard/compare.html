@@ -1,0 +1,598 @@
+{% extends 'base.html' %}
+
+{% block title %}Comparar Avaliações - CyberSecAssessment{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Comparar Avaliações</li>
+            </ol>
+        </nav>
+        
+        <h1 class="display-5 fw-bold">
+            <i class="fas fa-exchange-alt text-primary me-2"></i> Comparar Avaliações
+        </h1>
+        <p class="lead">Compare diferentes avaliações para analisar seu progresso ao longo do tempo.</p>
+    </div>
+</div>
+
+{% if assessments|length > 0 %}
+<!-- Seletor de Avaliações -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Selecione as Avaliações para Comparação</h5>
+    </div>
+    <div class="card-body">
+        <form id="compare-form" class="mb-3">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Selecione de 1 a 3 avaliações para comparar seus resultados.
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="50">Selecionar</th>
+                            <th>Título</th>
+                            <th>Data</th>
+                            <th>Pontuação Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assessment in assessments %}
+                        <tr>
+                            <td class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="assessment_ids" value="{{ assessment.id }}" id="check-{{ assessment.id }}">
+                                </div>
+                            </td>
+                            <td>{{ assessment.title }}</td>
+                            <td>{{ assessment.created_at.strftime('%d/%m/%Y') }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 me-2" style="height: 8px">
+                                        <div class="progress-bar 
+                                            {% if assessment.total_score >= 80 %}bg-success
+                                            {% elif assessment.total_score >= 60 %}bg-warning
+                                            {% else %}bg-danger{% endif %}"
+                                            role="progressbar" 
+                                            style="width: {{ assessment.total_score }}%" 
+                                            aria-valuenow="{{ assessment.total_score }}" 
+                                            aria-valuemin="0" 
+                                            aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <span class="small fw-bold">{{ assessment.total_score|round(1) }}%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-bar me-1"></i> Comparar Selecionadas
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Resultados da Comparação (inicialmente oculto) -->
+<div id="comparison-section" class="d-none">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Resultado da Comparação</h5>
+        </div>
+        <div class="card-body">
+            <div id="comparison-chart" class="mb-4">
+                <!-- O gráfico será inserido aqui via JavaScript -->
+            </div>
+            
+            <div id="comparison-results">
+                <!-- Os resultados detalhados serão inseridos aqui via JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tabela de Comparação Detalhada -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Comparação Detalhada por Categoria</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="comparison-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Categoria</th>
+                            <!-- Cabeçalhos com datas serão inseridos via JavaScript -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linhas serão inseridas via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Análise e Conclusões -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Análise e Conclusões</h5>
+        </div>
+        <div class="card-body">
+            <div id="comparison-analysis">
+                <!-- Análise será inserida via JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- Sem avaliações disponíveis -->
+<div class="card shadow-sm">
+    <div class="card-body text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-exchange-alt fa-4x text-muted"></i>
+        </div>
+        <h4>Nenhuma avaliação disponível para comparação</h4>
+        <p class="text-muted">Você precisa completar pelo menos uma avaliação para usar esta funcionalidade.</p>
+        <a href="{{ url_for('assessment.new_assessment') }}" class="btn btn-primary mt-3">
+            <i class="fas fa-plus me-2"></i> Iniciar Primeira Avaliação
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if assessments|length > 0 %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const compareForm = document.getElementById('compare-form');
+    const comparisonSection = document.getElementById('comparison-section');
+    
+    compareForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Coletar IDs das avaliações selecionadas
+        const assessmentIds = [];
+        const checkboxes = document.querySelectorAll('input[name="assessment_ids"]:checked');
+        
+        checkboxes.forEach(checkbox => {
+            assessmentIds.push(checkbox.value);
+        });
+        
+        // Validar seleção
+        if (assessmentIds.length < 1 || assessmentIds.length > 3) {
+            alert('Por favor, selecione de 1 a 3 avaliações para comparar.');
+            return;
+        }
+        
+        // Realizar requisição AJAX para obter dados de comparação
+        fetch('/dashboard/api/compare', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ assessment_ids: assessmentIds })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mostrar seção de comparação
+                comparisonSection.classList.remove('d-none');
+                
+                // Renderizar gráficos e tabelas
+                renderComparisonChart(data);
+                renderComparisonTable(data);
+                renderComparisonAnalysis(data);
+                
+                // Rolar para a seção de resultados
+                comparisonSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert(data.message || 'Erro ao comparar avaliações.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Ocorreu um erro ao processar sua solicitação.');
+        });
+    });
+    
+    // Função para renderizar o gráfico de comparação
+    function renderComparisonChart(data) {
+        const chartContainer = document.getElementById('comparison-chart');
+        chartContainer.innerHTML = '<canvas id="comparisonCanvas" height="400"></canvas>';
+        
+        const ctx = document.getElementById('comparisonCanvas').getContext('2d');
+        
+        // Preparar datasets
+        const datasets = [];
+        const colors = ['#3a6df0', '#28a745', '#ffc107'];
+        
+        data.assessments.forEach((assessment, index) => {
+            datasets.push({
+                label: `${assessment.title} (${assessment.created_at})`,
+                data: [
+                    assessment.scores.network,
+                    assessment.scores.credentials,
+                    assessment.scores.malware,
+                    assessment.scores.backup,
+                    assessment.scores.compliance,
+                    assessment.scores.total
+                ],
+                backgroundColor: `${colors[index]}33`,
+                borderColor: colors[index],
+                borderWidth: 2,
+                pointBackgroundColor: colors[index],
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: colors[index]
+            });
+        });
+        
+        // Criar gráfico
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: data.categories,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+        
+        // Adicionar resumo de evolução se houver mais de uma avaliação
+        if (data.assessments.length > 1) {
+            const comparisonResults = document.getElementById('comparison-results');
+            const newest = data.assessments[0];
+            const oldest = data.assessments[data.assessments.length - 1];
+            
+            // Calcular diferença na pontuação total
+            const totalDiff = newest.scores.total - oldest.scores.total;
+            const totalDiffSign = totalDiff >= 0 ? '+' : '';
+            const totalDiffClass = totalDiff >= 0 ? 'text-success' : 'text-danger';
+            const totalDiffIcon = totalDiff >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+            
+            comparisonResults.innerHTML = `
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Evolução da Pontuação Total</h5>
+                                <div class="d-flex align-items-center">
+                                    <h3 class="${totalDiffClass} me-2">${totalDiffSign}${Math.abs(totalDiff).toFixed(1)}%</h3>
+                                    <i class="fas ${totalDiffIcon} ${totalDiffClass}"></i>
+                                    <span class="ms-2">desde ${oldest.created_at}</span>
+                                </div>
+                                <p class="text-muted mt-2">
+                                    ${totalDiff >= 0 ? 
+                                        'Houve um progresso positivo na segurança cibernética.' : 
+                                        'A pontuação diminuiu desde a avaliação anterior.'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    // Função para renderizar tabela comparativa
+    function renderComparisonTable(data) {
+        const table = document.getElementById('comparison-table');
+        // Limpar tabela existente
+        const tableHead = table.querySelector('thead tr');
+        const tableBody = table.querySelector('tbody');
+        
+        // Manter apenas a primeira coluna (Categoria)
+        while (tableHead.children.length > 1) {
+            tableHead.removeChild(tableHead.lastChild);
+        }
+        
+        // Limpar corpo da tabela
+        tableBody.innerHTML = '';
+        
+        // Adicionar cabeçalhos para cada avaliação
+        data.assessments.forEach(assessment => {
+            const th = document.createElement('th');
+            th.textContent = `${assessment.title} (${assessment.created_at})`;
+            tableHead.appendChild(th);
+        });
+        
+        // Adicionar linhas para cada categoria
+        const categories = [
+            { key: 'network', name: 'Segurança de Rede' },
+            { key: 'credentials', name: 'Controle de Acesso' },
+            { key: 'malware', name: 'Proteção contra Malware' },
+            { key: 'backup', name: 'Backup e Recuperação' },
+            { key: 'compliance', name: 'Conformidade' },
+            { key: 'total', name: 'Pontuação Total' }
+        ];
+        
+        categories.forEach(category => {
+            const tr = document.createElement('tr');
+            
+            // Primeira coluna: nome da categoria
+            const tdName = document.createElement('td');
+            tdName.textContent = category.name;
+            if (category.key === 'total') {
+                tdName.classList.add('fw-bold');
+            }
+            tr.appendChild(tdName);
+            
+            // Colunas para cada avaliação
+            data.assessments.forEach(assessment => {
+                const tdScore = document.createElement('td');
+                const score = assessment.scores[category.key];
+                
+                // Formatação com classes de cor baseadas na pontuação
+                let colorClass = '';
+                if (score >= 80) {
+                    colorClass = 'text-success';
+                } else if (score >= 60) {
+                    colorClass = 'text-warning';
+                } else {
+                    colorClass = 'text-danger';
+                }
+                
+                // Adicionar valor com formatação
+                tdScore.innerHTML = `<span class="${colorClass} fw-bold">${score.toFixed(1)}%</span>`;
+                
+                // Se não for a primeira avaliação, mostrar diferença em relação à anterior
+                if (data.assessments.length > 1 && data.assessments.indexOf(assessment) > 0) {
+                    const prevIndex = data.assessments.indexOf(assessment) - 1;
+                    const prevScore = data.assessments[prevIndex].scores[category.key];
+                    const diff = score - prevScore;
+                    
+                    if (diff !== 0) {
+                        const diffSign = diff > 0 ? '+' : '';
+                        const diffClass = diff > 0 ? 'text-success' : 'text-danger';
+                        const diffIcon = diff > 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+                        
+                        tdScore.innerHTML += ` <small class="${diffClass}"><i class="fas ${diffIcon}"></i> ${diffSign}${Math.abs(diff).toFixed(1)}%</small>`;
+                    }
+                }
+                
+                tr.appendChild(tdScore);
+            });
+            
+            tableBody.appendChild(tr);
+        });
+    }
+    
+    // Função para renderizar análise comparativa
+    function renderComparisonAnalysis(data) {
+        const analysisContainer = document.getElementById('comparison-analysis');
+        
+        if (data.assessments.length === 1) {
+            // Apenas uma avaliação selecionada
+            const assessment = data.assessments[0];
+            
+            let statusText, statusClass;
+            if (assessment.scores.total >= 80) {
+                statusText = 'Bom';
+                statusClass = 'success';
+            } else if (assessment.scores.total >= 60) {
+                statusText = 'Moderado';
+                statusClass = 'warning';
+            } else {
+                statusText = 'Crítico';
+                statusClass = 'danger';
+            }
+            
+            analysisContainer.innerHTML = `
+                <div class="alert alert-${statusClass}">
+                    <h5 class="mb-1">Status Atual: ${statusText}</h5>
+                    <p class="mb-0">
+                        ${assessment.scores.total >= 80 ? 
+                            'Sua prefeitura demonstra um bom nível de maturidade em segurança cibernética.' : 
+                            assessment.scores.total >= 60 ? 
+                            'Sua prefeitura apresenta um nível moderado de maturidade em segurança cibernética com oportunidades de melhoria.' : 
+                            'Sua prefeitura apresenta oportunidades significativas de melhoria em segurança cibernética.'}
+                    </p>
+                </div>
+                
+                <h6 class="mb-3">Pontos Fortes e Fracos</h6>
+                <p>Com base na avaliação <strong>${assessment.title}</strong>, foram identificados os seguintes pontos:</p>
+            `;
+            
+            // Encontrar categoria mais forte e mais fraca
+            const scores = [
+                { key: 'network', name: 'Segurança de Rede', score: assessment.scores.network },
+                { key: 'credentials', name: 'Controle de Acesso', score: assessment.scores.credentials },
+                { key: 'malware', name: 'Proteção contra Malware', score: assessment.scores.malware },
+                { key: 'backup', name: 'Backup e Recuperação', score: assessment.scores.backup },
+                { key: 'compliance', name: 'Conformidade', score: assessment.scores.compliance }
+            ];
+            
+            scores.sort((a, b) => b.score - a.score);
+            
+            const strongest = scores[0];
+            const weakest = scores[scores.length - 1];
+            
+            analysisContainer.innerHTML += `
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <h6 class="card-title text-success">
+                                    <i class="fas fa-arrow-up me-2"></i>Ponto Forte
+                                </h6>
+                                <p class="card-text">
+                                    <strong>${strongest.name}</strong> (${strongest.score.toFixed(1)}%)
+                                </p>
+                                <div class="progress" style="height: 10px">
+                                    <div class="progress-bar bg-success" style="width: ${strongest.score}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-danger">
+                            <div class="card-body">
+                                <h6 class="card-title text-danger">
+                                    <i class="fas fa-arrow-down me-2"></i>Ponto Fraco
+                                </h6>
+                                <p class="card-text">
+                                    <strong>${weakest.name}</strong> (${weakest.score.toFixed(1)}%)
+                                </p>
+                                <div class="progress" style="height: 10px">
+                                    <div class="progress-bar bg-danger" style="width: ${weakest.score}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h6 class="mb-3 mt-4">Recomendações</h6>
+                <p>Para melhorar o nível de segurança cibernética, recomenda-se focar na categoria <strong>${weakest.name}</strong>, que apresenta a menor pontuação.</p>
+            `;
+        } else {
+            // Múltiplas avaliações selecionadas
+            const newest = data.assessments[0];
+            const oldest = data.assessments[data.assessments.length - 1];
+            
+            // Calcular diferença na pontuação total
+            const totalDiff = newest.scores.total - oldest.scores.total;
+            const totalDiffSign = totalDiff >= 0 ? '+' : '';
+            
+            // Determinar progresso geral
+            let progressText, progressClass;
+            if (totalDiff >= 10) {
+                progressText = 'Melhoria Significativa';
+                progressClass = 'success';
+            } else if (totalDiff >= 5) {
+                progressText = 'Melhoria Moderada';
+                progressClass = 'info';
+            } else if (totalDiff >= 0) {
+                progressText = 'Melhoria Leve';
+                progressClass = 'primary';
+            } else if (totalDiff >= -5) {
+                progressText = 'Pequeno Declínio';
+                progressClass = 'warning';
+            } else {
+                progressText = 'Declínio Significativo';
+                progressClass = 'danger';
+            }
+            
+            analysisContainer.innerHTML = `
+                <div class="alert alert-${progressClass}">
+                    <h5 class="mb-1">Progresso Geral: ${progressText}</h5>
+                    <p class="mb-0">
+                        Comparando as avaliações de ${oldest.created_at} e ${newest.created_at}, houve uma variação de 
+                        <strong>${totalDiffSign}${Math.abs(totalDiff).toFixed(1)}%</strong> na pontuação total.
+                    </p>
+                </div>
+            `;
+            
+            // Análise de categorias com maior melhoria e maior declínio
+            const categories = [
+                { key: 'network', name: 'Segurança de Rede' },
+                { key: 'credentials', name: 'Controle de Acesso' },
+                { key: 'malware', name: 'Proteção contra Malware' },
+                { key: 'backup', name: 'Backup e Recuperação' },
+                { key: 'compliance', name: 'Conformidade' }
+            ];
+            
+            const categoryChanges = categories.map(category => {
+                return {
+                    ...category,
+                    diff: newest.scores[category.key] - oldest.scores[category.key]
+                };
+            });
+            
+            // Ordenar por maior diferença
+            categoryChanges.sort((a, b) => b.diff - a.diff);
+            
+            const mostImproved = categoryChanges[0];
+            const leastImproved = categoryChanges[categoryChanges.length - 1];
+            
+            analysisContainer.innerHTML += `
+                <h6 class="mb-3">Áreas com Maior Variação</h6>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card ${mostImproved.diff >= 0 ? 'border-success' : 'border-danger'}">
+                            <div class="card-body">
+                                <h6 class="card-title ${mostImproved.diff >= 0 ? 'text-success' : 'text-danger'}">
+                                    <i class="fas ${mostImproved.diff >= 0 ? 'fa-arrow-up' : 'fa-arrow-down'} me-2"></i>
+                                    ${mostImproved.diff >= 0 ? 'Maior Melhoria' : 'Maior Declínio'}
+                                </h6>
+                                <p class="card-text">
+                                    <strong>${mostImproved.name}</strong> (${mostImproved.diff >= 0 ? '+' : ''}${mostImproved.diff.toFixed(1)}%)
+                                </p>
+                                <p class="small text-muted">
+                                    De ${oldest.scores[mostImproved.key].toFixed(1)}% para ${newest.scores[mostImproved.key].toFixed(1)}%
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card ${leastImproved.diff >= 0 ? 'border-success' : 'border-danger'}">
+                            <div class="card-body">
+                                <h6 class="card-title ${leastImproved.diff >= 0 ? 'text-success' : 'text-danger'}">
+                                    <i class="fas ${leastImproved.diff >= 0 ? 'fa-arrow-up' : 'fa-arrow-down'} me-2"></i>
+                                    ${leastImproved.diff >= 0 ? 'Menor Melhoria' : 'Maior Declínio'}
+                                </h6>
+                                <p class="card-text">
+                                    <strong>${leastImproved.name}</strong> (${leastImproved.diff >= 0 ? '+' : ''}${leastImproved.diff.toFixed(1)}%)
+                                </p>
+                                <p class="small text-muted">
+                                    De ${oldest.scores[leastImproved.key].toFixed(1)}% para ${newest.scores[leastImproved.key].toFixed(1)}%
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h6 class="mb-3 mt-4">Conclusões e Recomendações</h6>
+            `;
+            
+            // Recomendações baseadas na análise
+            if (totalDiff >= 0) {
+                analysisContainer.innerHTML += `
+                    <p>A evolução entre as avaliações mostra um progresso positivo na segurança cibernética da prefeitura. Para continuar melhorando, recomenda-se:</p>
+                    <ul>
+                        <li>Manter e fortalecer as práticas que contribuíram para a melhoria em <strong>${mostImproved.name}</strong></li>
+                        <li>Focar atenção especial na área de <strong>${leastImproved.name}</strong> para equilibrar o desenvolvimento</li>
+                        <li>Realizar avaliações regulares para monitorar o progresso contínuo</li>
+                    </ul>
+                `;
+            } else {
+                analysisContainer.innerHTML += `
+                    <p>A comparação entre as avaliações indica um declínio na segurança cibernética da prefeitura. Recomenda-se:</p>
+                    <ul>
+                        <li>Investigar as causas do declínio na área de <strong>${leastImproved.name}</strong></li>
+                        <li>Revisar e fortalecer as políticas e práticas de segurança</li>
+                        <li>Realizar treinamentos para conscientização dos funcionários</li>
+                        <li>Programar uma nova avaliação em breve para verificar a eficácia das medidas corretivas</li>
+                    </ul>
+                `;
+            }
+        }
+    }
+});
+</script>
+{% endif %}
+{% endblock %}

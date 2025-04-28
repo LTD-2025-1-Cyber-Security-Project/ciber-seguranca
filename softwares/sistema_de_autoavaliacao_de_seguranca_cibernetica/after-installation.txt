@@ -1,0 +1,204 @@
+# PROCEDIMENTOS PÓS-INSTALAÇÃO
+# Sistema de Autoavaliação de Segurança Cibernética para Prefeituras
+Versão 1.0.0
+
+## VERIFICAÇÃO INICIAL
+
+Após concluir a instalação do Sistema de Autoavaliação de Segurança Cibernética, execute as seguintes verificações para garantir que tudo esteja funcionando corretamente:
+
+1. **Verificar acesso ao sistema**:
+   - Confirme que o aplicativo está rodando no endereço http://127.0.0.1:5000/
+   - Verifique se a página de login é exibida corretamente
+   - Teste o login com as credenciais padrão:
+     - Usuário: admin@prefeitura.gov.br
+     - Senha: admin123
+
+2. **Verificar conexão com banco de dados**:
+   - Acesse o painel administrativo
+   - Verifique se os dados de exemplo foram carregados corretamente
+   - Confirme se não há erros de banco de dados no log do sistema
+
+3. **Verificar recursos do sistema**:
+   - Monitore o uso de CPU e memória durante o primeiro uso
+   - Verifique se o sistema responde em tempo aceitável (menos de 2 segundos)
+
+## CONFIGURAÇÕES ESSENCIAIS DE SEGURANÇA
+
+### 1. Alteração de Credenciais Padrão
+
+**CRÍTICO: Altere imediatamente as senhas padrão!**
+
+- Acesse "Perfil" > "Alterar Senha"
+- Crie uma senha forte (mínimo 12 caracteres, combinando letras maiúsculas/minúsculas, números e símbolos)
+- Documente a nova senha em um gerenciador de senhas seguro
+
+### 2. Configuração de Autenticação de Dois Fatores (2FA)
+
+- Acesse "Perfil" > "Segurança"
+- Ative a autenticação de dois fatores
+- Escaneie o código QR com um aplicativo autenticador (Google Authenticator, Microsoft Authenticator ou similar)
+- Salve os códigos de backup em local seguro
+
+### 3. Configuração de Política de Senhas
+
+- Acesse "Administração" > "Políticas de Segurança"
+- Configure os requisitos mínimos para senhas:
+  - Comprimento mínimo: 12 caracteres
+  - Exigir letras maiúsculas e minúsculas
+  - Exigir números
+  - Exigir caracteres especiais
+  - Período de expiração: 90 dias
+  - Histórico de senhas: 5 últimas senhas
+
+### 4. Configuração de Timeout de Sessão
+
+- Acesse "Administração" > "Configurações Globais"
+- Configure o timeout de sessão para 15 minutos de inatividade
+- Ative o bloqueio automático da estação
+
+## CONFIGURAÇÃO INICIAL DO SISTEMA
+
+### 1. Dados da Instituição
+
+- Acesse "Configurações" > "Perfil da Instituição"
+- Preencha:
+  - Nome completo da prefeitura
+  - CNPJ
+  - Endereço completo
+  - Contatos principais
+  - Organograma básico da área de TI
+  - Logo da instituição (opcional)
+
+### 2. Estrutura Organizacional
+
+- Acesse "Administração" > "Estrutura Organizacional"
+- Cadastre os departamentos/secretarias da prefeitura
+- Defina a hierarquia organizacional
+- Vincule responsáveis a cada unidade
+
+### 3. Gestão de Usuários
+
+- Acesse "Administração" > "Usuários"
+- Crie contas para os principais usuários do sistema
+- Atribua perfis de acesso adequados:
+  - Administrador: acesso total ao sistema
+  - Gestor: acesso a relatórios e dashboards
+  - Analista: acesso a questionários e avaliações
+  - Auditor: acesso somente leitura a relatórios
+
+### 4. Customização de Questionários
+
+- Acesse "Administração" > "Questionários"
+- Revise os questionários padrão
+- Adapte conforme necessidades específicas da prefeitura
+- Crie questionários adicionais se necessário
+
+## CONFIGURAÇÃO DE BACKUPS
+
+### 1. Backup Automatizado
+
+- Verifique se o script de backup automático está configurado:
+  ```
+  sudo crontab -l
+  ```
+- Caso não esteja, configure-o:
+  ```
+  sudo crontab -e
+  # Adicione a linha:
+  0 1 * * * /caminho/para/backup_db.sh
+  ```
+
+### 2. Teste de Backup e Restauração
+
+- Execute um backup manual:
+  ```
+  sudo /caminho/para/backup_db.sh
+  ```
+- Teste o processo de restauração em um ambiente de teste
+
+### 3. Política de Retenção
+
+- Configure a retenção de backups:
+  - Diários: 7 dias
+  - Semanais: 4 semanas
+  - Mensais: 12 meses
+
+## PRIMEIRA AVALIAÇÃO DE SEGURANÇA
+
+### 1. Preparação
+
+- Reúna documentação sobre a infraestrutura atual de TI
+- Identifique os principais ativos de informação
+- Defina o escopo da avaliação inicial
+
+### 2. Realização da Avaliação
+
+- Acesse "Avaliações" > "Nova Avaliação"
+- Selecione o questionário "Avaliação Inicial de Maturidade"
+- Responda todas as perguntas com base na situação atual
+- Salve periodicamente para não perder o progresso
+
+### 3. Análise de Resultados
+
+- Após concluir a avaliação, acesse "Relatórios" > "Análise de Maturidade"
+- Identifique as áreas mais críticas
+- Verifique a pontuação geral de maturidade
+
+### 4. Criação do Plano de Ação
+
+- Acesse "Plano de Ação" > "Novo Plano"
+- Crie ações para as vulnerabilidades identificadas
+- Priorize as ações com base nos riscos
+- Atribua responsáveis e prazos
+- Estabeleça métricas de acompanhamento
+
+## PRÓXIMOS PASSOS
+
+1. **Treinamento de Usuários**:
+   - Agende sessões de treinamento para todos os usuários do sistema
+   - Crie material de referência rápida (guias de uso)
+   - Estabeleça um canal para dúvidas e suporte interno
+
+2. **Integração com Outros Sistemas**:
+   - Identifique possíveis integrações com outros sistemas da prefeitura
+   - Configure APIs se disponíveis
+   - Teste as integrações em ambiente controlado
+
+3. **Monitoramento Contínuo**:
+   - Configure alertas para eventos críticos
+   - Estabeleça rotina de revisão de logs
+   - Crie dashboard para acompanhamento em tempo real
+
+4. **Documentação Final**:
+   - Complete a documentação do ambiente
+   - Documente procedimentos operacionais
+   - Crie plano de continuidade para o sistema
+
+## VERIFICAÇÃO FINAL
+
+Antes de considerar a implantação concluída, confirme:
+
+- [  ] Todos os usuários têm acesso adequado
+- [  ] Backups estão funcionando corretamente
+- [  ] Políticas de segurança estão aplicadas
+- [  ] Avaliação inicial foi concluída
+- [  ] Plano de ação foi criado
+- [  ] Documentação está completa
+- [  ] Suporte técnico está disponível
+
+---
+
+## CONTATOS PARA SUPORTE
+
+Em caso de dificuldades durante o processo de pós-instalação:
+
+- **Suporte Técnico**: suporte@cybersecprefeitura.gov.br | (XX) XXXX-XXXX
+- **Emergências**: plantao@cybersecprefeitura.gov.br | (XX) XXXX-XXXX
+- **Portal de Suporte**: https://suporte.cybersecprefeitura.gov.br
+
+---
+
+© 2025 Sistema de Autoavaliação de Segurança Cibernética para Prefeituras.
+Todos os direitos reservados.
+
+Última atualização: 26 de Abril de 2025

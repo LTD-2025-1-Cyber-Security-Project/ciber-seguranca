@@ -1,0 +1,1 @@
+primeiro, execute o python3 setup_cybersec.py e depois python3 run.py

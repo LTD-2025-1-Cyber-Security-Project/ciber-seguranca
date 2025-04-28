@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block title %}Avaliações - CyberSecAssessment{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5 fw-bold">
+            <i class="fas fa-clipboard-check text-primary me-2"></i> Avaliações
+        </h1>
+        <p class="lead">Gerencie suas avaliações de segurança cibernética.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5>Suas Avaliações</h5>
+            <a href="{{ url_for('assessment.new_assessment') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Nova Avaliação
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if assessments %}
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Título</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Pontuação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assessment in assessments %}
+                <tr>
+                    <td>
+                        <strong>{{ assessment.title }}</strong>
+                        {% if assessment.description %}
+                        <br>
+                        <small class="text-muted">{{ assessment.description|truncate(60) }}</small>
+                        {% endif %}
+                    </td>
+                    <td>{{ assessment.created_at.strftime('%d/%m/%Y') }}</td>
+                    <td>
+                        {% if assessment.status == 'completed' %}
+                        <span class="badge bg-success">Concluída</span>
+                        {% else %}
+                        <span class="badge bg-warning text-dark">Em Progresso</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if assessment.status == 'completed' %}
+                        <div class="d-flex align-items-center">
+                            <div class="progress flex-grow-1 me-2" style="height: 8px">
+                                <div class="progress-bar 
+                                    {% if assessment.total_score >= 80 %}bg-success
+                                    {% elif assessment.total_score >= 60 %}bg-warning
+                                    {% else %}bg-danger{% endif %}"
+                                    role="progressbar" 
+                                    style="width: {{ assessment.total_score }}%" 
+                                    aria-valuenow="{{ assessment.total_score }}" 
+                                    aria-valuemin="0" 
+                                    aria-valuemax="100">
+                                </div>
+                            </div>
+                            <span class="small fw-bold">{{ assessment.total_score|round|int }}%</span>
+                        </div>
+                        {% else %}
+                        <span class="text-muted">--</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            {% if assessment.status == 'completed' %}
+                            <a href="{{ url_for('assessment.view_assessment', assessment_id=assessment.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('assessment.edit_assessment', assessment_id=assessment.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            {% endif %}
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ assessment.id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Modal de Confirmação de Exclusão -->
+                        <div class="modal fade" id="deleteModal{{ assessment.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ assessment.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel{{ assessment.id }}">Confirmar Exclusão</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Tem certeza que deseja excluir a avaliação <strong>"{{ assessment.title }}"</strong>?</p>
+                                        <p class="text-danger">Esta ação não pode ser desfeita.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{{ url_for('assessment.delete_assessment', assessment_id=assessment.id) }}" method="post">
+                                            <button type="submit" class="btn btn-danger">Excluir</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="card shadow-sm">
+    <div class="card-body text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-clipboard-list fa-4x text-muted"></i>
+        </div>
+        <h4>Nenhuma avaliação encontrada</h4>
+        <p class="text-muted">Você ainda não realizou nenhuma avaliação de segurança cibernética.</p>
+        <a href="{{ url_for('assessment.new_assessment') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> Iniciar Primeira Avaliação
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- Dicas e Informações -->
+<div class="row mt-4">
+    <div class="col-md-6 mb-4">
+        <div class="card border-info h-100">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i> Por que realizar avaliações regulares?</h5>
+            </div>
+            <div class="card-body">
+                <p>Avaliações regulares de segurança cibernética ajudam sua prefeitura a:</p>
+                <ul>
+                    <li>Identificar vulnerabilidades antes que sejam exploradas</li>
+                    <li>Manter-se em conformidade com regulamentações</li>
+                    <li>Proteger dados sensíveis de cidadãos e funcionários</li>
+                    <li>Evitar interrupções nos serviços públicos</li>
+                    <li>Acompanhar melhorias na segurança ao longo do tempo</li>
+                </ul>
+                <p>Recomendamos realizar uma avaliação completa a cada 3-6 meses.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card border-success h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i> Dicas para melhorar sua pontuação</h5>
+            </div>
+            <div class="card-body">
+                <p>Para melhorar a segurança cibernética de sua prefeitura:</p>
+                <ul>
+                    <li>Priorize recomendações de alta prioridade</li>
+                    <li>Estabeleça uma equipe responsável pela segurança</li>
+                    <li>Desenvolva políticas de segurança claras</li>
+                    <li>Realize treinamentos regulares com funcionários</li>
+                    <li>Mantenha sistemas e softwares atualizados</li>
+                    <li>Implemente controles de acesso rigorosos</li>
+                </ul>
+                <p>Lembre-se: segurança é um processo contínuo, não um objetivo final.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

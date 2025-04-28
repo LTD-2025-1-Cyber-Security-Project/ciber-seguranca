@@ -1,0 +1,302 @@
+<!-- templates/assessment/edit.html -->
+{% extends 'base.html' %}
+
+{% block title %}Avaliação - {{ assessment.title }} - CyberSecAssessment{% endblock %}
+
+{% block extra_css %}
+<style>
+.question-card.answered {
+    border-left: 3px solid #28a745;
+}
+.rating-option label:hover {
+    background-color: rgba(58, 109, 240, 0.1);
+    border-color: rgba(58, 109, 240, 0.3);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('assessment.list_assessments') }}">Avaliações</a></li>
+                <li class="breadcrumb-item active">{{ assessment.title }}</li>
+            </ol>
+        </nav>
+        
+        <h1 class="display-5 fw-bold">
+            <i class="fas fa-clipboard-check text-primary me-2"></i> {{ assessment.title }}
+        </h1>
+        <p class="lead">{{ assessment.description }}</p>
+    </div>
+</div>
+
+<!-- Barra de Progresso -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-2">
+            <h5 class="mb-0">Progresso da Avaliação</h5>
+            <span id="progress-text">0/25 questões respondidas (0%)</span>
+        </div>
+        <div class="progress assessment-progress">
+            <div id="assessment-progress" class="progress-bar bg-primary" role="progressbar" style="width: 0%" 
+                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+
+<form id="assessment-form" method="post">
+    <!-- Informações Básicas -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Informações da Avaliação</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="form-control" id="title" name="title" 
+                       value="{{ assessment.title }}" required>
+            </div>
+            <div class="mb-0">
+                <label for="description" class="form-label">Descrição (Opcional)</label>
+                <textarea class="form-control" id="description" name="description" 
+                          rows="2">{{ assessment.description }}</textarea>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Questionário -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Questionário de Autoavaliação</h5>
+            <span class="badge bg-primary">25 questões</span>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-4">
+                Para cada questão, avalie sua prefeitura em uma escala de 0 a 5, onde:
+                <span class="d-block mt-2">
+                    <span class="badge bg-danger">0</span> = Não implementado ou inexistente
+                    <span class="badge bg-warning text-dark ms-2">1-2</span> = Implementação básica ou incompleta
+                    <span class="badge bg-info text-dark ms-2">3-4</span> = Implementação adequada
+                    <span class="badge bg-success ms-2">5</span> = Implementação completa e avançada
+                </span>
+            </p>
+            
+            <!-- Segurança de Rede -->
+            <h4 class="category-heading">
+                <i class="fas fa-network-wired text-primary me-2"></i> Segurança de Rede e Infraestrutura
+            </h4>
+            
+            {% for question in questions['network'] %}
+            <div class="card question-card mb-3 {% if question.id in responses %}answered{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ question.text }}</h5>
+                    
+                    <div class="rating-group mt-3">
+                        {% for i in range(6) %}
+                        <div class="rating-option">
+                            <input type="radio" class="btn-check" name="{{ question.id }}" id="{{ question.id }}_{{ i }}" 
+                                   value="{{ i }}" {% if responses.get(question.id) == i|string %}checked{% endif %}>
+                            <label class="btn btn-outline-secondary" for="{{ question.id }}_{{ i }}">{{ i }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Controle de Acesso -->
+            <h4 class="category-heading">
+                <i class="fas fa-key text-primary me-2"></i> Gerenciamento de Credenciais e Controle de Acesso
+            </h4>
+            
+            {% for question in questions['credentials'] %}
+            <div class="card question-card mb-3 {% if question.id in responses %}answered{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ question.text }}</h5>
+                    
+                    <div class="rating-group mt-3">
+                        {% for i in range(6) %}
+                        <div class="rating-option">
+                            <input type="radio" class="btn-check" name="{{ question.id }}" id="{{ question.id }}_{{ i }}" 
+                                   value="{{ i }}" {% if responses.get(question.id) == i|string %}checked{% endif %}>
+                            <label class="btn btn-outline-secondary" for="{{ question.id }}_{{ i }}">{{ i }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Proteção contra Malware -->
+            <h4 class="category-heading">
+                <i class="fas fa-shield-alt text-primary me-2"></i> Proteção contra Malware e Ataques Cibernéticos
+            </h4>
+            
+            {% for question in questions['malware'] %}
+            <div class="card question-card mb-3 {% if question.id in responses %}answered{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ question.text }}</h5>
+                    
+                    <div class="rating-group mt-3">
+                        {% for i in range(6) %}
+                        <div class="rating-option">
+                            <input type="radio" class="btn-check" name="{{ question.id }}" id="{{ question.id }}_{{ i }}" 
+                                   value="{{ i }}" {% if responses.get(question.id) == i|string %}checked{% endif %}>
+                            <label class="btn btn-outline-secondary" for="{{ question.id }}_{{ i }}">{{ i }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Backup e Recuperação -->
+            <h4 class="category-heading">
+                <i class="fas fa-database text-primary me-2"></i> Políticas de Backup e Recuperação de Desastres
+              </h4>
+              
+              {% for question in questions['backup'] %}
+              <div class="card question-card mb-3 {% if question.id in responses %}answered{% endif %}">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ question.text }}</h5>
+                      
+                      <div class="rating-group mt-3">
+                          {% for i in range(6) %}
+                          <div class="rating-option">
+                              <input type="radio" class="btn-check" name="{{ question.id }}" id="{{ question.id }}_{{ i }}" 
+                                     value="{{ i }}" {% if responses.get(question.id) == i|string %}checked{% endif %}>
+                              <label class="btn btn-outline-secondary" for="{{ question.id }}_{{ i }}">{{ i }}</label>
+                          </div>
+                          {% endfor %}
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+              
+              <!-- Conformidade -->
+              <h4 class="category-heading">
+                  <i class="fas fa-clipboard-list text-primary me-2"></i> Conformidade com Legislações de Proteção de Dados
+              </h4>
+              
+              {% for question in questions['compliance'] %}
+              <div class="card question-card mb-3 {% if question.id in responses %}answered{% endif %}">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ question.text }}</h5>
+                      
+                      <div class="rating-group mt-3">
+                          {% for i in range(6) %}
+                          <div class="rating-option">
+                              <input type="radio" class="btn-check" name="{{ question.id }}" id="{{ question.id }}_{{ i }}" 
+                                     value="{{ i }}" {% if responses.get(question.id) == i|string %}checked{% endif %}>
+                              <label class="btn btn-outline-secondary" for="{{ question.id }}_{{ i }}">{{ i }}</label>
+                          </div>
+                          {% endfor %}
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+      
+      <!-- Ações -->
+      <div class="card shadow-sm mb-4">
+          <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                      <button type="submit" class="btn btn-success me-2" name="save">
+                          <i class="fas fa-save me-1"></i> Salvar Progresso
+                      </button>
+                      <button type="submit" class="btn btn-primary" name="finish">
+                          <i class="fas fa-check-circle me-1"></i> Concluir Avaliação
+                      </button>
+                  </div>
+                  <a href="{{ url_for('assessment.list_assessments') }}" class="btn btn-outline-secondary">
+                      <i class="fas fa-times me-1"></i> Cancelar
+                  </a>
+              </div>
+          </div>
+      </div>
+  </form>
+  {% endblock %}
+  
+  {% block extra_js %}
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Atualizar progresso inicialmente
+      updateAnsweredProgress();
+      
+      // Marcar questões como respondidas quando uma opção é selecionada
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+          radio.addEventListener('change', function() {
+              const questionCard = this.closest('.question-card');
+              
+              if (questionCard) {
+                  // Marcar como respondida
+                  questionCard.classList.add('answered');
+                  questionCard.classList.remove('border-danger');
+                  
+                  // Remover mensagem de alerta se existir
+                  const alertText = questionCard.querySelector('.text-danger');
+                  if (alertText) alertText.remove();
+                  
+                  // Atualizar barra de progresso
+                  updateAnsweredProgress();
+              }
+          });
+      });
+      
+      // Função para atualizar a barra de progresso
+      function updateAnsweredProgress() {
+          const progressBar = document.getElementById('assessment-progress');
+          const progressText = document.getElementById('progress-text');
+          
+          const totalQuestions = document.querySelectorAll('.question-card').length;
+          const answeredQuestions = document.querySelectorAll('.question-card.answered').length;
+          
+          // Calcular porcentagem
+          const percentage = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
+          
+          // Atualizar barra de progresso
+          progressBar.style.width = `${percentage}%`;
+          progressBar.setAttribute('aria-valuenow', percentage);
+          
+          // Atualizar texto de progresso
+          progressText.textContent = `${answeredQuestions}/${totalQuestions} questões respondidas (${Math.round(percentage)}%)`;
+      }
+      
+      // Validar envio do formulário
+      document.getElementById('assessment-form').addEventListener('submit', function(event) {
+          // Verificar se todas as questões foram respondidas quando o botão "Concluir" for clicado
+          if (event.submitter && event.submitter.name === 'finish') {
+              const unansweredQuestions = document.querySelectorAll('.question-card:not(.answered)');
+              
+              if (unansweredQuestions.length > 0) {
+                  event.preventDefault();
+                  
+                  // Destacar questões não respondidas
+                  unansweredQuestions.forEach(card => {
+                      card.classList.add('border-danger');
+                      
+                      // Adicionar mensagem de alerta se ainda não existir
+                      if (!card.querySelector('.text-danger')) {
+                          const alertText = document.createElement('div');
+                          alertText.className = 'text-danger mt-2';
+                          alertText.innerHTML = '<i class="fas fa-exclamation-circle"></i> Esta questão precisa ser respondida';
+                          card.querySelector('.card-body').appendChild(alertText);
+                      }
+                  });
+                  
+                  // Rolar até a primeira questão não respondida
+                  unansweredQuestions[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  
+                  // Mostrar alerta
+                  alert('Por favor, responda todas as questões antes de concluir a avaliação.');
+              }
+          }
+      });
+  });
+  </script>
+  {% endblock %}

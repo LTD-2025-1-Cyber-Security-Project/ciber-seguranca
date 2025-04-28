@@ -1,0 +1,407 @@
+/* static/css/style.css */
+
+/* Variáveis para personalização de cores */
+:root {
+  --primary: #3a6df0;
+  --primary-light: #5b88fc;
+  --primary-dark: #2b58c4;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --white: #ffffff;
+  --background: #f3f6fd;
+  --card-bg: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --shadow-hover: rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo geral do corpo */
+body {
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--background);
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Estilização de cartões */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 1.25rem;
+}
+
+/* Barra de navegação */
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to right, var(--primary-dark), var(--primary));
+  border: none;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+}
+
+.nav-item {
+  margin: 0 5px;
+}
+
+.nav-link {
+  border-radius: 8px;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.2s;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Botões */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(to right, var(--primary), var(--primary-light));
+  border: none;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to right, var(--primary-dark), var(--primary));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-success {
+  background: linear-gradient(to right, #28a745, #34ce57);
+  border: none;
+}
+
+.btn-success:hover {
+  background: linear-gradient(to right, #218838, #28a745);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: linear-gradient(to right, #dc3545, #f55a6a);
+  border: none;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(to right, #c82333, #dc3545);
+  transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* Formulários */
+.form-control, .input-group-text {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 3px rgba(58, 109, 240, 0.25);
+  border-color: var(--primary);
+}
+
+.form-control-lg {
+  font-size: 1.1rem;
+  padding: 0.8rem 1.2rem;
+}
+
+.input-group .form-control {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Avaliações e Questionários */
+.question-card {
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary);
+}
+
+.assessment-progress {
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.category-heading {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.rating-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.rating-option {
+  flex: 0 0 auto;
+}
+
+.rating-option input[type="radio"] {
+  display: none;
+}
+
+.rating-option label {
+  display: inline-block;
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.rating-option input[type="radio"]:checked + label {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard e Gráficos */
+.dashboard-header {
+  background-color: var(--white);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  background-color: var(--white);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card .stat-icon {
+  position: absolute;
+  right: -15px;
+  bottom: -15px;
+  font-size: 6rem;
+  opacity: 0.1;
+}
+
+.stat-card .stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card .stat-label {
+  font-size: 1rem;
+  color: var(--secondary);
+}
+
+/* Recomendações */
+.recommendation-card {
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  border-left: 5px solid;
+  transition: all 0.3s ease;
+}
+
+.recommendation-card.high {
+  border-left-color: var(--danger);
+}
+
+.recommendation-card.medium {
+  border-left-color: var(--warning);
+}
+
+.recommendation-card.low {
+  border-left-color: var(--success);
+}
+
+.recommendation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.recommendation-body {
+  padding: 1.5rem;
+}
+
+.recommendation-steps {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.recommendation-steps ol {
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.recommendation-resources {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Status de Recomendação */
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.status-badge.pending {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--danger);
+}
+
+.status-badge.in-progress {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #d39e00;
+}
+
+.status-badge.implemented {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--success);
+}
+
+/* Tabelas */
+.table-responsive {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid var(--border-color);
+  font-weight: 600;
+  color: var(--secondary);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* Animações e transições */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Rodapé */
+footer {
+  margin-top: 3rem;
+  background-color: #343a40;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+footer h5 {
+  color: white;
+  font-weight: 600;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .btn {
+    padding: 0.4rem 1rem;
+  }
+  
+  .display-5 {
+    font-size: 1.8rem;
+  }
+  
+  .lead {
+    font-size: 1rem;
+  }
+  
+  .rating-group {
+    justify-content: space-between;
+  }
+  
+  .rating-option label {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}

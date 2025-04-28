@@ -1,0 +1,405 @@
+{% extends 'base.html' %}
+
+{% block title %}Estatísticas - CyberSecAssessment{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Estatísticas</li>
+            </ol>
+        </nav>
+        
+        <h1 class="display-5 fw-bold">
+            <i class="fas fa-chart-bar text-primary me-2"></i> Estatísticas
+        </h1>
+        <p class="lead">Análise detalhada do desempenho em segurança cibernética.</p>
+    </div>
+</div>
+
+{% if avg_scores %}
+<!-- Cartões de Resumo -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Pontuação Média por Categoria</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="avgScoresChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Pontos Fortes e Fracos</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="fas fa-arrow-up me-2"></i>Ponto Forte</h6>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <span class="display-6 fw-bold">{{ strongest_category[1]|round|int }}%</span>
+                        </div>
+                        <div>
+                            <span class="fs-5">{{ strongest_category[0] }}</span>
+                            <div class="progress mt-2" style="height: 10px">
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     style="width: {{ strongest_category[1] }}%" 
+                                     aria-valuenow="{{ strongest_category[1] }}" 
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h6 class="text-danger"><i class="fas fa-arrow-down me-2"></i>Ponto Fraco</h6>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <span class="display-6 fw-bold">{{ weakest_category[1]|round|int }}%</span>
+                        </div>
+                        <div>
+                            <span class="fs-5">{{ weakest_category[0] }}</span>
+                            <div class="progress mt-2" style="height: 10px">
+                                <div class="progress-bar bg-danger" role="progressbar" 
+                                     style="width: {{ weakest_category[1] }}%" 
+                                     aria-valuenow="{{ weakest_category[1] }}" 
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gráficos Detalhados -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Evolução Temporal</h5>
+            </div>
+            <div class="card-body">
+                {% if assessments_by_month %}
+                <canvas id="timelineChart" height="250"></canvas>
+                {% else %}
+                <div class="text-center my-5">
+                    <p class="text-muted">Não há dados suficientes para mostrar a evolução temporal.</p>
+                    <p>Complete mais avaliações para visualizar este gráfico.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Distribuição de Recomendações</h5>
+            </div>
+            <div class="card-body">
+                {% if recs_categories %}
+                <canvas id="recommendationsChart" height="250"></canvas>
+                {% else %}
+                <div class="text-center my-5">
+                    <p class="text-muted">Nenhuma recomendação encontrada.</p>
+                    <p>Complete uma avaliação para receber recomendações personalizadas.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detalhes por Categoria -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Detalhes por Categoria</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Categoria</th>
+                        <th>Pontuação</th>
+                        <th>Status</th>
+                        <th>Recomendações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category, score in avg_scores.items() %}
+                    <tr>
+                        <td>{{ category }}</td>
+                        <td>{{ score|round(1) }}%</td>
+                        <td>
+                            {% if score >= 80 %}
+                            <span class="badge bg-success">Bom</span>
+                            {% elif score >= 60 %}
+                            <span class="badge bg-warning text-dark">Moderado</span>
+                            {% else %}
+                            <span class="badge bg-danger">Crítico</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if category in recs_categories %}
+                            {{ recs_categories[category] }} recomendações
+                            {% else %}
+                            0 recomendações
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Insights e Recomendações -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Insights e Próximos Passos</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="mb-3">Análise Geral</h6>
+                <p>
+                    {% if avg_scores.total >= 80 %}
+                    Sua prefeitura demonstra um bom nível de maturidade em segurança cibernética, com uma pontuação média de <strong>{{ avg_scores.total|round(1) }}%</strong>. Continue com as boas práticas implementadas e foque na melhoria contínua.
+                    {% elif avg_scores.total >= 60 %}
+                    Sua prefeitura apresenta um nível moderado de maturidade em segurança cibernética, com uma pontuação média de <strong>{{ avg_scores.total|round(1) }}%</strong>. Há várias áreas com oportunidades de melhoria que devem ser priorizadas.
+                    {% else %}
+                    Sua prefeitura apresenta oportunidades significativas de melhoria em segurança cibernética, com uma pontuação média de <strong>{{ avg_scores.total|round(1) }}%</strong>. Recomenda-se atenção imediata às vulnerabilidades identificadas.
+                    {% endif %}
+                </p>
+                
+                <h6 class="mb-3 mt-4">Áreas Prioritárias</h6>
+                <p>Com base nas avaliações realizadas, recomendamos focar primeiro na área de <strong>{{ weakest_category[0] }}</strong>, que apresenta a pontuação mais baixa ({{ weakest_category[1]|round(1) }}%).</p>
+            </div>
+            
+            <div class="col-md-6">
+                <h6 class="mb-3">Próximas Ações Recomendadas</h6>
+                <ol class="list-group list-group-numbered mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Revisar recomendações pendentes</div>
+                            Priorize as recomendações de alta prioridade ainda não implementadas
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Focar na categoria mais fraca</div>
+                            Desenvolva um plano de ação para {{ weakest_category[0] }}
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Realizar nova avaliação</div>
+                            Após implementar melhorias, realize uma nova avaliação para medir o progresso
+                        </div>
+                    </li>
+                </ol>
+                
+                <div class="text-end">
+                    <a href="{{ url_for('assessment.new_assessment') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i> Nova Avaliação
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- Sem dados suficientes -->
+<div class="card shadow-sm">
+    <div class="card-body text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-chart-bar fa-4x text-muted"></i>
+        </div>
+        <h4>Dados insuficientes</h4>
+        <p class="text-muted">Você ainda não completou nenhuma avaliação de segurança cibernética.</p>
+        <p>Complete pelo menos uma avaliação para visualizar estatísticas detalhadas.</p>
+        <a href="{{ url_for('assessment.new_assessment') }}" class="btn btn-primary mt-3">
+            <i class="fas fa-plus me-2"></i> Iniciar Primeira Avaliação
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if avg_scores %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Pontuação Média por Categoria
+    const ctxAvgScores = document.getElementById('avgScoresChart').getContext('2d');
+    new Chart(ctxAvgScores, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Segurança de Rede',
+                'Controle de Acesso',
+                'Proteção contra Malware',
+                'Backup e Recuperação',
+                'Conformidade'
+            ],
+            datasets: [{
+                label: 'Pontuação Média (%)',
+                data: [
+                    {{ avg_scores.Segurança_de_Rede|default(avg_scores.network, 0) }},
+                    {{ avg_scores.Controle_de_Acesso|default(avg_scores.credentials, 0) }},
+                    {{ avg_scores.Proteção_contra_Malware|default(avg_scores.malware, 0) }},
+                    {{ avg_scores.Backup_e_Recuperação|default(avg_scores.backup, 0) }},
+                    {{ avg_scores.Conformidade|default(avg_scores.compliance, 0) }}
+                ],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.raw.toFixed(1) + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Evolução Temporal (se houver dados)
+    {% if assessments_by_month %}
+    const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
+    new Chart(ctxTimeline, {
+        type: 'line',
+        data: {
+            labels: [
+                {% for month, count in assessments_by_month %}
+                '{{ month }}',
+                {% endfor %}
+            ],
+            datasets: [{
+                label: 'Avaliações Realizadas',
+                data: [
+                    {% for month, count in assessments_by_month %}
+                    {{ count }},
+                    {% endfor %}
+                ],
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+    {% endif %}
+    
+    // Distribuição de Recomendações (se houver dados)
+    {% if recs_categories %}
+    const ctxRecommendations = document.getElementById('recommendationsChart').getContext('2d');
+    new Chart(ctxRecommendations, {
+        type: 'pie',
+        data: {
+            labels: [
+                {% for category, count in recs_categories.items() %}
+                '{{ category }}',
+                {% endfor %}
+            ],
+            datasets: [{
+                data: [
+                    {% for category, count in recs_categories.items() %}
+                    {{ count }},
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.raw;
+                            const percentage = context.parsed * 100 / context.dataset.data.reduce((a, b) => a + b, 0);
+                            return label + ': ' + value + ' (' + percentage.toFixed(1) + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+    {% endif %}
+});
+</script>
+{% endif %}
+{% endblock %}

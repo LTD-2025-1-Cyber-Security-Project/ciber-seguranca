@@ -1,0 +1,405 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - CyberSecAssessment{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5 fw-bold">
+            <i class="fas fa-tachometer-alt text-primary me-2"></i> Dashboard
+        </h1>
+        <p class="lead">Bem-vindo ao sistema de autoavaliação de segurança cibernética, {{ current_user.first_name }}.</p>
+    </div>
+</div>
+
+<!-- Cartões de Estatísticas -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-primary shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-muted mb-1">Total de Avaliações</h6>
+                        <h2 class="mb-0">{{ assessments_count }}</h2>
+                    </div>
+                    <div class="bg-primary text-white rounded-circle p-3">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <a href="{{ url_for('assessment.list_assessments') }}" class="text-decoration-none">
+                    <small>Ver detalhes <i class="fas fa-arrow-right ms-1"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-success shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-muted mb-1">Avaliações Concluídas</h6>
+                        <h2 class="mb-0">{{ completed_assessments }}</h2>
+                    </div>
+                    <div class="bg-success text-white rounded-circle p-3">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <a href="{{ url_for('assessment.list_assessments') }}" class="text-decoration-none">
+                    <small>Ver detalhes <i class="fas fa-arrow-right ms-1"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-info shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-muted mb-1">Pontuação Média</h6>
+                        <h2 class="mb-0">{% if avg_scores and avg_scores.total %}{{ "%.1f"|format(avg_scores.total) }}%{% else %}0.0%{% endif %}</h2>
+                    </div>
+                    <div class="bg-info text-white rounded-circle p-3">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <a href="{{ url_for('dashboard.stats') }}" class="text-decoration-none">
+                    <small>Ver estatísticas <i class="fas fa-arrow-right ms-1"></i></small>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Última Avaliação -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Última Avaliação</h5>
+            </div>
+            <div class="card-body">
+                {% if latest_assessment %}
+                <h4>{{ latest_assessment.title }}</h4>
+                <p class="text-muted">
+                    <i class="far fa-calendar-alt me-1"></i> {{ latest_assessment.created_at.strftime('%d/%m/%Y') }}
+                    <span class="ms-3">
+                        <i class="fas fa-tasks me-1"></i> Status: 
+                        {% if latest_assessment.status == 'completed' %}
+                            <span class="badge bg-success">Concluída</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Em Progresso</span>
+                        {% endif %}
+                    </span>
+                </p>
+                
+                {% if latest_assessment.status == 'completed' %}
+                <div class="mb-3">
+                    <div class="progress" style="height: 10px">
+                        <div class="progress-bar bg-primary" role="progressbar" 
+                             style="width: {{ latest_assessment.total_score }}%;" 
+                             aria-valuenow="{{ latest_assessment.total_score }}" 
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <small>Pontuação Total</small>
+                        <small>{{ "%.1f"|format(latest_assessment.total_score) }}%</small>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-6">
+                        <small class="d-block fw-bold">Segurança de Rede</small>
+                        <div class="progress mb-2" style="height: 5px">
+                            <div class="progress-bar bg-info" style="width: {{ latest_assessment.score_network }}%"></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <small class="d-block fw-bold">Controle de Acesso</small>
+                        <div class="progress mb-2" style="height: 5px">
+                            <div class="progress-bar bg-info" style="width: {{ latest_assessment.score_credentials }}%"></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <small class="d-block fw-bold">Proteção contra Malware</small>
+                        <div class="progress mb-2" style="height: 5px">
+                            <div class="progress-bar bg-info" style="width: {{ latest_assessment.score_malware }}%"></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <small class="d-block fw-bold">Backup e Recuperação</small>
+                        <div class="progress mb-2" style="height: 5px">
+                            <div class="progress-bar bg-info" style="width: {{ latest_assessment.score_backup }}%"></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <small class="d-block fw-bold">Conformidade</small>
+                        <div class="progress mb-2" style="height: 5px">
+                            <div class="progress-bar bg-info" style="width: {{ latest_assessment.score_compliance }}%"></div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p>Esta avaliação ainda está em progresso. Continue respondendo ao questionário para visualizar os resultados.</p>
+                {% endif %}
+                
+                <div class="mt-3">
+                    {% if latest_assessment.status == 'completed' %}
+                    <a href="{{ url_for('assessment.view_assessment', assessment_id=latest_assessment.id) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-eye me-1"></i> Ver Detalhes
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('assessment.edit_assessment', assessment_id=latest_assessment.id) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit me-1"></i> Continuar Avaliação
+                    </a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <p>Nenhuma avaliação encontrada. Comece agora sua primeira avaliação de segurança cibernética.</p>
+                <a href="{{ url_for('assessment.new_assessment') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i> Nova Avaliação
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recomendações de Alta Prioridade -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Recomendações de Alta Prioridade</h5>
+            </div>
+            <div class="card-body">
+                {% if high_priority_recs %}
+                <ul class="list-group list-group-flush">
+                    {% for rec in high_priority_recs %}
+                    <li class="list-group-item px-0">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <span class="badge rounded-pill bg-danger p-2">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </span>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-0">{{ rec.title }}</h6>
+                                <small class="text-muted">
+                                    Categoria: 
+                                    {% if rec.category == 'network' %}
+                                        Segurança de Rede
+                                    {% elif rec.category == 'credentials' %}
+                                        Controle de Acesso
+                                    {% elif rec.category == 'malware' %}
+                                        Proteção contra Malware
+                                    {% elif rec.category == 'backup' %}
+                                        Backup e Recuperação
+                                    {% elif rec.category == 'compliance' %}
+                                        Conformidade
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Nenhuma recomendação de alta prioridade pendente. Continue realizando avaliações regulares para manter seu ambiente seguro.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Ações Rápidas -->
+    <div class="col-12 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Ações Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <a href="{{ url_for('assessment.new_assessment') }}" class="text-decoration-none">
+                            <div class="border rounded p-3 h-100 d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                    <i class="fas fa-plus text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Nova Avaliação</h6>
+                                    <small class="text-muted">Iniciar uma nova autoavaliação</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <a href="{{ url_for('dashboard.stats') }}" class="text-decoration-none">
+                            <div class="border rounded p-3 h-100 d-flex align-items-center">
+                                <div class="bg-success bg-opacity-10 p-3 rounded me-3">
+                                    <i class="fas fa-chart-bar text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Estatísticas</h6>
+                                    <small class="text-muted">Visualizar relatórios detalhados</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <a href="{{ url_for('dashboard.compare') }}" class="text-decoration-none">
+                            <div class="border rounded p-3 h-100 d-flex align-items-center">
+                                <div class="bg-info bg-opacity-10 p-3 rounded me-3">
+                                    <i class="fas fa-exchange-alt text-info"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Comparar Avaliações</h6>
+                                    <small class="text-muted">Analisar progresso ao longo do tempo</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Progresso de Implementação -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Progresso de Implementação</h5>
+            </div>
+            <div class="card-body">
+                {% if implementation_progress.pending + implementation_progress.in_progress + implementation_progress.implemented > 0 %}
+                <canvas id="implementationChart" height="200"></canvas>
+                
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ctx = document.getElementById('implementationChart');
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Pendente', 'Em Progresso', 'Implementado'],
+                                datasets: [{
+                                    data: [
+                                        {{ implementation_progress.pending }},
+                                        {{ implementation_progress.in_progress }},
+                                        {{ implementation_progress.implemented }}
+                                    ],
+                                    backgroundColor: ['#dc3545', '#ffc107', '#198754'],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom'
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+                </script>
+                
+                <div class="d-flex justify-content-around mt-3">
+                    <div class="text-center">
+                        <h5 class="mb-0 text-danger">{{ implementation_progress.pending }}</h5>
+                        <small class="text-muted">Pendente</small>
+                    </div>
+                    <div class="text-center">
+                        <h5 class="mb-0 text-warning">{{ implementation_progress.in_progress }}</h5>
+                        <small class="text-muted">Em Progresso</small>
+                    </div>
+                    <div class="text-center">
+                        <h5 class="mb-0 text-success">{{ implementation_progress.implemented }}</h5>
+                        <small class="text-muted">Implementado</small>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-center my-5">Nenhuma recomendação encontrada. Complete uma avaliação para receber recomendações personalizadas.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pontuação por Categoria -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Pontuação por Categoria</h5>
+            </div>
+            <div class="card-body">
+                {% if avg_scores and avg_scores.total %}
+                <canvas id="radarChart" height="200"></canvas>
+                
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ctx = document.getElementById('radarChart');
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: 'radar',
+                            data: {
+                                labels: [
+                                    'Segurança de Rede',
+                                    'Controle de Acesso',
+                                    'Proteção contra Malware',
+                                    'Backup e Recuperação',
+                                    'Conformidade'
+                                ],
+                                datasets: [{
+                                    label: 'Pontuação Média (%)',
+                                    data: [
+                                        {{ avg_scores.network or 0 }},
+                                        {{ avg_scores.credentials or 0 }},
+                                        {{ avg_scores.malware or 0 }},
+                                        {{ avg_scores.backup or 0 }},
+                                        {{ avg_scores.compliance or 0 }}
+                                    ],
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    borderColor: 'rgb(54, 162, 235)',
+                                    pointBackgroundColor: 'rgb(54, 162, 235)',
+                                    pointBorderColor: '#fff',
+                                    pointHoverBackgroundColor: '#fff',
+                                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    r: {
+                                        angleLines: {
+                                            display: true
+                                        },
+                                        suggestedMin: 0,
+                                        suggestedMax: 100
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+                </script>
+                {% else %}
+                <p class="text-center my-5">Complete uma avaliação para visualizar a pontuação por categoria.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

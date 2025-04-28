@@ -1,0 +1,22 @@
+<!-- templates/errors/403.html -->
+{% extends 'base.html' %}
+
+{% block title %}Acesso Negado - CyberSecAssessment{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 text-center">
+        <div class="error-container py-5">
+            <h1 class="display-1 text-danger">403</h1>
+            <h2 class="mb-4">Acesso Negado</h2>
+            <p class="lead mb-4">Você não tem permissão para acessar este recurso.</p>
+            <img src="{{ url_for('static', filename='images/403.svg') }}" alt="Erro 403" class="img-fluid mb-4" style="max-height: 250px;">
+            <div class="mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-home me-2"></i>Voltar para a Página Inicial
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

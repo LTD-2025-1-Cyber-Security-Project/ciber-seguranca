@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Erro Interno - CyberSecAssessment{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 text-center">
+        <div class="error-container py-5">
+            <h1 class="display-1 text-danger">500</h1>
+            <h2 class="mb-4">Erro Interno do Servidor</h2>
+            <p class="lead mb-4">Ocorreu um erro interno no servidor. Por favor, tente novamente mais tarde ou entre em contato com o suporte.</p>
+            <div class="mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-home me-2"></i>Voltar para a Página Inicial
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
