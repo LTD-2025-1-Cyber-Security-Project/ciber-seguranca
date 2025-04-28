@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Resultados do Quiz - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Resultados do Quiz de Phishing</h2>
+        <p class="text-muted">Veja como você se saiu!</p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body text-center py-5">
+        <h3>Sua Pontuação</h3>
+        <div class="display-1 fw-bold mb-3">{{ score }}/{{ total }}</div>
+        <h4>{{ percentage }}%</h4>
+        
+        {% if percentage >= 90 %}
+        <div class="alert alert-success mt-4">
+            <i class="fas fa-trophy fa-2x mb-3"></i>
+            <h5>Excelente!</h5>
+            <p>Você tem um ótimo conhecimento sobre phishing e está bem preparado para identificar e prevenir ataques.</p>
+        </div>
+        {% elif percentage >= 70 %}
+        <div class="alert alert-info mt-4">
+            <i class="fas fa-thumbs-up fa-2x mb-3"></i>
+            <h5>Bom Trabalho!</h5>
+            <p>Você tem um bom entendimento sobre phishing, mas ainda há espaço para melhorar seus conhecimentos.</p>
+        </div>
+        {% elif percentage >= 50 %}
+        <div class="alert alert-warning mt-4">
+            <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+            <h5>Atenção!</h5>
+            <p>Você tem conhecimento básico sobre phishing, mas precisa aprender mais para se proteger adequadamente.</p>
+        </div>
+        {% else %}
+        <div class="alert alert-danger mt-4">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+            <h5>Cuidado!</h5>
+            <p>Você precisa melhorar significativamente seus conhecimentos sobre phishing para evitar cair em golpes.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Próximos Passos</h5>
+            </div>
+            <div class="card-body">
+                <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-book"></i></span>
+                        <strong>Revise o material educativo:</strong> Volte à página de aprendizado para reforçar seus conhecimentos.
+                    </li>
+                    <li class="mt-3"><span class="fa-li"><i class="fas fa-glasses"></i></span>
+                        <strong>Pratique a identificação:</strong> Observe os exemplos de e-mails de phishing e treine para reconhecer os sinais de alerta.
+                    </li>
+                    <li class="mt-3"><span class="fa-li"><i class="fas fa-shield-alt"></i></span>
+                        <strong>Melhore sua segurança:</strong> Ative a autenticação em dois fatores em suas contas, use um gerenciador de senhas e mantenha seu software atualizado.
+                    </li>
+                    <li class="mt-3"><span class="fa-li"><i class="fas fa-share-alt"></i></span>
+                        <strong>Compartilhe o conhecimento:</strong> Ajude amigos e colegas a se protegerem contra phishing.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Recursos Recomendados</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-3">
+                    <a href="{{ url_for('learn') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-book-reader"></i> Material Educativo
+                    </a>
+                    <a href="{{ url_for('quiz') }}" class="btn btn-outline-success">
+                        <i class="fas fa-redo"></i> Refazer o Quiz
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-tachometer-alt"></i> Voltar ao Dashboard
+                    </a>
+                    <a href="https://www.cisa.gov/sites/default/files/publications/Phishing_Tip_Sheet.pdf" target="_blank" class="btn btn-outline-info">
+                        <i class="fas fa-download"></i> Guia de Prevenção de Phishing (PDF)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

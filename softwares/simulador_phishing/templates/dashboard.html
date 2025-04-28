@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Dashboard</h2>
+        <p class="text-muted">Bem-vindo ao seu painel de controle, {{ current_user.username }}!</p>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('new_campaign') }}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Nova Campanha
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total de Campanhas</h5>
+                <p class="card-text display-4">{{ campaigns|length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Campanhas Ativas</h5>
+                <p class="card-text display-4">{{ campaigns|selectattr('active', 'eq', true)|list|length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Taxa de Detecção</h5>
+                {% set total_emails = namespace(value=0) %}
+                {% set reported_emails = namespace(value=0) %}
+                {% for campaign in campaigns %}
+                    {% for email in campaign.emails %}
+                        {% set total_emails.value = total_emails.value + 1 %}
+                        {% if email.reported %}
+                            {% set reported_emails.value = reported_emails.value + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                {% if total_emails.value > 0 %}
+                    {% set report_rate = (reported_emails.value / total_emails.value) * 100 %}
+                {% else %}
+                    {% set report_rate = 0 %}
+                {% endif %}
+                <p class="card-text display-4">{{ "%.1f"|format(report_rate) }}%</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">Suas Campanhas</h5>
+    </div>
+    <div class="card-body">
+        {% if campaigns %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Data de Criação</th>
+                        <th>Status</th>
+                        <th>Templates</th>
+                        <th>Alvos</th>
+                        <th>Emails Enviados</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for campaign in campaigns %}
+                    <tr>
+                        <td><a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}">{{ campaign.name }}</a></td>
+                        <td>{{ campaign.created_at.strftime('%d/%m/%Y') }}</td>
+                        <td>
+                            {% if campaign.active %}
+                            <span class="badge bg-success">Ativa</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Inativa</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ campaign.templates|length }}</td>
+                        <td>{{ campaign.targets|length }}</td>
+                        <td>{{ campaign.emails|length }}</td>
+                        <td>
+                            <a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            {% if campaign.templates|length > 0 and campaign.targets|length > 0 %}
+                            <a href="{{ url_for('send_campaign', campaign_id=campaign.id) }}" class="btn btn-sm btn-outline-success">
+                                <i class="fas fa-paper-plane"></i>
+                            </a>
+                            {% endif %}
+                            <a href="{{ url_for('campaign_results', campaign_id=campaign.id) }}" class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-chart-bar"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="fas fa-folder-open fa-4x mb-3 text-muted"></i>
+            <p class="mb-0">Você ainda não criou nenhuma campanha.</p>
+            <p>Clique no botão "Nova Campanha" para começar.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

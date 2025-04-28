@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}Aprender Sobre Phishing - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Aprender Sobre Phishing</h2>
+        <p class="text-muted">Materiais educacionais e recursos para identificar e se proteger contra ataques de phishing.</p>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('quiz') }}" class="btn btn-primary">
+            <i class="fas fa-question-circle"></i> Fazer Quiz
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">O que é Phishing?</h5>
+            </div>
+            <div class="card-body">
+                <p>Phishing é uma técnica de engenharia social onde atacantes se disfarçam como entidades confiáveis para induzir as vítimas a revelar informações sensíveis, como senhas e dados de cartão de crédito, ou a instalar malware.</p>
+                <p>Estes ataques geralmente ocorrem via e-mail, mensagens, ou sites falsos, e podem ser direcionados a indivíduos específicos (spear phishing) ou organizações inteiras.</p>
+                <h6 class="mt-4">Tipos comuns de phishing:</h6>
+                <ul>
+                    <li><strong>Phishing por e-mail</strong> - E-mails que parecem vir de empresas legítimas.</li>
+                    <li><strong>Spear phishing</strong> - Ataques direcionados a pessoas específicas.</li>
+                    <li><strong>Whaling</strong> - Direcionado a executivos de alto nível.</li>
+                    <li><strong>Smishing</strong> - Phishing via mensagens SMS.</li>
+                    <li><strong>Vishing</strong> - Phishing por telefone ou voz.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">Como Identificar Phishing</h5>
+            </div>
+            <div class="card-body">
+                <h6>Sinais de alerta em e-mails:</h6>
+                <ul>
+                    <li><strong>Erros gramaticais</strong> - Mensagens com erros de ortografia ou gramática.</li>
+                    <li><strong>Urgência</strong> - Mensagens criando senso de urgência ou ameaça.</li>
+                    <li><strong>Remetente suspeito</strong> - Endereços de e-mail que parecem legítimos, mas têm pequenas alterações.</li>
+                    <li><strong>Links suspeitos</strong> - URLs que não correspondem à organização mencionada.</li>
+                    <li><strong>Solicitações incomuns</strong> - Pedidos de informações pessoais ou financeiras.</li>
+                    <li><strong>Anexos não solicitados</strong> - Arquivos que você não esperava receber.</li>
+                    <li><strong>Design estranho</strong> - Logos distorcidos ou layouts diferentes dos oficiais.</li>
+                    <li><strong>Saudação genérica</strong> - "Prezado cliente" em vez do seu nome.</li>
+                </ul>
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-lightbulb"></i> <strong>Dica:</strong> Passe o mouse sobre links (sem clicar) para ver o URL real.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Como Se Proteger</h5>
+            </div>
+            <div class="card-body">
+                <h6>Medidas preventivas:</h6>
+                <ul>
+                    <li><strong>Verifique o remetente</strong> - Confira cuidadosamente o endereço de e-mail.</li>
+                    <li><strong>Não clique em links suspeitos</strong> - Digite o URL diretamente no navegador.</li>
+                    <li><strong>Use autenticação em dois fatores</strong> - Adicione uma camada extra de segurança.</li>
+                    <li><strong>Mantenha software atualizado</strong> - Instale regularmente as atualizações de segurança.</li>
+                    <li><strong>Use filtros de spam</strong> - Configure filtros de e-mail eficazes.</li>
+                    <li><strong>Seja cético</strong> - Questione mensagens inesperadas, mesmo de conhecidos.</li>
+                    <li><strong>Reporte phishing</strong> - Informe sua equipe de TI ou segurança sobre tentativas.</li>
+                </ul>
+                <div class="alert alert-success mt-3">
+                    <i class="fas fa-shield-alt"></i> <strong>Lembre-se:</strong> Organizações legítimas nunca solicitam informações sensíveis por e-mail.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Exemplos de E-mails de Phishing</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        Exemplo 1: Falso Login do Office 365
+                    </div>
+                    <div class="card-body">
+                        <p><strong>De:</strong> Microsoft Office &lt;office365@microsoftt-support.com&gt;</p>
+                        <p><strong>Assunto:</strong> Alerta: Sua conta Office 365 será desativada</p>
+                        <hr>
+                        <p>Prezado usuário,</p>
+                        <p>Sua conta Microsoft Office 365 será <strong>desativada em 24 horas</strong> devido à falta de verificação de segurança. Clique no link abaixo para verificar sua conta imediatamente e evitar a interrupção do serviço.</p>
+                        <p><a href="#" class="text-danger">[Verificar Conta Agora]</a></p>
+                        <p>Atenciosamente,<br>Equipe Microsoft Office 365</p>
+                        <hr>
+                        <h6 class="text-danger">Indicadores de phishing:</h6>
+                        <ul>
+                            <li>Domínio de e-mail incorreto (note o "tt" duplicado)</li>
+                            <li>Cria urgência com ameaça de desativação</li>
+                            <li>Solicita clique em link suspeito</li>
+                            <li>Não menciona o nome do destinatário</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        Exemplo 2: Falsa Atualização de Pagamento
+                    </div>
+                    <div class="card-body">
+                        <p><strong>De:</strong> PayPal Service &lt;payment@paypal-secure.net&gt;</p>
+                        <p><strong>Assunto:</strong> Ação Urgente: Problema com seu pagamento</p>
+                        <hr>
+                        <p>Olá cliente,</p>
+                        <p>Detectamos atividades incomuns em sua conta PayPal. Seu método de pagamento expirou e precisa ser atualizado imediatamente para evitar a suspensão da conta.</p>
+                        <p><a href="#" class="text-danger">[Atualizar Detalhes de Pagamento]</a></p>
+                        <p>Se você não atualizar suas informações em 48 horas, sua conta será limitada.</p>
+                        <p>Departamento de Segurança PayPal</p>
+                        <hr>
+                        <h6 class="text-danger">Indicadores de phishing:</h6>
+                        <ul>
+                            <li>Domínio falso (não é paypal.com)</li>
+                            <li>Saudação genérica ("Olá cliente")</li>
+                            <li>Cria sentido de urgência</li>
+                            <li>Ameaça com consequências negativas</li>
+                            <li>Solicita informações financeiras</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Recursos Adicionais</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-book"></i> Material de Leitura</h6>
+                        <ul>
+                            <li><a href="https://www.cisa.gov/topics/threats-and-mitigations/protecting-against-phishing" target="_blank">CISA: Proteção contra Phishing</a></li>
+                            <li><a href="https://www.ftc.gov/business-guidance/small-business/cybersecurity/phishing" target="_blank">FTC: Guia de Phishing</a></li>
+                            <li><a href="https://www.sans.org/security-awareness-training/resources/stop-phish" target="_blank">SANS: Stop That Phish</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-video"></i> Vídeos Educacionais</h6>
+                        <ul>
+                            <li><a href="https://www.youtube.com/watch?v=jBpeBgLypFY" target="_blank">Como o Phishing Funciona</a></li>
+                            <li><a href="https://www.youtube.com/watch?v=9TRR6lHviQc" target="_blank">Exemplos de Phishing em Ação</a></li>
+                            <li><a href="https://www.youtube.com/watch?v=opRMrEfAIiI" target="_blank">Treinamento de Conscientização</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-tools"></i> Ferramentas</h6>
+                        <ul>
+                            <li><a href="https://www.phishtank.com/" target="_blank">PhishTank - Verificador de URLs</a></li>
+                            <li><a href="https://www.virustotal.com/" target="_blank">VirusTotal - Verificador de Anexos</a></li>
+                            <li><a href="https://safebrowsing.google.com/safebrowsing/report_phish/" target="_blank">Google - Reportar Phishing</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

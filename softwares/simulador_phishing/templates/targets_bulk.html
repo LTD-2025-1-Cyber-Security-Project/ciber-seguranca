@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Importar Alvos - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Importar Alvos</h2>
+        <p class="text-muted">Campanha: {{ campaign.name }}</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Importação em Massa</h5>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Formato: <code>Nome,Email,Departamento</code> (um por linha)
+        </div>
+        <form method="post">
+            <div class="mb-3">
+                <label for="csv_data" class="form-label">Dados CSV</label>
+                <textarea class="form-control font-monospace" id="csv_data" name="csv_data" rows="10" required></textarea>
+                <div class="form-text">Cole os dados no formato CSV. O departamento é opcional.</div>
+            </div>
+            <div class="mb-3">
+                <h6>Exemplo:</h6>
+                <pre>João Silva,joao.silva@empresa.com,TI
+Maria Oliveira,maria.oliveira@empresa.com,RH
+Pedro Santos,pedro.santos@empresa.com,Financeiro</pre>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}" class="btn btn-outline-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Importar Alvos</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

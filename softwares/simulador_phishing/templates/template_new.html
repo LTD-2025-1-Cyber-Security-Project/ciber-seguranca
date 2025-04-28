@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo Template - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Novo Template de E-mail</h2>
+        <p class="text-muted">Campanha: {{ campaign.name }}</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Informações do Template</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome do Template</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <div class="form-text">Um nome descritivo para identificar este template.</div>
+            </div>
+            <div class="mb-3">
+                <label for="subject" class="form-label">Assunto do E-mail</label>
+                <input type="text" class="form-control" id="subject" name="subject" required>
+                <div class="form-text">O assunto que aparecerá no e-mail enviado.</div>
+            </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">Corpo do E-mail (HTML)</label>
+                <textarea class="form-control" id="body" name="body" rows="10" required></textarea>
+                <div class="form-text">O conteúdo HTML do e-mail. Use {nome} para incluir o nome do alvo.</div>
+            </div>
+            <div class="mb-3">
+                <label for="phishing_indicators" class="form-label">Indicadores de Phishing</label>
+                <textarea class="form-control" id="phishing_indicators" name="phishing_indicators" rows="3"></textarea>
+                <div class="form-text">Liste os indicadores de phishing presentes neste template (um por linha).</div>
+            </div>
+            <div class="mb-3">
+                <label for="difficulty" class="form-label">Nível de Dificuldade</label>
+                <select class="form-select" id="difficulty" name="difficulty">
+                    <option value="easy">Fácil</option>
+                    <option value="medium" selected>Médio</option>
+                    <option value="hard">Difícil</option>
+                </select>
+                <div class="form-text">Quão difícil é identificar este email como phishing.</div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}" class="btn btn-outline-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Adicionar Template</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Se necessário, adicionar um editor WYSIWYG para o corpo do e-mail
+</script>
+{% endblock %}

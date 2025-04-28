@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz de Phishing - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Quiz de Phishing</h2>
+        <p class="text-muted">Teste seus conhecimentos sobre identificação e prevenção de phishing.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Questionário</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <!-- Questão 1 -->
+            <div class="mb-4">
+                <h5>1. Qual das seguintes características NÃO é um indicador comum de e-mails de phishing?</h5>
+                <input type="hidden" name="correct_q1" value="d">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q1" id="q1a" value="a" required>
+                    <label class="form-check-label" for="q1a">
+                        Erros de ortografia e gramática no texto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
+                    <label class="form-check-label" for="q1b">
+                        Mensagens criando senso de urgência
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q1" id="q1c" value="c">
+                    <label class="form-check-label" for="q1c">
+                        Links com URLs suspeitos
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q1" id="q1d" value="d">
+                    <label class="form-check-label" for="q1d">
+                        Assinatura com informações de contato completas da empresa
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 2 -->
+            <div class="mb-4">
+                <h5>2. O que é "spear phishing"?</h5>
+                <input type="hidden" name="correct_q2" value="c">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q2" id="q2a" value="a" required>
+                    <label class="form-check-label" for="q2a">
+                        Phishing usando mensagens SMS
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q2" id="q2b" value="b">
+                    <label class="form-check-label" for="q2b">
+                        Phishing direcionado apenas a executivos de alto nível
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q2" id="q2c" value="c">
+                    <label class="form-check-label" for="q2c">
+                        Phishing personalizado direcionado a indivíduos ou organizações específicas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q2" id="q2d" value="d">
+                    <label class="form-check-label" for="q2d">
+                        Phishing que usa exclusivamente anexos de e-mail como método de ataque
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 3 -->
+            <div class="mb-4">
+                <h5>3. Qual a melhor ação ao receber um e-mail suspeito de sua instituição financeira?</h5>
+                <input type="hidden" name="correct_q3" value="a">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q3" id="q3a" value="a" required>
+                    <label class="form-check-label" for="q3a">
+                        Ignorar o e-mail e acessar o site do banco digitando o endereço diretamente no navegador
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q3" id="q3b" value="b">
+                    <label class="form-check-label" for="q3b">
+                        Clicar no link do e-mail, mas não fornecer informações pessoais
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q3" id="q3c" value="c">
+                    <label class="form-check-label" for="q3c">
+                        Responder ao e-mail solicitando verificação da legitimidade
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q3" id="q3d" value="d">
+                    <label class="form-check-label" for="q3d">
+                        Encaminhar o e-mail para amigos para verificar se eles também receberam
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 4 -->
+            <div class="mb-4">
+                <h5>4. Qual método de segurança é mais eficaz para proteger suas contas contra phishing?</h5>
+                <input type="hidden" name="correct_q4" value="c">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q4" id="q4a" value="a" required>
+                    <label class="form-check-label" for="q4a">
+                        Usar a mesma senha complexa para todas as contas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q4" id="q4b" value="b">
+                    <label class="form-check-label" for="q4b">
+                        Mudar suas senhas uma vez por ano
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q4" id="q4c" value="c">
+                    <label class="form-check-label" for="q4c">
+                        Ativar autenticação em dois fatores (2FA)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q4" id="q4d" value="d">
+                    <label class="form-check-label" for="q4d">
+                        Utilizar apenas wi-fi público para acessar contas bancárias
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 5 -->
+            <div class="mb-4">
+                <h5>5. Qual das seguintes NÃO é uma consequência comum de ataques de phishing bem-sucedidos?</h5>
+                <input type="hidden" name="correct_q5" value="d">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q5" id="q5a" value="a" required>
+                    <label class="form-check-label" for="q5a">
+                        Roubo de identidade
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q5" id="q5b" value="b">
+                    <label class="form-check-label" for="q5b">
+                        Fraudes financeiras
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q5" id="q5c" value="c">
+                    <label class="form-check-label" for="q5c">
+                        Instalação de malware
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q5" id="q5d" value="d">
+                    <label class="form-check-label" for="q5d">
+                        Melhoria automática da segurança do sistema
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 6 -->
+            <div class="mb-4">
+                <h5>6. O que significa "vishing"?</h5>
+                <input type="hidden" name="correct_q6" value="a">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q6" id="q6a" value="a" required>
+                    <label class="form-check-label" for="q6a">
+                        Phishing por telefone ou mensagens de voz
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q6" id="q6b" value="b">
+                    <label class="form-check-label" for="q6b">
+                        Phishing através de realidade virtual
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q6" id="q6c" value="c">
+                    <label class="form-check-label" for="q6c">
+                        Phishing que usa vídeos falsos
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q6" id="q6d" value="d">
+                    <label class="form-check-label" for="q6d">
+                        Phishing direcionado a assistentes virtuais como Alexa ou Siri
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 7 -->
+            <div class="mb-4">
+                <h5>7. Qual é um indicador comum de um URL de phishing?</h5>
+                <input type="hidden" name="correct_q7" value="b">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q7" id="q7a" value="a" required>
+                    <label class="form-check-label" for="q7a">
+                        Começa com https://
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q7" id="q7b" value="b">
+                    <label class="form-check-label" for="q7b">
+                        Contém erros de digitação no nome do domínio (ex: amaz0n.com)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q7" id="q7c" value="c">
+                    <label class="form-check-label" for="q7c">
+                        Inclui o nome da empresa no domínio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q7" id="q7d" value="d">
+                    <label class="form-check-label" for="q7d">
+                        Usa uma extensão de domínio comum como .com ou .org
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 8 -->
+            <div class="mb-4">
+                <h5>8. Qual destas é a melhor prática ao receber um anexo de e-mail inesperado?</h5>
+                <input type="hidden" name="correct_q8" value="c">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q8" id="q8a" value="a" required>
+                    <label class="form-check-label" for="q8a">
+                        Abrir o anexo em modo de visualização para verificar o conteúdo
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q8" id="q8b" value="b">
+                    <label class="form-check-label" for="q8b">
+                        Encaminhar para o departamento de TI para abrir
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q8" id="q8c" value="c">
+                    <label class="form-check-label" for="q8c">
+                        Não abrir e verificar com o remetente por outro canal de comunicação
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q8" id="q8d" value="d">
+                    <label class="form-check-label" for="q8d">
+                        Abrir apenas se o e-mail for de alguém que você conhece
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 9 -->
+            <div class="mb-4">
+                <h5>9. Qual das seguintes ações é recomendada ao identificar um e-mail de phishing?</h5>
+                <input type="hidden" name="correct_q9" value="d">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q9" id="q9a" value="a" required>
+                    <label class="form-check-label" for="q9a">
+                        Excluir o e-mail imediatamente
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q9" id="q9b" value="b">
+                    <label class="form-check-label" for="q9b">
+                        Responder ao remetente informando que você identificou a tentativa
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q9" id="q9c" value="c">
+                    <label class="form-check-label" for="q9c">
+                        Clicar em "cancelar inscrição" ou "remover" no rodapé do e-mail
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q9" id="q9d" value="d">
+                    <label class="form-check-label" for="q9d">
+                        Reportar ao departamento de TI ou segurança da sua organização
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 10 -->
+            <div class="mb-4">
+                <h5>10. Por que campanhas de phishing frequentemente criam um senso de urgência?</h5>
+                <input type="hidden" name="correct_q10" value="b">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q10" id="q10a" value="a" required>
+                    <label class="form-check-label" for="q10a">
+                        Para evitar que os filtros de spam detectem o e-mail
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q10" id="q10b" value="b">
+                    <label class="form-check-label" for="q10b">
+                        Para levar as vítimas a agir sem pensar criticamente
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q10" id="q10c" value="c">
+                        Para aumentar a chance de abrir o e-mail rapidamente
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q10" id="q10d" value="d">
+                    <label class="form-check-label" for="q10d">
+                        Para imitar a comunicação corporativa legítima
+                    </label>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-lg btn-primary">Enviar Respostas</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Enviar Campanha - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Enviar Campanha</h2>
+        <p class="text-muted">Campanha: {{ campaign.name }}</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Configurações de Envio</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Template de E-mail</h5>
+                    <div class="mb-3">
+                        <label for="template_id" class="form-label">Selecione o Template</label>
+                        <select class="form-select" id="template_id" name="template_id" required>
+                            {% for template in campaign.templates %}
+                            <option value="{{ template.id }}">{{ template.name }} ({{ template.subject }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5>Alvos</h5>
+                    <div class="alert alert-info">
+                        <p><i class="fas fa-info-circle"></i> Esta campanha será enviada para <strong>{{ campaign.targets|length }} alvos</strong>.</p>
+                        <p class="mb-0">Para revisar a lista de alvos, <a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}">volte para os detalhes da campanha</a>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h5>Configurações de E-mail (Servidor SMTP)</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="smtp_server" class="form-label">Servidor SMTP</label>
+                        <input type="text" class="form-control" id="smtp_server" name="smtp_server" value="smtp.gmail.com" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="smtp_port" class="form-label">Porta SMTP</label>
+                        <input type="number" class="form-control" id="smtp_port" name="smtp_port" value="587" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="smtp_user" class="form-label">Usuário SMTP</label>
+                        <input type="email" class="form-control" id="smtp_user" name="smtp_user" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="smtp_password" class="form-label">Senha SMTP</label>
+                        <input type="password" class="form-control" id="smtp_password" name="smtp_password" required>
+                        <div class="form-text">Para Gmail, use uma senha de aplicativo.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h5>Configurações do Remetente</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="sender_name" class="form-label">Nome do Remetente</label>
+                        <input type="text" class="form-control" id="sender_name" name="sender_name" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="sender_email" class="form-label">E-mail do Remetente</label>
+                        <input type="email" class="form-control" id="sender_email" name="sender_email" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle"></i> Atenção</h5>
+                <p>Esta aplicação está em modo de simulação. Os e-mails não serão enviados realmente, mas os registros serão criados no sistema para fins de demonstração e testes.</p>
+                <p class="mb-0">Para ativar o envio real, descomente o código no arquivo app.py.</p>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}" class="btn btn-outline-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Enviar Campanha</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

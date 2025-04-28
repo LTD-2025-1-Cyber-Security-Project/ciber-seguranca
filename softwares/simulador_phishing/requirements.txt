@@ -1,0 +1,10 @@
+requests==2.31.0
+python-dotenv==1.0.0
+pyinstaller==6.13.0
+pyinstaller-hooks-contrib==2025.3
+Flask==3.1.0
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.40
+
+# pyinstaller --onefile --add-data "checklist_data.json:." run.py

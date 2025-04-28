@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Usuários - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Gerenciar Usuários</h2>
+        <p class="text-muted">Gerencie os usuários do sistema.</p>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Voltar ao Painel Admin
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">Lista de Usuários</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome de Usuário</th>
+                        <th>E-mail</th>
+                        <th>Tipo</th>
+                        <th>Data de Registro</th>
+                        <th>Último Login</th>
+                        <th>Campanhas</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.is_admin %}
+                            <span class="badge bg-danger">Administrador</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Usuário</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.created_at.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ user.last_login.strftime('%d/%m/%Y %H:%M') if user.last_login else 'Nunca' }}</td>
+                        <td>{{ user.campaigns|length }}</td>
+                        <td>
+                            {% if user.id != current_user.id %}
+                            <form method="post" action="{{ url_for('toggle_admin', user_id=user.id) }}" class="d-inline">
+                                {% if user.is_admin %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja remover os privilégios de administrador deste usuário?')">
+                                    <i class="fas fa-user-minus"></i> Remover Admin
+                                </button>
+                                {% else %}
+                                <button type="submit" class="btn btn-sm btn-outline-success" onclick="return confirm('Tem certeza que deseja tornar este usuário um administrador?')">
+                                    <i class="fas fa-user-shield"></i> Tornar Admin
+                                </button>
+                                {% endif %}
+                            </form>
+                            {% else %}
+                            <span class="badge bg-info">Seu usuário</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

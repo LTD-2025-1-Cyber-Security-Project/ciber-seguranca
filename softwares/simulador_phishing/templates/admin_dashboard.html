@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel de Administração - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Painel de Administração</h2>
+        <p class="text-muted">Bem-vindo ao painel de administração, {{ current_user.username }}!</p>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('admin_users') }}" class="btn btn-primary">
+            <i class="fas fa-users-cog"></i> Gerenciar Usuários
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body text-center">
+                <h6 class="card-title">Total de Usuários</h6>
+                <p class="card-text display-4">{{ stats.total_users }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body text-center">
+                <h6 class="card-title">Total de Campanhas</h6>
+                <p class="card-text display-4">{{ stats.total_campaigns }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body text-center">
+                <h6 class="card-title">Total de Templates</h6>
+                <p class="card-text display-4">{{ stats.total_templates }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body text-center">
+                <h6 class="card-title">Total de E-mails</h6>
+                <p class="card-text display-4">{{ stats.total_emails }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Lista de Usuários</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome de Usuário</th>
+                        <th>E-mail</th>
+                        <th>Tipo</th>
+                        <th>Data de Registro</th>
+                        <th>Último Login</th>
+                        <th>Campanhas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.is_admin %}
+                            <span class="badge bg-danger">Administrador</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Usuário</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.created_at.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ user.last_login.strftime('%d/%m/%Y %H:%M') if user.last_login else 'Nunca' }}</td>
+                        <td>{{ user.campaigns|length }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">Campanhas Ativas</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Criador</th>
+                        <th>Data de Criação</th>
+                        <th>Alvos</th>
+                        <th>E-mails Enviados</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for campaign in campaigns %}
+                    {% if campaign.active %}
+                    <tr>
+                        <td>{{ campaign.id }}</td>
+                        <td>{{ campaign.name }}</td>
+                        <td>{{ campaign.creator.username }}</td>
+                        <td>{{ campaign.created_at.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ campaign.targets|length }}</td>
+                        <td>{{ campaign.emails|length }}</td>
+                        <td>
+                            <a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

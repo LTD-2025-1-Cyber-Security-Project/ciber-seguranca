@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Nova Campanha - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Nova Campanha</h2>
+        <p class="text-muted">Crie uma nova campanha de phishing educacional.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Informações da Campanha</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome da Campanha</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <div class="form-text">Um nome único para identificar esta campanha.</div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descrição</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                <div class="form-text">Uma breve descrição do objetivo e público-alvo desta campanha.</div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Criar Campanha</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

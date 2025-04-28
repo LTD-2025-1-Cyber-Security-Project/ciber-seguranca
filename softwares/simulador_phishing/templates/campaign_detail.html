@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ campaign.name }} - Simulador de Phishing{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>{{ campaign.name }}</h2>
+        <p class="text-muted">{{ campaign.description }}</p>
+    </div>
+    <div class="col-auto">
+        {% if campaign.templates|length > 0 and campaign.targets|length > 0 %}
+        <a href="{{ url_for('send_campaign', campaign_id=campaign.id) }}" class="btn btn-success">
+            <i class="fas fa-paper-plane"></i> Enviar Campanha
+        </a>
+        {% endif %}
+        <a href="{{ url_for('campaign_results', campaign_id=campaign.id) }}" class="btn btn-info text-white">
+            <i class="fas fa-chart-bar"></i> Ver Resultados
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Templates de E-mail</h5>
+                <a href="{{ url_for('new_template', campaign_id=campaign.id) }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus"></i> Adicionar Template
+                </a>
+            </div>
+            <div class="card-body">
+                {% if campaign.templates %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Assunto</th>
+                                <th>Dificuldade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for template in campaign.templates %}
+                            <tr>
+                                <td>{{ template.name }}</td>
+                                <td>{{ template.subject }}</td>
+                                <td>
+                                    {% if template.difficulty == 'easy' %}
+                                    <span class="badge bg-success">Fácil</span>
+                                    {% elif template.difficulty == 'medium' %}
+                                    <span class="badge bg-warning">Médio</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Difícil</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-envelope fa-4x mb-3 text-muted"></i>
+                    <p>Nenhum template de e-mail adicionado ainda.</p>
+                    <a href="{{ url_for('new_template', campaign_id=campaign.id) }}" class="btn btn-primary">
+                        Adicionar Template
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Alvos</h5>
+                <div>
+                    <a href="{{ url_for('bulk_targets', campaign_id=campaign.id) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-file-csv"></i> Importar CSV
+                    </a>
+                    <a href="{{ url_for('new_target', campaign_id=campaign.id) }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i> Adicionar Alvo
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if campaign.targets %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Departamento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for target in campaign.targets %}
+                            <tr>
+                                <td>{{ target.name }}</td>
+                                <td>{{ target.email }}</td>
+                                <td>{{ target.department }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-users fa-4x mb-3 text-muted"></i>
+                    <p>Nenhum alvo adicionado ainda.</p>
+                    <div class="btn-group">
+                        <a href="{{ url_for('bulk_targets', campaign_id=campaign.id) }}" class="btn btn-outline-primary">
+                            Importar CSV
+                        </a>
+                        <a href="{{ url_for('new_target', campaign_id=campaign.id) }}" class="btn btn-primary">
+                            Adicionar Alvo
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">E-mails Enviados</h5>
+    </div>
+    <div class="card-body">
+        {% if campaign.emails %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Alvo</th>
+                        <th>Template</th>
+                        <th>Data de Envio</th>
+                        <th>Aberto</th>
+                        <th>Clicado</th>
+                        <th>Reportado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in campaign.emails %}
+                    <tr>
+                        <td>{{ email.target.name }}</td>
+                        <td>{{ email.template.name }}</td>
+                        <td>{{ email.sent_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>
+                            {% if email.opened %}
+                            <span class="badge bg-success">Sim</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Não</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if email.clicked %}
+                            <span class="badge bg-danger">Sim</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Não</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if email.reported %}
+                            <span class="badge bg-info">Sim</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Não</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="fas fa-paper-plane fa-4x mb-3 text-muted"></i>
+            <p>Nenhum e-mail enviado ainda.</p>
+            {% if campaign.templates|length > 0 and campaign.targets|length > 0 %}
+            <a href="{{ url_for('send_campaign', campaign_id=campaign.id) }}" class="btn btn-success">
+                Enviar Campanha
+            </a>
+            {% else %}
+            <p class="text-muted">
+                Adicione templates e alvos para poder enviar a campanha.
+            </p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
