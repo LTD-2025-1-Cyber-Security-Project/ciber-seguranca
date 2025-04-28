@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberShield - Governança de Segurança</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #0a192f;
+        --secondary: #172a45;
+        --accent: #64ffda;
+        --text: #e6f1ff;
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --success: #2ed573;
+        --info: #70a1ff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--primary);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        position: relative;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      .logo i {
+        font-size: 2rem;
+      }
+
+      .nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-link {
+        color: var(--text);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: var(--accent);
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Content Section */
+      .content-section {
+        padding: 60px 0;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .page-title::after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 3px;
+        background-color: var(--accent);
+        bottom: -10px;
+        left: 0;
+      }
+
+      .overview {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--accent);
+      }
+
+      .overview h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: var(--accent);
+      }
+
+      .overview p {
+        margin-bottom: 15px;
+      }
+
+      /* Topic Cards */
+      .topic-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .topic-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--accent);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .topic-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .topic-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .topic-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .topic-desc {
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 15px;
+      }
+
+      /* Detailed Section */
+      .detailed-section {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .detailed-section h2 {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .detailed-section h3 {
+        font-size: 1.4rem;
+        margin: 25px 0 15px 0;
+      }
+
+      .detailed-section p {
+        margin-bottom: 15px;
+      }
+
+      .detailed-section ul,
+      .detailed-section ol {
+        margin-bottom: 20px;
+        margin-left: 20px;
+      }
+
+      .detailed-section li {
+        margin-bottom: 10px;
+      }
+
+      /* Framework Section */
+      .framework {
+        margin-bottom: 40px;
+      }
+
+      .framework-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .framework-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .framework-step {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .framework-step:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .step-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: var(--accent);
+        color: var(--primary);
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+
+      .step-content h3 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+      }
+
+      /* Resources Section */
+      .resources {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .resources h2 {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .resource-list {
+        list-style-type: none;
+      }
+
+      .resource-list li {
+        margin-bottom: 15px;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .resource-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+
+      .resource-list a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .resource-list a:hover {
+        text-decoration: underline;
+      }
+
+      /* Back Button */
+      .back-btn {
+        display: inline-block;
+        background-color: transparent;
+        color: var(--accent);
+        padding: 10px 20px;
+        border: 2px solid var(--accent);
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .back-btn:hover {
+        background-color: rgba(100, 255, 218, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+/* Footer */
+      .footer {
+        background-color: var(--secondary);
+        padding: 50px 0 20px;
+        margin-top: 80px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h4 {
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-col h4::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background-color: var(--accent);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 15px;
+      }
+
+      .footer-links a {
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+        opacity: 1;
+        transform: translateX(5px);
+      }
+
+      .footer-social {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(100, 255, 218, 0.1);
+        color: var(--accent);
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background-color: var(--accent);
+        color: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .page-title {
+          font-size: 2rem;
+        }
+
+        .framework-step {
+          flex-direction: column;
+        }
+
+        .step-number {
+          margin-bottom: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>CyberShield</span>
+        </div>
+        <nav class="nav">
+          <a href="../../index.html" class="nav-link">Início</a>
+          <a href="#" class="nav-link">ISO 27000</a>
+          <a href="#" class="nav-link">Práticas</a>
+          <a href="#" class="nav-link">Phishing</a>
+          <a href="#" class="nav-link">LGPD</a>
+          <a href="#" class="nav-link">Ferramentas</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container">
+        <h1 class="page-title">Governança de Segurança</h1>
+
+        <div class="overview">
+          <h2>Visão Geral</h2>
+          <p>
+            A governança de segurança da informação estabelece a estrutura para
+            garantir que iniciativas de segurança sejam alinhadas com os
+            objetivos de negócio, gerenciem riscos de maneira eficaz e cumpram
+            requisitos regulatórios. Uma governança eficaz define os papéis,
+            responsabilidades, políticas e procedimentos necessários para
+            proteger os ativos de informação da organização.
+          </p>
+          <p>
+            Quando bem implementada, a governança de segurança proporciona uma
+            abordagem sistêmica para gerenciar riscos, proteger dados, garantir
+            a continuidade dos negócios e promover uma cultura de segurança em
+            toda a organização.
+          </p>
+        </div>
+
+        <div class="topic-grid">
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fas fa-file-contract"></i>
+            </div>
+            <h3 class="topic-title">Políticas de Segurança</h3>
+            <p class="topic-desc">
+              Documentos formais que definem diretrizes, regras e controles para
+              proteger ativos de informação e orientar comportamentos seguros.
+            </p>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fas fa-users-cog"></i>
+            </div>
+            <h3 class="topic-title">Papéis e Responsabilidades</h3>
+            <p class="topic-desc">
+              Definição clara das funções de segurança e responsabilidades de
+              cada colaborador, desde a alta direção até os usuários finais.
+            </p>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fas fa-balance-scale"></i>
+            </div>
+            <h3 class="topic-title">Conformidade Regulatória</h3>
+            <p class="topic-desc">
+              Garantia de que a organização cumpre leis, regulamentos e normas
+              aplicáveis relacionados à segurança da informação.
+            </p>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="topic-title">Métricas e Reportes</h3>
+            <p class="topic-desc">
+              Definição de indicadores para avaliar a eficácia dos controles de
+              segurança e comunicar resultados às partes interessadas.
+            </p>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="topic-title">Gestão de Riscos</h3>
+            <p class="topic-desc">
+              Processo sistemático para identificar, avaliar e mitigar riscos de
+              segurança de acordo com o apetite de risco da organização.
+            </p>
+          </div>
+
+          <div class="topic-card">
+            <div class="topic-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3 class="topic-title">Conscientização e Treinamento</h3>
+            <p class="topic-desc">
+              Programas educacionais para desenvolver uma cultura de segurança e
+              capacitar colaboradores em práticas seguras.
+            </p>
+          </div>
+        </div>
+
+        <div class="detailed-section">
+          <h2>Componentes Essenciais de uma Governança Eficaz</h2>
+
+          <h3>Alinhamento Estratégico</h3>
+          <p>
+            A governança de segurança deve estar alinhada com os objetivos
+            estratégicos da organização, garantindo que os investimentos em
+            segurança apoiem as metas de negócio e protejam os ativos mais
+            críticos.
+          </p>
+
+          <h3>Estrutura Organizacional</h3>
+          <p>
+            Uma estrutura clara de governança define como as decisões de
+            segurança são tomadas, quem tem autoridade para tomá-las e como as
+            responsabilidades são distribuídas entre departamentos e funções.
+          </p>
+          <ul>
+            <li>
+              <strong>Comitê de Segurança da Informação:</strong> Órgão
+              multidisciplinar responsável por supervisionar a estratégia de
+              segurança
+            </li>
+            <li>
+              <strong>CISO (Chief Information Security Officer):</strong>
+              Executivo responsável pela segurança da informação
+            </li>
+            <li>
+              <strong>Equipe de Segurança:</strong> Profissionais dedicados à
+              implementação e operação dos controles
+            </li>
+            <li>
+              <strong>Proprietários de Ativos:</strong> Responsáveis por definir
+              requisitos de proteção para seus ativos
+            </li>
+          </ul>
+
+          <h3>Framework de Políticas</h3>
+          <p>
+            Um conjunto hierárquico de documentos que estabelecem as regras,
+            diretrizes e procedimentos de segurança:
+          </p>
+          <ul>
+            <li>
+              <strong>Política Geral:</strong> Documento de alto nível que
+              define os princípios e compromissos
+            </li>
+            <li>
+              <strong>Políticas Específicas:</strong> Documentos detalhados para
+              áreas como controle de acesso, classificação de informações, etc.
+            </li>
+            <li>
+              <strong>Padrões:</strong> Requisitos técnicos ou processuais
+              obrigatórios
+            </li>
+            <li>
+              <strong>Procedimentos:</strong> Instruções passo a passo para
+              implementação
+            </li>
+            <li>
+              <strong>Diretrizes:</strong> Recomendações e melhores práticas
+            </li>
+          </ul>
+
+          <h3>Gestão de Riscos</h3>
+          <p>
+            Processo contínuo para gerenciar riscos de segurança da informação:
+          </p>
+          <ol>
+            <li>Identificação de ativos e ameaças</li>
+            <li>Avaliação de vulnerabilidades e impactos</li>
+            <li>Determinação do nível de risco</li>
+            <li>Seleção de controles para tratamento</li>
+            <li>Monitoramento e revisão</li>
+          </ol>
+
+          <h3>Programa de Conscientização</h3>
+          <p>
+            Iniciativas regulares para desenvolver uma cultura de segurança:
+          </p>
+          <ul>
+            <li>Treinamentos obrigatórios para todos os colaboradores</li>
+            <li>Capacitação específica para funções sensíveis</li>
+            <li>Campanhas de comunicação interna</li>
+            <li>Simulações de phishing e outros ataques</li>
+            <li>Reconhecimento de comportamentos seguros</li>
+          </ul>
+
+          <h3>Métricas e Indicadores</h3>
+          <p>Medidas para avaliar a eficácia do programa de segurança:</p>
+          <ul>
+            <li>Indicadores de exposição a riscos</li>
+            <li>Taxa de conformidade com políticas</li>
+            <li>Eficácia dos controles técnicos</li>
+            <li>Tempo de resposta a incidentes</li>
+            <li>Nível de maturidade do programa</li>
+          </ul>
+        </div>
+
+        <div class="framework">
+          <h2 class="framework-title">
+            Implementação de um Programa de Governança
+          </h2>
+
+          <div class="framework-steps">
+            <div class="framework-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3>Avaliação do Estado Atual</h3>
+                <p>
+                  Realize um diagnóstico da maturidade atual da governança de
+                  segurança, identificando lacunas em relação a políticas,
+                  controles, processos e conformidade regulatória. Esta etapa
+                  estabelece a linha de base para medir o progresso futuro.
+                </p>
+              </div>
+            </div>
+
+            <div class="framework-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3>Definição de Objetivos</h3>
+                <p>
+                  Estabeleça objetivos claros e mensuráveis para o programa de
+                  governança, alinhados com a estratégia de negócios. Defina o
+                  escopo, as prioridades e os recursos necessários para alcançar
+                  esses objetivos.
+                </p>
+              </div>
+            </div>
+
+            <div class="framework-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3>Desenvolvimento de Estrutura</h3>
+                <p>
+                  Estabeleça a estrutura organizacional de governança, definindo
+                  papéis, responsabilidades e autoridades. Crie comitês
+                  necessários e defina processos de tomada de decisão e
+                  escalação.
+                </p>
+              </div>
+            </div>
+
+            <div class="framework-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h3>Criação de Políticas</h3>
+                <p>
+                  Desenvolva um framework hierárquico de políticas, padrões,
+                  procedimentos e diretrizes. Envolva as partes interessadas
+                  relevantes para garantir que os documentos sejam aplicáveis e
+                  eficazes.
+                </p>
+              </div>
+            </div>
+
+            <div class="framework-step">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <h3>Implementação de Controles</h3>
+                <p>
+                  Implemente controles técnicos, administrativos e físicos com
+                  base na avaliação de riscos e requisitos de conformidade.
+                  Priorize controles com maior impacto na redução de riscos.
+                </p>
+              </div>
+            </div>
+
+            <div class="framework-step">
+              <div class="step-number">6</div>
+              <div class="step-content">
+                <h3>Treinamento e Conscientização</h3>
+                <p>
+                  Desenvolva e execute um programa abrangente de treinamento
+                  para todos os colaboradores. Personalize o conteúdo para
+                  diferentes funções e níveis de responsabilidade.
+                </p>
+              </div>
+            </div>
+
+            <div class="framework-step">
+              <div class="step-number">7</div>
+              <div class="step-content">
+                <h3>Monitoramento e Medição</h3>
+                <p>
+                  Implemente métricas e indicadores para avaliar o desempenho do
+                  programa. Estabeleça processos de auditoria e revisão para
+                  verificar a eficácia dos controles e a conformidade com
+                  políticas.
+                </p>
+              </div>
+            </div>
+
+            <div class="framework-step">
+              <div class="step-number">8</div>
+              <div class="step-content">
+                <h3>Melhoria Contínua</h3>
+                <p>
+                  Utilize os resultados de avaliações, auditorias e métricas
+                  para identificar oportunidades de melhoria. Mantenha o
+                  programa atualizado em relação a novas ameaças, tecnologias e
+                  requisitos regulatórios.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resources">
+          <h2>Recursos Adicionais</h2>
+          <ul class="resource-list">
+            <li>
+              <a href="#"
+                >ISO 27001: Requisitos para Sistemas de Gestão de Segurança da
+                Informação</a
+              >
+            </li>
+            <li>
+              <a href="#">COBIT: Framework para Governança e Gestão de TI</a>
+            </li>
+            <li><a href="#">NIST Cybersecurity Framework</a></li>
+            <li>
+              <a href="#">Modelos de Políticas de Segurança da Informação</a>
+            </li>
+            <li>
+              <a href="#">Guia para Implementação de Comitês de Segurança</a>
+            </li>
+            <li>
+              <a href="#"
+                >Métricas de Segurança da Informação: Um Guia Prático</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <a href="../../../index.html" class="back-btn"
+          ><i class="fas fa-arrow-left"></i> Voltar para Página Inicial</a
+        >
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <h4>CyberShield</h4>
+            <p>
+              Fornecendo soluções e conhecimento em cibersegurança para proteger
+              organizações de todos os tamanhos contra ameaças digitais.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="#inicio">Início</a></li>
+              <li><a href="#iso">ISO 27000</a></li>
+              <li><a href="#praticas">Práticas de Segurança</a></li>
+              <li><a href="#phishing">Phishing</a></li>
+              <li><a href="#lgpd">LGPD</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Recursos</h4>
+            <ul class="footer-links">
+              <li><a href="../../index.html">Blog</a></li>
+              <li><a href="../../index.html">E-books</a></li>
+              <li><a href="../../index.html">Webinars</a></li>
+              <li><a href="../../index.html">Ferramentas</a></li>
+              <li><a href="../../index.html">Glossário</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contato</h4>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Estacio, 1000 - Florianopolis, SC
+              </li>
+              <li><i class="fas fa-phone"></i> +55 (11) 1234-5678</li>
+              <li>
+                <i class="fas fa-envelope"></i> contato@cybershield.com.br
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 CyberShield. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

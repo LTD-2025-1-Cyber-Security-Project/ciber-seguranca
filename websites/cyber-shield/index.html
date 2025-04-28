@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberShield - Portal de Cibersegurança</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #0a192f;
+        --secondary: #172a45;
+        --accent: #64ffda;
+        --text: #e6f1ff;
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --success: #2ed573;
+        --info: #70a1ff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--primary);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(10, 25, 47, 0.9),
+          rgba(23, 42, 69, 0.9)
+        );
+        z-index: -1;
+      }
+
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        position: relative;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      .logo i {
+        font-size: 2rem;
+      }
+
+      .nav-toggle {
+        display: none;
+        font-size: 1.5rem;
+        background: none;
+        border: none;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-link {
+        color: var(--text);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: var(--accent);
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .hero {
+        height: calc(100vh - 80px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: url("/api/placeholder/1200/600") center/cover no-repeat;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(10, 25, 47, 0.8),
+          rgba(10, 25, 47, 0.9)
+        );
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        animation: fadeInUp 1s ease;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        animation: fadeInUp 1.2s ease;
+      }
+
+      .cta-btn {
+        display: inline-block;
+        background-color: transparent;
+        color: var(--accent);
+        padding: 12px 30px;
+        border: 2px solid var(--accent);
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        animation: fadeInUp 1.4s ease;
+      }
+
+      .cta-btn:hover {
+        background-color: rgba(100, 255, 218, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Features Section */
+      .section {
+        padding: 80px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 3px;
+        background-color: var(--accent);
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .feature-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--accent);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .feature-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .feature-desc {
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      /* ISO Standards Section */
+      .iso-standards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .iso-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .iso-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .iso-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--accent);
+        margin-bottom: 15px;
+      }
+
+      .iso-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .iso-desc {
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      /* Security Practices Section */
+      .security-practices {
+        margin-top: 50px;
+      }
+
+      .practice-tabs {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+
+      .practice-tab {
+        background-color: transparent;
+        color: var(--text);
+        border: 1px solid var(--accent);
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+      }
+
+      .practice-tab.active {
+        background-color: var(--accent);
+        color: var(--primary);
+      }
+
+      .practice-tab:hover:not(.active) {
+        background-color: rgba(100, 255, 218, 0.1);
+      }
+
+      .practice-content {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .practice-panel {
+        display: none;
+      }
+
+      .practice-panel.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .practice-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .practice-desc {
+        margin-bottom: 20px;
+      }
+
+      .practice-list {
+        list-style-type: none;
+      }
+
+      .practice-list li {
+        margin-bottom: 15px;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .practice-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+
+      /* Phishing Section */
+      .phishing-indicators {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .indicator-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--danger);
+      }
+
+      .indicator-icon {
+        font-size: 2rem;
+        color: var(--danger);
+        margin-bottom: 15px;
+      }
+
+      .indicator-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .indicator-desc {
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      /* LGPD Section */
+      .lgpd-principles {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .principle-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--info);
+      }
+
+      .principle-number {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-color: var(--info);
+        color: var(--primary);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+      }
+
+      .principle-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .principle-desc {
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      /* Tools Section */
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+      }
+
+      .tool-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        text-align: center;
+        border-bottom: 4px solid var(--accent);
+      }
+
+      .tool-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .tool-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .tool-name {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .tool-desc {
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 20px;
+      }
+
+      .tool-link {
+        display: inline-block;
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .tool-link:hover {
+        transform: translateX(5px);
+      }
+
+      /* FAQ Section */
+      .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .faq-item {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+      }
+
+      .faq-question {
+        padding: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .faq-question:hover {
+        background-color: rgba(100, 255, 218, 0.05);
+      }
+
+      .faq-question h3 {
+        font-size: 1.2rem;
+        margin: 0;
+      }
+
+      .faq-question i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+      }
+
+      .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+        padding: 0 20px;
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 500px;
+        padding: 0 20px 20px;
+      }
+
+      /* Contact Section */
+      .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 4px;
+        border: 1px solid rgba(100, 255, 218, 0.3);
+        background-color: rgba(10, 25, 47, 0.8);
+        color: var(--text);
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+      }
+
+      textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .submit-btn {
+        background-color: var(--accent);
+        color: var(--primary);
+        border: none;
+        border-radius: 4px;
+        padding: 12px 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background-color: rgba(100, 255, 218, 0.8);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Footer */
+      .footer {
+        background-color: var(--secondary);
+        padding: 50px 0 20px;
+        margin-top: 80px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h4 {
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-col h4::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background-color: var(--accent);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 15px;
+      }
+
+      .footer-links a {
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+        opacity: 1;
+        transform: translateX(5px);
+      }
+
+      .footer-social {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(100, 255, 218, 0.1);
+        color: var(--accent);
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background-color: var(--accent);
+        color: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid rgba(100, 255, 218, 0.1);
+      }
+
+      .footer-bottom p {
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav-toggle {
+          display: block;
+        }
+
+        .nav {
+          position: fixed;
+          top: 0;
+          right: -300px;
+          width: 250px;
+          height: 100vh;
+          background-color: var(--secondary);
+          flex-direction: column;
+          padding: 80px 30px;
+          transition: right 0.3s ease;
+          z-index: 100;
+          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav.active {
+          right: 0;
+        }
+
+        .close-nav {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          background: none;
+          border: none;
+          color: var(--text);
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
+
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .section-title {
+          font-size: 2rem;
+        }
+
+        .practice-tabs {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .practice-tab {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas class="particles" id="particles"></canvas>
+
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>CyberShield</span>
+        </div>
+        <button class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="nav" id="mainNav">
+          <button class="close-nav" id="closeNav">
+            <i class="fas fa-times"></i>
+          </button>
+          <a href="#inicio" class="nav-link">Início</a>
+          <a href="#iso" class="nav-link">ISO 27000</a>
+          <a href="#praticas" class="nav-link">Práticas de Segurança</a>
+          <a href="#phishing" class="nav-link">Phishing</a>
+          <a href="#lgpd" class="nav-link">LGPD</a>
+          <a href="#ferramentas" class="nav-link">Ferramentas</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+          <a href="#contato" class="nav-link">Contato</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero" id="inicio">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Proteja seu ambiente digital</h1>
+          <p>
+            Descubra as melhores práticas, ferramentas e estratégias para
+            garantir a segurança dos seus ativos digitais e proteger sua empresa
+            contra ameaças cibernéticas.
+          </p>
+          <a href="#iso" class="cta-btn"
+            >Comece Agora <i class="fas fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="iso">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">ISO 27000</h2>
+          <p class="section-subtitle">
+            Conheça as normas da família ISO 27000 e como elas podem ajudar sua
+            organização a estabelecer um Sistema de Gestão de Segurança da
+            Informação (SGSI) eficaz.
+          </p>
+        </div>
+
+        <div class="iso-standards">
+          <div class="iso-card">
+            <div class="iso-number">ISO 27000</div>
+            <h3 class="iso-title">Visão Geral e Vocabulário</h3>
+            <p class="iso-desc">
+              Fornece uma visão geral dos sistemas de gestão de segurança da
+              informação e define os termos relacionados. Estabelece uma base
+              comum de entendimento para toda a família de normas ISO 27000.
+            </p>
+          </div>
+
+          <div class="iso-card">
+            <div class="iso-number">ISO 27001</div>
+            <h3 class="iso-title">Requisitos para SGSI</h3>
+            <p class="iso-desc">
+              Especifica os requisitos para estabelecer, implementar, manter e
+              melhorar continuamente um sistema de gestão de segurança da
+              informação. Inclui requisitos para avaliação e tratamento de
+              riscos adaptados às necessidades da organização.
+            </p>
+          </div>
+
+          <div class="iso-card">
+            <div class="iso-number">ISO 27002</div>
+            <h3 class="iso-title">Código de Prática</h3>
+            <p class="iso-desc">
+              Fornece diretrizes para padrões de segurança da informação e
+              práticas de gestão, incluindo a seleção, implementação e
+              gerenciamento de controles, levando em consideração os ambientes
+              de risco da organização.
+            </p>
+          </div>
+
+          <div class="iso-card">
+            <div class="iso-number">ISO 27003</div>
+            <h3 class="iso-title">Guia de Implementação</h3>
+            <p class="iso-desc">
+              Fornece orientação para o processo de implementação de um SGSI de
+              acordo com a ISO 27001. Aborda aspectos práticos de como planejar
+              e executar a implementação.
+            </p>
+          </div>
+
+          <div class="iso-card">
+            <div class="iso-number">ISO 27004</div>
+            <h3 class="iso-title">Medição</h3>
+            <p class="iso-desc">
+              Fornece diretrizes para o desenvolvimento e uso de medições para
+              avaliar a eficácia de um SGSI e os controles implementados segundo
+              a ISO 27001.
+            </p>
+          </div>
+
+          <div class="iso-card">
+            <div class="iso-number">ISO 27005</div>
+            <h3 class="iso-title">Gestão de Riscos</h3>
+            <p class="iso-desc">
+              Fornece diretrizes para o gerenciamento de riscos de segurança da
+              informação, apoiando os conceitos gerais especificados na ISO
+              27001.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de Práticas de Segurança com links para páginas detalhadas -->
+    <section class="section" id="praticas">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Práticas de Segurança</h2>
+          <p class="section-subtitle">
+            Conheça as melhores práticas para proteger sua empresa contra
+            ameaças cibernéticas e garantir a integridade, confidencialidade e
+            disponibilidade dos seus ativos de informação.
+          </p>
+        </div>
+
+        <div class="security-practices">
+          <div class="practice-tabs">
+            <a
+              href="templates/praticasdesegurança/governanca/governanca.html"
+              class="practice-tab active"
+              data-tab="tab1"
+              >Governança</a
+            >
+            <a href="templates/praticasdesegurança/acesso/controledeacesso.html" class="practice-tab" data-tab="tab2"
+              >Acesso</a
+            >
+            <a href="templates/praticasdesegurança/redes/redes.html" class="practice-tab" data-tab="tab3">Redes</a>
+            <a href="incidentes.html" class="practice-tab" data-tab="tab4"
+              >Incidentes</a
+            >
+            <a href="templates/praticasdesegurança/dados/dados.html" class="practice-tab" data-tab="tab5">Dados</a>
+            <a href="templates/praticasdesegurança/endpoints/endpoints.html" class="practice-tab" data-tab="tab6"
+              >Endpoints</a
+            >
+          </div>
+
+          <div class="practice-content">
+            <div class="practice-panel active" id="tab1">
+              <h3 class="practice-title">Governança de Segurança</h3>
+              <p class="practice-desc">
+                A governança de segurança estabelece a estrutura para gerenciar
+                e mitigar riscos de segurança de forma alinhada aos objetivos de
+                negócio da organização.
+              </p>
+              <ul class="practice-list">
+                <li>Desenvolva políticas de segurança claras e abrangentes</li>
+                <li>Defina papéis e responsabilidades de segurança</li>
+                <li>Implemente um programa de conscientização e treinamento</li>
+                <li>
+                  Estabeleça métricas para avaliar a eficácia dos controles
+                </li>
+                <li>
+                  Realize auditorias e avaliações de segurança regularmente
+                </li>
+              </ul>
+              <a href="templates/praticasdesegurança/governanca/governanca.html" class="learn-more-btn"
+                ><i class="fas fa-arrow-right"></i> Saiba mais sobre Governança
+                de Segurança</a
+              >
+            </div>
+
+            <div class="practice-panel" id="tab2">
+              <h3 class="practice-title">Controle de Acesso</h3>
+              <p class="practice-desc">
+                O controle de acesso garante que apenas usuários autorizados
+                tenham acesso aos recursos necessários para desempenhar suas
+                funções.
+              </p>
+              <ul class="practice-list">
+                <li>Implemente o princípio do menor privilégio</li>
+                <li>Utilize autenticação multifator (MFA)</li>
+                <li>Gerencie credenciais de forma segura</li>
+                <li>
+                  Implemente controles de acesso baseados em funções (RBAC)
+                </li>
+                <li>Revise permissões de acesso regularmente</li>
+              </ul>
+              <a href="templates/praticasdesegurança/acesso/controledeacesso.html" class="learn-more-btn"
+                ><i class="fas fa-arrow-right"></i> Saiba mais sobre Controle de
+                Acesso</a
+              >
+            </div>
+
+            <div class="practice-panel" id="tab3">
+              <h3 class="practice-title">Segurança de Redes</h3>
+              <p class="practice-desc">
+                A segurança de redes protege a infraestrutura de comunicação,
+                garantindo a integridade e confidencialidade dos dados em
+                trânsito.
+              </p>
+              <ul class="practice-list">
+                <li>Implemente firewalls e sistemas de detecção de intrusão</li>
+                <li>Segmente redes para isolar sistemas críticos</li>
+                <li>Utilize VPNs para conexões remotas</li>
+                <li>Proteja endpoints com software atualizado</li>
+                <li>Monitore o tráfego de rede em busca de anomalias</li>
+              </ul>
+              <a href="templates/praticasdesegurança/redes/redes.html" class="learn-more-btn"
+                ><i class="fas fa-arrow-right"></i> Saiba mais sobre Segurança
+                de Redes</a
+              >
+            </div>
+
+            <div class="practice-panel" id="tab4">
+              <h3 class="practice-title">Gestão de Incidentes</h3>
+              <p class="practice-desc">
+                A gestão de incidentes permite responder de forma rápida e
+                eficaz a eventos de segurança, minimizando o impacto no negócio.
+              </p>
+              <ul class="practice-list">
+                <li>Desenvolva um plano de resposta a incidentes</li>
+                <li>Defina procedimentos de comunicação e escalação</li>
+                <li>Forme uma equipe de resposta a incidentes (CSIRT)</li>
+                <li>Realize simulações e testes regulares</li>
+                <li>Documente e analise incidentes para aprendizado</li>
+              </ul>
+              <a href="templates/praticasdesegurança/incidentes/incidentes.html" class="learn-more-btn"
+                ><i class="fas fa-arrow-right"></i> Saiba mais sobre Gestão de
+                Incidentes</a
+              >
+            </div>
+
+            <div class="practice-panel" id="tab5">
+              <h3 class="practice-title">Proteção de Dados</h3>
+              <p class="practice-desc">
+                A proteção de dados assegura que informações sensíveis sejam
+                adequadamente protegidas durante todo o seu ciclo de vida.
+              </p>
+              <ul class="practice-list">
+                <li>Classifique dados de acordo com sua sensibilidade</li>
+                <li>
+                  Implemente criptografia para dados em repouso e em trânsito
+                </li>
+                <li>Desenvolva políticas de retenção e descarte seguro</li>
+                <li>Realize backups regulares e teste a restauração</li>
+                <li>
+                  Implemente controles de prevenção de perda de dados (DLP)
+                </li>
+              </ul>
+              <a href="templates/praticasdesegurança/dados/dados.html" class="learn-more-btn"
+                ><i class="fas fa-arrow-right"></i> Saiba mais sobre Proteção de
+                Dados</a
+              >
+            </div>
+
+            <div class="practice-panel" id="tab6">
+              <h3 class="practice-title">Segurança de Endpoints</h3>
+              <p class="practice-desc">
+                A segurança de endpoints protege dispositivos como computadores,
+                laptops e dispositivos móveis contra ameaças e vulnerabilidades.
+              </p>
+              <ul class="practice-list">
+                <li>
+                  Mantenha sistemas operacionais e aplicativos atualizados
+                </li>
+                <li>Utilize soluções de proteção contra malware</li>
+                <li>Implemente controles de execução de aplicativos</li>
+                <li>Estabeleça políticas de hardening de sistemas</li>
+                <li>Configure firewalls pessoais</li>
+              </ul>
+              <a href="templates/praticasdesegurança/endpoints/endpoints.html" class="learn-more-btn"
+                ><i class="fas fa-arrow-right"></i> Saiba mais sobre Segurança
+                de Endpoints</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de Phishing com link para página detalhada -->
+    <section class="section" id="phishing">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Identificação de Phishing</h2>
+          <p class="section-subtitle">
+            Aprenda a identificar tentativas de phishing e proteger sua
+            organização contra este tipo comum de ataque que visa obter
+            informações sensíveis através de engenharia social.
+          </p>
+        </div>
+
+        <div class="phishing-indicators">
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-at"></i>
+            </div>
+            <h3 class="indicator-title">Endereços Suspeitos</h3>
+            <p class="indicator-desc">
+              Verifique cuidadosamente o endereço de e-mail do remetente.
+              Ataques de phishing frequentemente usam domínios que se parecem
+              com os legítimos, mas têm pequenas diferenças como letras trocadas
+              ou adicionais.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="indicator-title">Urgência Incomum</h3>
+            <p class="indicator-desc">
+              Desconfie de mensagens que criam um senso de urgência ou medo,
+              exigindo ação imediata. Golpistas frequentemente pressionam as
+              vítimas a agir rapidamente para evitar que tenham tempo de
+              analisar a situação.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-link"></i>
+            </div>
+            <h3 class="indicator-title">Links Suspeitos</h3>
+            <p class="indicator-desc">
+              Passe o mouse sobre links antes de clicar para ver a URL real.
+              Verifique se o domínio é o esperado. Em caso de dúvida, acesse o
+              site diretamente digitando o endereço conhecido no navegador.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-paperclip"></i>
+            </div>
+            <h3 class="indicator-title">Anexos Inesperados</h3>
+            <p class="indicator-desc">
+              Tenha cuidado com anexos não solicitados, especialmente aqueles
+              com extensões como .exe, .zip, .scr ou .docm. Abrir esses arquivos
+              pode instalar malware no seu dispositivo.
+            </p>
+          </div>
+        </div>
+
+        <div class="phishing-cta">
+          <a href="templates/phishing.html" class="cta-btn"
+            ><i class="fas fa-shield-alt"></i> Guia Completo sobre Phishing</a
+          >
+          <p>
+            Conheça nosso guia detalhado com exemplos, técnicas de identificação
+            e estratégias de proteção contra ataques de phishing.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de LGPD com link para página detalhada -->
+    <section class="section" id="lgpd">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Lei Geral de Proteção de Dados (LGPD)</h2>
+          <p class="section-subtitle">
+            Conheça os principais aspectos da LGPD e como implementar controles
+            para garantir a conformidade com a legislação de proteção de dados
+            pessoais.
+          </p>
+        </div>
+
+        <div class="lgpd-principles">
+          <div class="principle-card">
+            <div class="principle-number">1</div>
+            <h3 class="principle-title">Finalidade</h3>
+            <p class="principle-desc">
+              Os dados pessoais devem ser processados com propósitos legítimos,
+              específicos e explícitos, informados ao titular.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-number">2</div>
+            <h3 class="principle-title">Adequação</h3>
+            <p class="principle-desc">
+              O tratamento de dados deve ser compatível com as finalidades
+              informadas ao titular, de acordo com o contexto do processamento.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-number">3</div>
+            <h3 class="principle-title">Necessidade</h3>
+            <p class="principle-desc">
+              O tratamento deve ser limitado ao mínimo necessário para a
+              realização de suas finalidades, abrangendo apenas os dados
+              pertinentes.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-number">4</div>
+            <h3 class="principle-title">Livre Acesso</h3>
+            <p class="principle-desc">
+              Os titulares devem ter consulta facilitada e gratuita sobre a
+              forma e a duração do tratamento de seus dados pessoais.
+            </p>
+          </div>
+        </div>
+
+        <div class="lgpd-cta">
+          <a href="templates/lgpd.html" class="cta-btn"
+            ><i class="fas fa-file-contract"></i> Guia Completo sobre LGPD</a
+          >
+          <p>
+            Acesse nosso guia completo sobre a Lei Geral de Proteção de Dados,
+            incluindo todos os princípios, direitos dos titulares e estratégias
+            de implementação.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      /* Estilos adicionais para os links e botões */
+      .practice-tabs {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+
+      .practice-tab {
+        background-color: transparent;
+        color: var(--text);
+        border: 1px solid var(--accent);
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+        text-decoration: none;
+        text-align: center;
+      }
+
+      .practice-tab.active {
+        background-color: var(--accent);
+        color: var(--primary);
+      }
+
+      .practice-tab:hover:not(.active) {
+        background-color: rgba(100, 255, 218, 0.1);
+      }
+
+      .learn-more-btn {
+        display: inline-block;
+        margin-top: 15px;
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .learn-more-btn:hover {
+        transform: translateX(5px);
+      }
+
+      .phishing-cta,
+      .lgpd-cta {
+        margin-top: 30px;
+        text-align: center;
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .cta-btn {
+        display: inline-block;
+        background-color: var(--accent);
+        color: var(--primary);
+        padding: 12px 25px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .cta-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .tool-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        text-align: center;
+        border-bottom: 4px solid var(--accent);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: var(--text);
+      }
+
+      .tool-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .tool-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .tool-name {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: var(--text);
+      }
+
+      .tool-desc {
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 20px;
+      }
+
+      .tool-link {
+        display: inline-block;
+        color: var(--accent);
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .tool-link i {
+        transition: transform 0.3s ease;
+      }
+
+      .tool-card:hover .tool-link i {
+        transform: translateX(5px);
+      }
+
+      @media (max-width: 768px) {
+        .practice-tab {
+          width: 100%;
+        }
+      }
+    </style>
+
+    <section class="section" id="ferramentas">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Ferramentas de Segurança</h2>
+          <p class="section-subtitle">
+            Conheça as principais ferramentas e soluções que podem ajudar sua
+            organização a proteger seus ativos de informação e detectar ameaças.
+          </p>
+        </div>
+
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-eye"></i>
+            </div>
+            <h3 class="tool-name">SIEM</h3>
+            <p class="tool-desc">
+              Sistemas de Gerenciamento de Eventos e Informações de Segurança
+              coletam, analisam e correlacionam dados de diversos dispositivos
+              para identificar ameaças e anomalias.
+            </p>
+            <a href="templates/ferramentas/siem.html" class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="tool-name">Firewalls de Nova Geração</h3>
+            <p class="tool-desc">
+              Combinam funcionalidades tradicionais de firewall com recursos
+              avançados como inspeção profunda de pacotes, prevenção de intrusão
+              e filtragem de URL.
+            </p>
+            <a href="templates/ferramentas/firewalls.html" class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="tool-name">Gestão de Identidades</h3>
+            <p class="tool-desc">
+              Soluções que gerenciam todo o ciclo de vida de identidades
+              digitais, desde o provisionamento até o desprovisionamento, com
+              controles de acesso baseados em funções.
+            </p>
+            <a href="templates/ferramentas/iam.html" class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3 class="tool-name">EDR</h3>
+            <p class="tool-desc">
+              Endpoint Detection and Response monitora continuamente endpoints
+              para detectar, investigar e responder a ameaças avançadas, como
+              malware e ataques de dia zero.
+            </p>
+            <a href="templates/ferramentas/edr.html" class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-user-secret"></i>
+            </div>
+            <h3 class="tool-name">DLP</h3>
+            <p class="tool-desc">
+              Data Loss Prevention identifica, monitora e protege dados
+              sensíveis em uso, em movimento e em repouso, prevenindo vazamentos
+              não autorizados.
+            </p>
+            <a href="templates/ferramentas/dlp.html" class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <h3 class="tool-name">Gestão de Vulnerabilidades</h3>
+            <p class="tool-desc">
+              Ferramentas para identificar, classificar, remediar e reportar
+              vulnerabilidades em sistemas, aplicações e infraestrutura.
+            </p>
+            <a
+              href="templates/ferramentas/gestaodevulnerabilidades.html"
+              class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3 class="tool-name">SOAR</h3>
+            <p class="tool-desc">
+              Security Orchestration, Automation and Response integra
+              ferramentas de segurança e automatiza fluxos de trabalho para
+              responder rapidamente a incidentes.
+            </p>
+            <a href="templates/ferramentas/soar.html" class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="tool-card">
+            <div class="tool-icon">
+              <i class="fas fa-cloud"></i>
+            </div>
+            <h3 class="tool-name">CASB</h3>
+            <p class="tool-desc">
+              Cloud Access Security Broker protege dados e aplicações em
+              ambientes de nuvem, oferecendo visibilidade, controle e proteção
+              contra ameaças.
+            </p>
+            <a href="templates/ferramentas/casb.html" class="tool-link"
+              >Saiba mais <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Perguntas Frequentes</h2>
+          <p class="section-subtitle">
+            Encontre respostas para as dúvidas mais comuns sobre cibersegurança
+            e proteção de dados.
+          </p>
+        </div>
+
+        <div class="faq-container">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>O que é um ataque de ransomware?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Ransomware é um tipo de malware que criptografa os dados da
+                vítima e exige um pagamento (resgate) para descriptografá-los.
+                Os ataques de ransomware geralmente começam com phishing ou
+                explorando vulnerabilidades. A melhor defesa inclui backups
+                regulares, atualizações de sistemas, conscientização dos
+                usuários e controles de acesso rigorosos.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>Como proteger o trabalho remoto?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Para proteger o trabalho remoto, implemente VPNs para conexões
+                seguras, utilize autenticação multifator, garanta que os
+                dispositivos tenham software de segurança atualizado,
+                criptografe dados sensíveis, estabeleça políticas claras de
+                segurança para trabalho remoto, ofereça treinamento regular
+                sobre segurança e utilize soluções de gerenciamento de
+                dispositivos móveis (MDM).
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>
+                Por que preciso de um SGSI mesmo sendo uma empresa pequena?
+              </h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Empresas de todos os tamanhos são alvos de ciberataques, muitas
+                vezes as pequenas são mais visadas por terem menos recursos
+                dedicados à segurança. Um Sistema de Gestão de Segurança da
+                Informação (SGSI) ajuda a identificar e proteger ativos de
+                informação críticos, demonstra comprometimento com a segurança
+                para clientes e parceiros, facilita o cumprimento de requisitos
+                regulatórios, e pode ser implementado de forma proporcional ao
+                tamanho e complexidade da organização.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>
+                Quais são os principais direitos dos titulares de dados segundo
+                a LGPD?
+              </h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>
+                A LGPD garante aos titulares de dados os seguintes direitos:
+                confirmação da existência de tratamento, acesso aos dados,
+                correção de dados incompletos ou inexatos,
+                anonimização/bloqueio/eliminação de dados desnecessários,
+                portabilidade dos dados, eliminação dos dados tratados com
+                consentimento, informação sobre compartilhamento, informação
+                sobre a possibilidade de não fornecer consentimento, revogação
+                do consentimento e revisão de decisões automatizadas.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>O que é um SOC e por que é importante?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Um Security Operations Center (SOC) é uma equipe dedicada
+                responsável por monitorar, analisar e responder a incidentes de
+                segurança de forma contínua. O SOC é importante porque
+                proporciona monitoramento 24/7, detecção rápida de ameaças,
+                resposta coordenada a incidentes, análise de ameaças,
+                visibilidade abrangente sobre o ambiente de TI, e contribui para
+                a melhoria contínua dos controles de segurança da organização.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contato">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Entre em Contato</h2>
+          <p class="section-subtitle">
+            Tem dúvidas sobre cibersegurança ou precisa de ajuda para proteger
+            sua organização? Entre em contato conosco.
+          </p>
+        </div>
+
+        <div class="contact-form">
+          <div class="form-group">
+            <label for="name">Nome</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              placeholder="Seu nome"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="Seu e-mail"
+            />
+          </div>
+          <div class="form-group">
+            <label for="subject">Assunto</label>
+            <input
+              type="text"
+              id="subject"
+              class="form-control"
+              placeholder="Assunto da mensagem"
+            />
+          </div>
+          <div class="form-group">
+            <label for="message">Mensagem</label>
+            <textarea
+              id="message"
+              class="form-control"
+              placeholder="Sua mensagem"
+            ></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Enviar Mensagem</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <h4>CyberShield</h4>
+            <p>
+              Fornecendo soluções e conhecimento em cibersegurança para proteger
+              organizações de todos os tamanhos contra ameaças digitais.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="#inicio">Início</a></li>
+              <li><a href="#iso">ISO 27000</a></li>
+              <li><a href="#praticas">Práticas de Segurança</a></li>
+              <li><a href="#phishing">Phishing</a></li>
+              <li><a href="#lgpd">LGPD</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Recursos</h4>
+            <ul class="footer-links">
+              <li><a href="../../index.html">Blog</a></li>
+              <li><a href="../../index.html">E-books</a></li>
+              <li><a href="../../index.html">Webinars</a></li>
+              <li><a href="../../index.html">Ferramentas</a></li>
+              <li><a href="../../index.html">Glossário</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contato</h4>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Estacio, 1000 - Florianopolis, SC
+              </li>
+              <li><i class="fas fa-phone"></i> +55 (11) 1234-5678</li>
+              <li>
+                <i class="fas fa-envelope"></i> contato@cybershield.com.br
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 CyberShield. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Partículas de fundo
+      document.addEventListener("DOMContentLoaded", function () {
+        const canvas = document.getElementById("particles");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        for (let i = 0; i < particleCount; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2 + 1,
+            color: `rgba(100, 255, 218, ${Math.random() * 0.6 + 0.1})`,
+            velocity: {
+              x: Math.random() * 0.5 - 0.25,
+              y: Math.random() * 0.5 - 0.25,
+            },
+          });
+        }
+
+        function drawParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          particles.forEach((particle) => {
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = particle.color;
+            ctx.fill();
+
+            // Mover partículas
+            particle.x += particle.velocity.x;
+            particle.y += particle.velocity.y;
+
+            // Limites da tela
+            if (particle.x < 0 || particle.x > canvas.width) {
+              particle.velocity.x = -particle.velocity.x;
+            }
+
+            if (particle.y < 0 || particle.y > canvas.height) {
+              particle.velocity.y = -particle.velocity.y;
+            }
+          });
+
+          // Desenhar linhas entre partículas próximas
+          particles.forEach((particle, i) => {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particle.x - particles[j].x;
+              const dy = particle.y - particles[j].y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              if (distance < 100) {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(100, 255, 218, ${
+                  0.2 - distance / 500
+                })`;
+                ctx.lineWidth = 0.5;
+                ctx.moveTo(particle.x, particle.y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.stroke();
+              }
+            }
+          });
+
+          requestAnimationFrame(drawParticles);
+        }
+
+        drawParticles();
+
+        // Ajustar canvas quando a janela é redimensionada
+        window.addEventListener("resize", function () {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        });
+      });
+
+      // Menu de navegação responsivo
+      document.addEventListener("DOMContentLoaded", function () {
+        const navToggle = document.getElementById("navToggle");
+        const closeNav = document.getElementById("closeNav");
+        const mainNav = document.getElementById("mainNav");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        navToggle.addEventListener("click", function () {
+          mainNav.classList.add("active");
+        });
+
+        closeNav.addEventListener("click", function () {
+          mainNav.classList.remove("active");
+        });
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", function () {
+            mainNav.classList.remove("active");
+
+            // Rolagem suave
+            const target = document.querySelector(this.getAttribute("href"));
+            window.scrollTo({
+              top: target.offsetTop - 80,
+              behavior: "smooth",
+            });
+          });
+        });
+      });
+
+      // Abas de práticas de segurança
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".practice-tab");
+        const panels = document.querySelectorAll(".practice-panel");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            // Remover classe ativa de todas as abas
+            tabs.forEach((t) => t.classList.remove("active"));
+
+            // Adicionar classe ativa na aba clicada
+            this.classList.add("active");
+
+            // Esconder todos os painéis
+            panels.forEach((panel) => panel.classList.remove("active"));
+
+            // Mostrar o painel correspondente
+            const tabId = this.getAttribute("data-tab");
+            document.getElementById(tabId).classList.add("active");
+          });
+        });
+      });
+
+      // FAQ Accordion
+      document.addEventListener("DOMContentLoaded", function () {
+        const faqItems = document.querySelectorAll(".faq-item");
+
+        faqItems.forEach((item) => {
+          const question = item.querySelector(".faq-question");
+
+          question.addEventListener("click", function () {
+            // Toggle active class
+            item.classList.toggle("active");
+
+            // Fechar outros itens
+            faqItems.forEach((otherItem) => {
+              if (otherItem !== item) {
+                otherItem.classList.remove("active");
+              }
+            });
+          });
+        });
+      });
+
+      // Animação de scroll
+      document.addEventListener("DOMContentLoaded", function () {
+        const animatedElements = document.querySelectorAll(
+          ".section-header, .feature-card, .iso-card, .principle-card, .indicator-card, .tool-card"
+        );
+
+        function checkScroll() {
+          animatedElements.forEach((element) => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (elementTop < windowHeight * 0.9) {
+              element.style.opacity = "1";
+              element.style.transform = "translateY(0)";
+            }
+          });
+        }
+
+        // Inicialmente, todos os elementos estão ocultos
+        animatedElements.forEach((element) => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(30px)";
+          element.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+        });
+
+        // Verificar no carregamento da página
+        checkScroll();
+
+        // Verificar ao fazer scroll
+        window.addEventListener("scroll", checkScroll);
+      });
+
+      // Validação do formulário de contato
+      document.addEventListener("DOMContentLoaded", function () {
+        const contactForm = document.querySelector(".contact-form");
+
+        contactForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const nameInput = document.getElementById("name");
+          const emailInput = document.getElementById("email");
+          const subjectInput = document.getElementById("subject");
+          const messageInput = document.getElementById("message");
+
+          let isValid = true;
+
+          // Validar nome
+          if (nameInput.value.trim() === "") {
+            setError(nameInput, "Por favor, informe seu nome");
+            isValid = false;
+          } else {
+            clearError(nameInput);
+          }
+
+          // Validar email
+          if (emailInput.value.trim() === "") {
+            setError(emailInput, "Por favor, informe seu e-mail");
+            isValid = false;
+          } else if (!isValidEmail(emailInput.value)) {
+            setError(emailInput, "Por favor, informe um e-mail válido");
+            isValid = false;
+          } else {
+            clearError(emailInput);
+          }
+
+          // Validar assunto
+          if (subjectInput.value.trim() === "") {
+            setError(subjectInput, "Por favor, informe o assunto");
+            isValid = false;
+          } else {
+            clearError(subjectInput);
+          }
+
+          // Validar mensagem
+          if (messageInput.value.trim() === "") {
+            setError(messageInput, "Por favor, escreva sua mensagem");
+            isValid = false;
+          } else {
+            clearError(messageInput);
+          }
+
+          // Se for válido, simularia o envio
+          if (isValid) {
+            // Aqui poderia integrar com um serviço de envio de e-mail
+            alert("Mensagem enviada com sucesso!");
+            contactForm.reset();
+          }
+        });
+
+        function setError(input, message) {
+          const formGroup = input.parentElement;
+
+          // Verificar se já existe mensagem de erro
+          let errorElement = formGroup.querySelector(".error-message");
+
+          if (!errorElement) {
+            errorElement = document.createElement("div");
+            errorElement.className = "error-message";
+            errorElement.style.color = "var(--danger)";
+            errorElement.style.fontSize = "0.8rem";
+            errorElement.style.marginTop = "5px";
+            formGroup.appendChild(errorElement);
+          }
+
+          errorElement.textContent = message;
+          input.style.borderColor = "var(--danger)";
+        }
+
+        function clearError(input) {
+          const formGroup = input.parentElement;
+          const errorElement = formGroup.querySelector(".error-message");
+
+          if (errorElement) {
+            formGroup.removeChild(errorElement);
+          }
+
+          input.style.borderColor = "rgba(100, 255, 218, 0.3)";
+        }
+
+        function isValidEmail(email) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+        }
+      });
+
+      // Inicialização de técnicas adicionais de segurança
+      document.addEventListener("DOMContentLoaded", function () {
+        // Código para habilitar recursos de segurança como proteção contra clickjacking,
+        // proteção XSS, restrições de origens, etc.
+
+        // Essas são práticas simuladas para fins educacionais
+
+        // Simulação de verificação de ambiente seguro
+        function checkSecureEnvironment() {
+          const isSecure = window.location.protocol === "https:";
+
+          if (!isSecure) {
+            console.warn(
+              "Este site deve ser executado em um ambiente HTTPS para máxima segurança."
+            );
+            // Em um ambiente real, poderia redirecionar para HTTPS
+            // window.location.href = window.location.href.replace('http:', 'https:');
+          }
+
+          return isSecure;
+        }
+
+        // Simulação de proteção contra clickjacking usando cabeçalhos HTTP
+        function simulateFrameProtection() {
+          // Em um servidor real, seria implementado via cabeçalhos HTTP
+          // X-Frame-Options: DENY
+          console.log("Proteção contra clickjacking ativada");
+        }
+
+        // Simulação de configuração de Content Security Policy
+        function simulateCSP() {
+          // Em um servidor real, seria implementado via cabeçalhos HTTP
+          // Content-Security-Policy: default-src 'self'
+          console.log("Content Security Policy configurada");
+        }
+
+        // Executar verificações
+        checkSecureEnvironment();
+        simulateFrameProtection();
+        simulateCSP();
+      });
+    </script>
+  </body>
+</html>

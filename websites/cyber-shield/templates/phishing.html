@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberShield - Identificação de Phishing</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #0a192f;
+        --secondary: #172a45;
+        --accent: #64ffda;
+        --text: #e6f1ff;
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --success: #2ed573;
+        --info: #70a1ff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--primary);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        position: relative;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      .logo i {
+        font-size: 2rem;
+      }
+
+      .nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-link {
+        color: var(--text);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: var(--accent);
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Content Section */
+      .content-section {
+        padding: 60px 0;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .page-title::after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 3px;
+        background-color: var(--accent);
+        bottom: -10px;
+        left: 0;
+      }
+
+      .overview {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--danger);
+      }
+
+      .overview h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: var(--danger);
+      }
+
+      .overview p {
+        margin-bottom: 15px;
+      }
+
+      /* Stats Section */
+      .stats-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+      }
+
+      .stat-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--danger);
+        margin-bottom: 10px;
+      }
+
+      .stat-label {
+        font-size: 1.1rem;
+        color: var(--text);
+      }
+
+      /* Indicators Grid */
+      .indicators-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .indicators-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .indicator-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--danger);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .indicator-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .indicator-icon {
+        font-size: 2.5rem;
+        color: var(--danger);
+        margin-bottom: 20px;
+      }
+
+      .indicator-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .indicator-desc {
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 15px;
+      }
+
+      /* Example Section */
+      .examples-section {
+        margin-bottom: 40px;
+      }
+
+      .examples-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 30px;
+      }
+
+      .example-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .example-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .example-image {
+        width: 100%;
+        height: 250px;
+        background-color: #444;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .example-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .example-label {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 15px;
+        border-radius: 4px;
+        font-weight: bold;
+        z-index: 1;
+      }
+
+      .label-phishing {
+        background-color: var(--danger);
+        color: white;
+      }
+
+      .label-legitimate {
+        background-color: var(--success);
+        color: white;
+      }
+
+      .example-content {
+        padding: 25px;
+      }
+
+      .example-title {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+      }
+
+      .example-desc {
+        margin-bottom: 15px;
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      .example-analysis {
+        background-color: rgba(10, 25, 47, 0.5);
+        padding: 15px;
+        border-radius: 4px;
+      }
+
+      .example-analysis h4 {
+        margin-bottom: 10px;
+        color: var(--accent);
+      }
+
+      .analysis-points {
+        list-style-type: none;
+      }
+
+      .analysis-points li {
+        padding-left: 20px;
+        position: relative;
+        margin-bottom: 8px;
+      }
+
+      .analysis-points li::before {
+        content: "\f071";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: var(--danger);
+        position: absolute;
+        left: 0;
+      }
+
+      .analysis-points.legitimate li::before {
+        content: "\f00c";
+        color: var(--success);
+      }
+
+      /* Protection Steps */
+      .protection-section {
+        margin-bottom: 40px;
+      }
+
+      .protection-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .protection-steps {
+        counter-reset: step-counter;
+        list-style-type: none;
+      }
+
+      .protection-step {
+        position: relative;
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px 25px 25px 70px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .protection-step::before {
+        content: counter(step-counter);
+        counter-increment: step-counter;
+        position: absolute;
+        left: 20px;
+        top: 25px;
+        width: 35px;
+        height: 35px;
+        background-color: var(--accent);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .protection-step h3 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+      }
+
+      /* Response Section */
+      .response-section {
+        margin-bottom: 40px;
+      }
+
+      .response-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .response-content {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--warning);
+      }
+
+      .response-steps {
+        list-style-type: none;
+        counter-reset: response-counter;
+      }
+
+      .response-step {
+        position: relative;
+        padding-left: 50px;
+        margin-bottom: 20px;
+      }
+
+      .response-step::before {
+        content: counter(response-counter);
+        counter-increment: response-counter;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 35px;
+        height: 35px;
+        background-color: var(--warning);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .response-step h3 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+      }
+
+      /* Tools Section */
+      .tools-section {
+        margin-bottom: 40px;
+      }
+
+      .tools-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+      }
+
+      .tool-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .tool-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .tool-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .tool-name {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .tool-desc {
+        font-size: 0.95rem;
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 20px;
+      }
+
+      .tool-link {
+        display: inline-block;
+        color: var(--accent);
+        text-decoration: none;
+        border: 1px solid var(--accent);
+        padding: 8px 15px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .tool-link:hover {
+        background-color: rgba(100, 255, 218, 0.1);
+      }
+
+      /* Resources Section */
+      .resources {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .resources h2 {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .resource-list {
+        list-style-type: none;
+      }
+
+      .resource-list li {
+        margin-bottom: 15px;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .resource-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+
+      .resource-list a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .resource-list a:hover {
+        text-decoration: underline;
+      }
+
+      /* Back Button */
+      .back-btn {
+        display: inline-block;
+        background-color: transparent;
+        color: var(--accent);
+        padding: 10px 20px;
+        border: 2px solid var(--accent);
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .back-btn:hover {
+        background-color: rgba(100, 255, 218, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+/* Footer */
+      .footer {
+        background-color: var(--secondary);
+        padding: 50px 0 20px;
+        margin-top: 80px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h4 {
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-col h4::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background-color: var(--accent);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 15px;
+      }
+
+      .footer-links a {
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+        opacity: 1;
+        transform: translateX(5px);
+      }
+
+      .footer-social {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(100, 255, 218, 0.1);
+        color: var(--accent);
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background-color: var(--accent);
+        color: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .page-title {
+          font-size: 2rem;
+        }
+
+        .example-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .protection-step {
+          padding-left: 60px;
+        }
+
+        .protection-step::before {
+          left: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>CyberShield</span>
+        </div>
+        <nav class="nav">
+          <a href="../../index.html" class="nav-link">Início</a>
+          <a href="#" class="nav-link">ISO 27000</a>
+          <a href="#" class="nav-link">Práticas</a>
+          <a href="#" class="nav-link">Phishing</a>
+          <a href="#" class="nav-link">LGPD</a>
+          <a href="#" class="nav-link">Ferramentas</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container">
+        <h1 class="page-title">Identificação de Phishing</h1>
+
+        <div class="overview">
+          <h2>O que é Phishing?</h2>
+          <p>
+            Phishing é uma técnica de engenharia social usada por criminosos
+            cibernéticos para enganar usuários e obter informações sensíveis
+            como senhas, dados de cartão de crédito ou detalhes bancários. Os
+            atacantes se disfarçam como entidades confiáveis em comunicações
+            eletrônicas, geralmente através de e-mails, mensagens instantâneas
+            ou sites fraudulentos.
+          </p>
+          <p>
+            Esses ataques são projetados para induzir um senso de urgência,
+            curiosidade ou medo nas vítimas, levando-as a clicar em links
+            maliciosos, baixar anexos infectados ou fornecer informações
+            confidenciais. Reconhecer os sinais de phishing é fundamental para
+            proteger tanto indivíduos quanto organizações contra violações de
+            dados e roubo de identidade.
+          </p>
+        </div>
+
+        <div class="stats-section">
+          <div class="stat-card">
+            <div class="stat-value">83%</div>
+            <div class="stat-label">
+              dos ataques cibernéticos começam com phishing
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">30%</div>
+            <div class="stat-label">
+              das tentativas de phishing são abertas pelos destinatários
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">12%</div>
+            <div class="stat-label">
+              dos usuários clicam em links maliciosos
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">R$ 14.7M</div>
+            <div class="stat-label">
+              é o custo médio de um ataque bem-sucedido
+            </div>
+          </div>
+        </div>
+
+        <h2 class="indicators-title">Sinais de Alerta de Phishing</h2>
+
+        <div class="indicators-grid">
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3 class="indicator-title">Remetente Suspeito</h3>
+            <p class="indicator-desc">
+              Examine cuidadosamente o endereço de e-mail do remetente.
+              Verifique inconsistências como domínios similares mas ligeiramente
+              diferentes (como "bancobrasiI.com" com "I" maiúsculo em vez de
+              "l"), subdomínios estranhos ou endereços desconhecidos.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="indicator-title">Urgência Incomum</h3>
+            <p class="indicator-desc">
+              Mensagens que criam um forte senso de urgência e exigem ação
+              imediata são frequentemente phishing. Elas podem alegar problemas
+              com contas, cobranças não reconhecidas ou oportunidades limitadas
+              para pressionar o destinatário a agir sem pensar.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-link"></i>
+            </div>
+            <h3 class="indicator-title">URLs Suspeitas</h3>
+            <p class="indicator-desc">
+              Passe o mouse sobre os links antes de clicar para ver o URL real.
+              Verifique se o endereço corresponde ao site legítimo. Sites de
+              phishing frequentemente têm URLs estranhas, mal escritas ou com
+              domínios diferentes do esperado.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-paperclip"></i>
+            </div>
+            <h3 class="indicator-title">Anexos Inesperados</h3>
+            <p class="indicator-desc">
+              Tenha extremo cuidado com anexos não solicitados, especialmente
+              com extensões como .exe, .zip, .scr ou documentos que pedem a
+              ativação de macros. Estes podem conter malware projetado para
+              comprometer seu sistema.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-font"></i>
+            </div>
+            <h3 class="indicator-title">Erros Gramaticais</h3>
+            <p class="indicator-desc">
+              Erros de ortografia, gramática e formatação inconsistente são
+              comuns em e-mails de phishing. Empresas legítimas geralmente têm
+              processos de revisão e não enviam comunicações oficiais com muitos
+              erros.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-user-secret"></i>
+            </div>
+            <h3 class="indicator-title">Solicitação de Dados Pessoais</h3>
+            <p class="indicator-desc">
+              Instituições legítimas nunca solicitam senhas, dados de cartão ou
+              outras informações sensíveis por e-mail. Qualquer mensagem pedindo
+              esse tipo de informação deve ser tratada como suspeita.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-hand-paper"></i>
+            </div>
+            <h3 class="indicator-title">Saudação Genérica</h3>
+            <p class="indicator-desc">
+              E-mails com saudações genéricas como "Caro cliente" em vez do seu
+              nome real são suspeitos. Empresas com as quais você mantém
+              relacionamento normalmente usam seu nome nas comunicações.
+            </p>
+          </div>
+
+          <div class="indicator-card">
+            <div class="indicator-icon">
+              <i class="fas fa-gift"></i>
+            </div>
+            <h3 class="indicator-title">Ofertas Irrealistas</h3>
+            <p class="indicator-desc">
+              Prêmios, presentes ou ofertas que parecem boas demais para ser
+              verdade geralmente são. Sorteios que você não participou, heranças
+              inesperadas ou oportunidades de ganho fácil são táticas comuns de
+              phishing.
+            </p>
+          </div>
+        </div>
+
+        <div class="examples-section">
+          <h2 class="examples-title">
+            Exemplos de Phishing vs. Comunicações Legítimas
+          </h2>
+
+          <div class="example-grid">
+            <div class="example-card">
+              <div class="example-image">
+                <div class="example-label label-phishing">PHISHING</div>
+                <img
+                  src="/api/placeholder/450/250"
+                  alt="Exemplo de e-mail de phishing"
+                />
+              </div>
+              <div class="example-content">
+                <h3 class="example-title">E-mail Bancário Fraudulento</h3>
+                <p class="example-desc">
+                  Este e-mail alegadamente do Banco do Brasil solicita
+                  verificação imediata da conta devido a "atividades suspeitas",
+                  com um link para uma página falsa de login.
+                </p>
+                <div class="example-analysis">
+                  <h4>Sinais de Phishing:</h4>
+                  <ul class="analysis-points">
+                    <li>
+                      Remetente: conta.verificacao@banco-brazil.net (domínio
+                      incorreto)
+                    </li>
+                    <li>
+                      Urgência excessiva alegando bloqueio iminente da conta
+                    </li>
+                    <li>Link não aponta para o site oficial do banco</li>
+                    <li>Erros gramaticais e de formatação no texto</li>
+                    <li>Saudação genérica sem nome do destinatário</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-image">
+                <div class="example-label label-legitimate">LEGÍTIMO</div>
+                <img
+                  src="/api/placeholder/450/250"
+                  alt="Exemplo de e-mail legítimo"
+                />
+              </div>
+              <div class="example-content">
+                <h3 class="example-title">E-mail Bancário Autêntico</h3>
+                <p class="example-desc">
+                  Um e-mail legítimo do Banco do Brasil informando sobre uma
+                  atualização do aplicativo móvel, sem solicitar informações
+                  sensíveis ou ações imediatas.
+                </p>
+                <div class="example-analysis">
+                  <h4>Características de Legitimidade:</h4>
+                  <ul class="analysis-points legitimate">
+                    <li>
+                      Remetente com domínio oficial:
+                      comunicacao@bancodobrasil.com.br
+                    </li>
+                    <li>Cliente tratado pelo nome completo</li>
+                    <li>Nenhuma solicitação de informações confidenciais</li>
+                    <li>Texto bem escrito sem erros graves</li>
+                    <li>Links apontam para o domínio oficial do banco</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-image">
+                <div class="example-label label-phishing">PHISHING</div>
+                <img
+                  src="/api/placeholder/450/250"
+                  alt="Exemplo de falsa página de login"
+                />
+              </div>
+              <div class="example-content">
+                <h3 class="example-title">Página de Login Falsa</h3>
+                <p class="example-desc">
+                  Uma página de login falsa do Microsoft 365 que parece quase
+                  idêntica à original, mas foi criada para roubar credenciais de
+                  usuários.
+                </p>
+                <div class="example-analysis">
+                  <h4>Sinais de Phishing:</h4>
+                  <ul class="analysis-points">
+                    <li>URL não oficial: office365-login.security-check.com</li>
+                    <li>Erros sutis no logo e elementos visuais</li>
+                    <li>Certificado SSL inválido ou ausente</li>
+                    <li>Interface de usuário ligeiramente desalinhada</li>
+                    <li>Formulário envia dados para um servidor diferente</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-image">
+                <div class="example-label label-phishing">PHISHING</div>
+                <img
+                  src="/api/placeholder/450/250"
+                  alt="Exemplo de SMS phishing"
+                />
+              </div>
+              <div class="example-content">
+                <h3 class="example-title">SMS Phishing (Smishing)</h3>
+                <p class="example-desc">
+                  Uma mensagem SMS fraudulenta alegando problemas com uma
+                  entrega, solicitando que o destinatário clique em um link para
+                  "reprogramar".
+                </p>
+                <div class="example-analysis">
+                  <h4>Sinais de Phishing:</h4>
+                  <ul class="analysis-points">
+                    <li>Remetente com número desconhecido ou aleatório</li>
+                    <li>Mensagem cria senso de urgência</li>
+                    <li>URL encurtado para esconder o destino real</li>
+                    <li>Não menciona detalhes específicos da encomenda</li>
+                    <li>Empresa mencionada não enviou nenhum pacote</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="protection-section">
+          <h2 class="protection-title">Como Se Proteger Contra Phishing</h2>
+
+          <div class="protection-steps">
+            <div class="protection-step">
+              <h3>Verifique o Remetente Cuidadosamente</h3>
+              <p>
+                Preste muita atenção ao endereço de e-mail completo do
+                remetente, não apenas ao nome exibido. Verifique se o domínio (a
+                parte após @) corresponde exatamente ao domínio oficial da
+                organização. Lembre-se que atacantes frequentemente usam
+                domínios muito similares aos legítimos, com pequenas alterações
+                que podem passar despercebidas.
+              </p>
+            </div>
+
+            <div class="protection-step">
+              <h3>Examine URLs Antes de Clicar</h3>
+              <p>
+                Sempre passe o mouse sobre links para visualizar o URL real
+                antes de clicar. Verifique se o link direciona para o site
+                oficial que você espera. Quando tiver dúvidas, digite o endereço
+                diretamente no navegador em vez de clicar no link. Em
+                dispositivos móveis, pressione e segure o link para ver o URL
+                completo antes de acessá-lo.
+              </p>
+            </div>
+
+            <div class="protection-step">
+              <h3>Mantenha Software Atualizado</h3>
+              <p>
+                Mantenha seu sistema operacional, navegadores, antivírus e todos
+                os aplicativos atualizados com as últimas correções de
+                segurança. Muitos ataques de phishing exploram vulnerabilidades
+                conhecidas que já foram corrigidas em versões mais recentes de
+                software.
+              </p>
+            </div>
+
+            <div class="protection-step">
+              <h3>Use Autenticação Multifator (MFA)</h3>
+              <p>
+                Ative a autenticação de dois fatores ou multifator sempre que
+                possível. Mesmo que os criminosos obtenham suas credenciais
+                através de phishing, eles não conseguirão acessar suas contas
+                sem o segundo fator de autenticação (como um código enviado ao
+                seu telefone ou gerado por um aplicativo autenticador).
+              </p>
+            </div>
+
+            <div class="protection-step">
+              <h3>Seja Cético com Solicitações Urgentes</h3>
+              <p>
+                Desconfie de mensagens que criam um senso de urgência ou medo.
+                Empresas legítimas raramente exigem ação imediata para questões
+                sensíveis por e-mail. Quando receber comunicações urgentes,
+                verifique a autenticidade contatando a organização diretamente
+                através de canais oficiais.
+              </p>
+            </div>
+
+            <div class="protection-step">
+              <h3>Não Forneça Informações Sensíveis</h3>
+              <p>
+                Empresas legítimas nunca solicitam senhas, números de cartão de
+                crédito, dados de documentos ou outras informações confidenciais
+                por e-mail. Desconfie imediatamente de qualquer mensagem que
+                solicite tais dados, independentemente de quão oficial pareça.
+              </p>
+            </div>
+
+            <div class="protection-step">
+              <h3>Verifique Certificados de Segurança</h3>
+              <p>
+                Ao acessar sites que solicitam informações sensíveis, verifique
+                se a conexão é segura (https://) e se o certificado é válido. A
+                maioria dos navegadores exibe um ícone de cadeado na barra de
+                endereços para indicar uma conexão segura. Clique neste ícone
+                para verificar se o certificado pertence à organização esperada.
+              </p>
+            </div>
+
+            <div class="protection-step">
+              <h3>Participe de Treinamentos</h3>
+              <p>
+                Mantenha-se informado sobre novas técnicas de phishing e
+                participe de treinamentos de conscientização em segurança.
+                Organizações devem implementar programas regulares de
+                treinamento e simulações de phishing para educar funcionários
+                sobre os riscos e como identificar tentativas de ataque.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="response-section">
+          <h2 class="response-title">
+            O Que Fazer Se Você Foi Vítima de Phishing
+          </h2>
+
+          <div class="response-content">
+            <p>
+              Se você suspeita que caiu em um esquema de phishing, é importante
+              agir rapidamente para minimizar os danos. Siga estes passos:
+            </p>
+
+            <ol class="response-steps">
+              <li class="response-step">
+                <h3>Altere Suas Senhas Imediatamente</h3>
+                <p>
+                  Se você forneceu credenciais, altere suas senhas imediatamente
+                  para todas as contas afetadas. Se usava a mesma senha em
+                  múltiplas contas, altere em todas elas, começando pelas mais
+                  críticas (bancárias, e-mail principal, etc.).
+                </p>
+              </li>
+
+              <li class="response-step">
+                <h3>Monitore Suas Contas</h3>
+                <p>
+                  Verifique regularmente suas contas bancárias e cartões de
+                  crédito em busca de transações suspeitas. Configure alertas de
+                  atividade para ser notificado sobre movimentações em suas
+                  contas.
+                </p>
+              </li>
+
+              <li class="response-step">
+                <h3>Notifique as Instituições Relevantes</h3>
+                <p>
+                  Informe imediatamente bancos, credores ou outras instituições
+                  afetadas sobre o incidente. Eles podem tomar medidas
+                  adicionais para proteger suas contas e ajudar a evitar
+                  fraudes.
+                </p>
+              </li>
+
+              <li class="response-step">
+                <h3>Reporte o Ataque</h3>
+                <p>
+                  Denuncie o ataque de phishing ao departamento de TI da sua
+                  organização, se for o caso. Também reporte às autoridades
+                  competentes como delegacias de crimes cibernéticos e
+                  organizações de proteção ao consumidor.
+                </p>
+              </li>
+
+              <li class="response-step">
+                <h3>Verifique Seu Dispositivo</h3>
+                <p>
+                  Execute uma verificação antivírus completa no seu dispositivo
+                  para detectar qualquer malware que possa ter sido instalado.
+                  Em alguns casos, pode ser necessário restaurar o sistema para
+                  um estado anterior ou formatar o dispositivo.
+                </p>
+              </li>
+
+              <li class="response-step">
+                <h3>Considere Alertas de Fraude</h3>
+                <p>
+                  Se informações financeiras foram comprometidas, considere
+                  ativar alertas de fraude em seus relatórios de crédito ou até
+                  mesmo congelar seu crédito temporariamente para evitar que
+                  criminosos abram novas contas em seu nome.
+                </p>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="tools-section">
+          <h2 class="tools-title">Ferramentas para Proteção Contra Phishing</h2>
+
+          <div class="tools-grid">
+            <div class="tool-card">
+              <div class="tool-icon">
+                <i class="fas fa-filter"></i>
+              </div>
+              <h3 class="tool-name">Filtros Anti-spam</h3>
+              <p class="tool-desc">
+                Utilize filtros anti-spam avançados que usam machine learning
+                para identificar padrões de phishing e bloquear e-mails
+                suspeitos antes que cheguem à sua caixa de entrada.
+              </p>
+              <a href="#" class="tool-link">Saiba mais</a>
+            </div>
+
+            <div class="tool-card">
+              <div class="tool-icon">
+                <i class="fas fa-desktop"></i>
+              </div>
+              <h3 class="tool-name">Simuladores de Phishing</h3>
+              <p class="tool-desc">
+                Plataformas que permitem às organizações enviar e-mails de
+                phishing simulados para testar e treinar funcionários,
+                identificando vulnerabilidades no fator humano.
+              </p>
+              <a href="#" class="tool-link">Saiba mais</a>
+            </div>
+
+            <div class="tool-card">
+              <div class="tool-icon">
+                <i class="fas fa-globe"></i>
+              </div>
+              <h3 class="tool-name">Verificadores de URL</h3>
+              <p class="tool-desc">
+                Ferramentas que analisam URLs em tempo real antes de você
+                acessá-las, verificando se são legítimas ou conhecidas por
+                hospedar conteúdo malicioso.
+              </p>
+              <a href="#" class="tool-link">Saiba mais</a>
+            </div>
+
+            <div class="tool-card">
+              <div class="tool-icon">
+                <i class="fas fa-eye"></i>
+              </div>
+              <h3 class="tool-name">Extensões Anti-phishing</h3>
+              <p class="tool-desc">
+                Complementos para navegadores que alertam sobre sites
+                fraudulentos, verificam autenticidade de páginas e analisam
+                links antes que você clique neles.
+              </p>
+              <a href="#" class="tool-link">Saiba mais</a>
+            </div>
+
+            <div class="tool-card">
+              <div class="tool-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="tool-name">Soluções DMARC/SPF/DKIM</h3>
+              <p class="tool-desc">
+                Protocolos de autenticação de e-mail que ajudam a verificar se
+                as mensagens recebidas realmente vêm dos remetentes que alegam
+                ser, prevenindo falsificação.
+              </p>
+              <a href="#" class="tool-link">Saiba mais</a>
+            </div>
+
+            <div class="tool-card">
+              <div class="tool-icon">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <h3 class="tool-name">Plataformas de Conscientização</h3>
+              <p class="tool-desc">
+                Programas de treinamento interativos que educam usuários sobre
+                os riscos de phishing e como identificar e lidar com tentativas
+                de ataque.
+              </p>
+              <a href="#" class="tool-link">Saiba mais</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="resources">
+          <h2>Recursos Adicionais</h2>
+          <ul class="resource-list">
+            <li><a href="#">Guia Completo Anti-Phishing para Empresas</a></li>
+            <li>
+              <a href="#">Laboratório de Phishing: Exemplos Interativos</a>
+            </li>
+            <li><a href="#">Como Configurar Filtros Anti-Phishing</a></li>
+            <li><a href="#">Relatório Anual de Tendências de Phishing</a></li>
+            <li>
+              <a href="#">Cartilha Educativa: Proteção Contra Phishing</a>
+            </li>
+            <li><a href="#">Onde Reportar Ataques de Phishing no Brasil</a></li>
+          </ul>
+        </div>
+
+        <a href="../../index.html" class="back-btn"
+          ><i class="fas fa-arrow-left"></i> Voltar para Página Inicial</a
+        >
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <h4>CyberShield</h4>
+            <p>
+              Fornecendo soluções e conhecimento em cibersegurança para proteger
+              organizações de todos os tamanhos contra ameaças digitais.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="#inicio">Início</a></li>
+              <li><a href="#iso">ISO 27000</a></li>
+              <li><a href="#praticas">Práticas de Segurança</a></li>
+              <li><a href="#phishing">Phishing</a></li>
+              <li><a href="#lgpd">LGPD</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Recursos</h4>
+            <ul class="footer-links">
+              <li><a href="../../index.html">Blog</a></li>
+              <li><a href="../../index.html">E-books</a></li>
+              <li><a href="../../index.html">Webinars</a></li>
+              <li><a href="../../index.html">Ferramentas</a></li>
+              <li><a href="../../index.html">Glossário</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contato</h4>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Estacio, 1000 - Florianopolis, SC
+              </li>
+              <li><i class="fas fa-phone"></i> +55 (11) 1234-5678</li>
+              <li>
+                <i class="fas fa-envelope"></i> contato@cybershield.com.br
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 CyberShield. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Animação para elementos ao rolar a página
+        const animatedElements = document.querySelectorAll(
+          ".indicator-card, .example-card, .protection-step, .response-step, .tool-card, .stat-card"
+        );
+
+        function checkScroll() {
+          animatedElements.forEach((element) => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (elementTop < windowHeight * 0.9) {
+              element.style.opacity = "1";
+              element.style.transform = "translateY(0)";
+            }
+          });
+        }
+
+        // Inicialmente, todos os elementos estão ocultos
+        animatedElements.forEach((element) => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(30px)";
+          element.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+        });
+
+        // Verificar no carregamento da página
+        checkScroll();
+
+        // Verificar ao fazer scroll
+        window.addEventListener("scroll", checkScroll);
+      });
+    </script>
+  </body>
+</html>

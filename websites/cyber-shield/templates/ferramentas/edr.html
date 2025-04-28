@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberShield - EDR (Endpoint Detection and Response)</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #0a192f;
+        --secondary: #172a45;
+        --accent: #64ffda;
+        --text: #e6f1ff;
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --success: #2ed573;
+        --info: #70a1ff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--primary);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        position: relative;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      .logo i {
+        font-size: 2rem;
+      }
+
+      .nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-link {
+        color: var(--text);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: var(--accent);
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Content Section */
+      .content-section {
+        padding: 60px 0;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .page-title::after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 3px;
+        background-color: var(--accent);
+        bottom: -10px;
+        left: 0;
+      }
+
+      .overview {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--accent);
+      }
+
+      .overview h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: var(--accent);
+      }
+
+      .overview p {
+        margin-bottom: 15px;
+      }
+
+      /* Traditional vs EDR */
+      .comparison-section {
+        margin-bottom: 40px;
+      }
+
+      .comparison-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .comparison-container {
+        display: flex;
+        gap: 30px;
+      }
+
+      .comparison-column {
+        flex: 1;
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .comparison-column h3 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+        color: var(--text);
+        text-align: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+      }
+
+      .comparison-column:first-child h3 {
+        color: var(--warning);
+      }
+
+      .comparison-column:last-child h3 {
+        color: var(--success);
+      }
+
+      .comparison-list {
+        list-style-type: none;
+      }
+
+      .comparison-list li {
+        margin-bottom: 15px;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .comparison-list li::before {
+        position: absolute;
+        left: 0;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+      }
+
+      .comparison-column:first-child .comparison-list li::before {
+        content: "\f071";
+        color: var(--warning);
+      }
+
+      .comparison-column:last-child .comparison-list li::before {
+        content: "\f00c";
+        color: var(--success);
+      }
+
+      /* Capabilities */
+      .capabilities-section {
+        margin-bottom: 40px;
+      }
+
+      .capabilities-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .capabilities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .capability-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--info);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        height: 100%;
+      }
+
+      .capability-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .capability-icon {
+        font-size: 2.5rem;
+        color: var(--info);
+        margin-bottom: 20px;
+      }
+
+      .capability-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .capability-desc {
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      /* Architecture Section */
+      .architecture-section {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .architecture-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .architecture-diagram {
+        background-color: rgba(10, 25, 47, 0.5);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .architecture-diagram img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .architecture-components {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .component {
+        background-color: rgba(100, 255, 218, 0.05);
+        border-radius: 8px;
+        padding: 20px;
+        border-left: 3px solid var(--accent);
+      }
+
+      .component h3 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: var(--accent);
+      }
+
+      .component p {
+        font-size: 0.95rem;
+      }
+
+      /* Benefits Section */
+      .benefits-section {
+        margin-bottom: 40px;
+      }
+
+      .benefits-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+      }
+
+      .benefit-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--success);
+      }
+
+      .benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .benefit-icon {
+        font-size: 2rem;
+        color: var(--success);
+        margin-bottom: 15px;
+      }
+
+      .benefit-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .benefit-desc {
+        flex-grow: 1;
+      }
+
+      /* Implementation Section */
+      .implementation-section {
+        margin-bottom: 40px;
+      }
+
+      .implementation-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .implementation-steps {
+        counter-reset: step-counter;
+        list-style-type: none;
+      }
+
+      .implementation-step {
+        position: relative;
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px 25px 25px 70px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .implementation-step::before {
+        content: counter(step-counter);
+        counter-increment: step-counter;
+        position: absolute;
+        left: 20px;
+        top: 25px;
+        width: 35px;
+        height: 35px;
+        background-color: var(--accent);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .implementation-step h3 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+      }
+
+      /* Use Cases Section */
+      .use-cases-section {
+        margin-bottom: 40px;
+      }
+
+      .use-cases-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .use-cases-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+      }
+
+      .use-case-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+
+      .use-case-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .use-case-icon {
+        font-size: 2rem;
+        color: var(--info);
+        margin-bottom: 15px;
+      }
+
+      .use-case-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+
+      .use-case-desc {
+        margin-bottom: 15px;
+      }
+
+      .use-case-benefits {
+        background-color: rgba(10, 25, 47, 0.5);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+      }
+
+      .use-case-benefits h4 {
+        margin-bottom: 10px;
+        color: var(--accent);
+        font-size: 1.1rem;
+      }
+
+      .benefits-list {
+        list-style-type: none;
+      }
+
+      .benefits-list li {
+        margin-bottom: 8px;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .benefits-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+
+      /* Solutions Section */
+      .solutions-section {
+        margin-bottom: 40px;
+      }
+
+      .solutions-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+      }
+
+      .solutions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .solution-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+
+      .solution-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .solution-logo {
+        height: 60px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .solution-logo i {
+        font-size: 2.5rem;
+        color: var(--accent);
+      }
+
+      .solution-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .solution-desc {
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      /* Resources Section */
+      .resources {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .resources h2 {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .resource-list {
+        list-style-type: none;
+      }
+
+      .resource-list li {
+        margin-bottom: 15px;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .resource-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+
+      .resource-list a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .resource-list a:hover {
+        text-decoration: underline;
+      }
+
+      /* Back Button */
+      .back-btn {
+        display: inline-block;
+        background-color: transparent;
+        color: var(--accent);
+        padding: 10px 20px;
+        border: 2px solid var(--accent);
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .back-btn:hover {
+        background-color: rgba(100, 255, 218, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+/* Footer */
+      .footer {
+        background-color: var(--secondary);
+        padding: 50px 0 20px;
+        margin-top: 80px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h4 {
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-col h4::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background-color: var(--accent);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 15px;
+      }
+
+      .footer-links a {
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+        opacity: 1;
+        transform: translateX(5px);
+      }
+
+      .footer-social {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(100, 255, 218, 0.1);
+        color: var(--accent);
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background-color: var(--accent);
+        color: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .page-title {
+          font-size: 2rem;
+        }
+
+        .comparison-container {
+          flex-direction: column;
+        }
+
+        .architecture-components {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>CyberShield</span>
+        </div>
+        <nav class="nav">
+          <a href="../../index.html" class="nav-link">Início</a>
+          <a href="../../index.html" class="nav-link">ISO 27000</a>
+          <a href="../../index.html" class="nav-link">Práticas</a>
+          <a href="../../index.html" class="nav-link">Phishing</a>
+          <a href="../../index.html" class="nav-link">LGPD</a>
+          <a href="../../index.html" class="nav-link">Ferramentas</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container">
+        <h1 class="page-title">EDR - Endpoint Detection and Response</h1>
+
+        <div class="overview">
+          <h2>O que é EDR?</h2>
+          <p>
+            EDR (Endpoint Detection and Response) é uma categoria de soluções de
+            segurança cibernética projetada para detectar, investigar e
+            responder a ameaças em dispositivos endpoint, como computadores,
+            laptops, servidores e dispositivos móveis. Diferente das soluções
+            tradicionais de proteção de endpoint, que se concentram
+            principalmente na prevenção, as soluções EDR fornecem visibilidade
+            contínua, detecção avançada de ameaças e capacidades de resposta a
+            incidentes.
+          </p>
+          <p>
+            O termo "EDR" foi cunhado pelo analista da Gartner Anton Chuvakin em
+            2013 e, desde então, evoluiu para se tornar um componente essencial
+            de estratégias modernas de defesa cibernética. As soluções EDR
+            monitoram e coletam dados de atividades em endpoints, usam análise
+            comportamental e inteligência de ameaças para identificar anomalias
+            e oferecem ferramentas para investigação forense e resposta rápida a
+            incidentes.
+          </p>
+        </div>
+
+        <div class="comparison-section">
+          <h2 class="comparison-title">
+            Proteção Tradicional de Endpoint vs. EDR
+          </h2>
+
+          <div class="comparison-container">
+            <div class="comparison-column">
+              <h3>Antivírus Tradicional</h3>
+              <ul class="comparison-list">
+                <li>Focado principalmente em prevenção</li>
+                <li>
+                  Depende fortemente de assinaturas e definições conhecidas
+                </li>
+                <li>
+                  Limitado na detecção de ameaças desconhecidas e zero-day
+                </li>
+                <li>Análise independente em cada dispositivo</li>
+                <li>Capacidades mínimas de investigação após detecção</li>
+                <li>Visibilidade limitada sobre a cadeia de ataque completa</li>
+                <li>Opções de resposta limitadas a quarentena ou remoção</li>
+                <li>Difícil correlação de eventos entre múltiplos endpoints</li>
+              </ul>
+            </div>
+
+            <div class="comparison-column">
+              <h3>Solução EDR</h3>
+              <ul class="comparison-list">
+                <li>
+                  Abordagem equilibrada entre prevenção, detecção e resposta
+                </li>
+                <li>
+                  Combina assinaturas com análise comportamental e contextual
+                </li>
+                <li>Capacidade avançada para detectar ameaças desconhecidas</li>
+                <li>Análise centralizada com correlação entre dispositivos</li>
+                <li>
+                  Recursos forenses detalhados para investigação aprofundada
+                </li>
+                <li>Rastreamento completo da cadeia de ataque (kill chain)</li>
+                <li>Diversas opções de resposta automatizada e manual</li>
+                <li>Correlação entre eventos em múltiplos endpoints</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="capabilities-section">
+          <h2 class="capabilities-title">Capacidades Essenciais de EDR</h2>
+
+          <div class="capabilities-grid">
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <h3 class="capability-title">Monitoramento Contínuo</h3>
+              <p class="capability-desc">
+                Coleta e registro contínuo de atividades e eventos em endpoints,
+                incluindo execução de processos, carregamento de módulos,
+                modificações de registro e sistema de arquivos, conexões de rede
+                e atividades do usuário. Esta vigilância ininterrupta cria uma
+                linha do tempo detalhada que é crucial para investigações.
+              </p>
+            </div>
+
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <h3 class="capability-title">Detecção Avançada</h3>
+              <p class="capability-desc">
+                Utilização de múltiplas técnicas de detecção, incluindo análise
+                comportamental, machine learning, indicadores de compromisso
+                (IoCs), regras de detecção YARA e inteligência de ameaças para
+                identificar atividades suspeitas ou maliciosas que poderiam
+                passar despercebidas por soluções tradicionais.
+              </p>
+            </div>
+
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-search-plus"></i>
+              </div>
+              <h3 class="capability-title">Investigação Forense</h3>
+              <p class="capability-desc">
+                Ferramentas de investigação que permitem aos analistas de
+                segurança examinar detalhadamente alertas, incluindo a
+                visualização da linha do tempo completa do ataque, isolamento de
+                root causes, e análise de artefatos para compreender
+                completamente a natureza e o escopo de uma violação.
+              </p>
+            </div>
+
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-reply"></i>
+              </div>
+              <h3 class="capability-title">Resposta Imediata</h3>
+              <p class="capability-desc">
+                Capacidade de executar ações de resposta remotamente em
+                endpoints afetados, incluindo isolamento de rede, eliminação de
+                malware, encerramento de processos maliciosos, remoção de
+                arquivos, restauração de sistemas modificados e outros
+                remediações críticas.
+              </p>
+            </div>
+
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h3 class="capability-title">Automação de Resposta</h3>
+              <p class="capability-desc">
+                Capacidade de configurar respostas automáticas para determinados
+                tipos de detecções, permitindo contenção rápida de ameaças sem
+                intervenção manual, reduzindo o tempo para remediar e limitando
+                o impacto potencial de um incidente.
+              </p>
+            </div>
+
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-project-diagram"></i>
+              </div>
+              <h3 class="capability-title">Inteligência de Ameaças</h3>
+              <p class="capability-desc">
+                Integração com feeds de inteligência de ameaças para melhorar a
+                detecção de atacantes conhecidos, campanhas específicas e
+                técnicas emergentes, enriquecendo os alertas com informações
+                contextuais valiosas para os analistas.
+              </p>
+            </div>
+
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3 class="capability-title">Análise de Tendências</h3>
+              <p class="capability-desc">
+                Recursos de análise e relatórios que identificam padrões, medem
+                a eficácia de controles de segurança, destacam áreas de
+                vulnerabilidade e fornecem métricas úteis para melhorar
+                continuamente a postura de segurança da organização.
+              </p>
+            </div>
+
+            <div class="capability-card">
+              <div class="capability-icon">
+                <i class="fas fa-cloud"></i>
+              </div>
+              <h3 class="capability-title">Arquitetura Centralizada</h3>
+              <p class="capability-desc">
+                Console de gerenciamento centralizado que proporciona
+                visibilidade e controle de todos os endpoints protegidos,
+                permitindo administração unificada de políticas, investigação
+                correlacionada entre múltiplos dispositivos e resposta
+                coordenada a incidentes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="architecture-section">
+          <h2 class="architecture-title">Arquitetura de Soluções EDR</h2>
+
+          <div class="architecture-diagram">
+            <img
+              src="/api/placeholder/900/500"
+              alt="Diagrama de Arquitetura EDR"
+            />
+          </div>
+
+          <p>
+            As soluções EDR modernas geralmente seguem uma arquitetura
+            distribuída que combina agentes locais com análise centralizada.
+            Essa abordagem permite coleta detalhada de dados nos endpoints
+            enquanto aproveita o poder computacional e a inteligência coletiva
+            na nuvem ou em servidores centralizados.
+          </p>
+
+          <div class="architecture-components">
+            <div class="component">
+              <h3>Agentes de Endpoint</h3>
+              <p>
+                Componentes leves instalados em cada dispositivo protegido que
+                monitoram continuamente atividades, coletam telemetria, aplicam
+                políticas de segurança e executam ações de resposta. Os agentes
+                são projetados para ter impacto mínimo no desempenho do sistema.
+              </p>
+            </div>
+
+            <div class="component">
+              <h3>Canal de Comunicação Seguro</h3>
+              <p>
+                Conexão criptografada entre agentes e a infraestrutura central,
+                garantindo a segurança dos dados transmitidos e permitindo
+                comunicação bidirecional para comandos de resposta e
+                atualizações de políticas.
+              </p>
+            </div>
+
+            <div class="component">
+              <h3>Armazenamento de Dados</h3>
+              <p>
+                Repositório centralizado que armazena histórico de eventos,
+                alertas, dados de telemetria e resultados de investigações,
+                permitindo consultas rápidas, análises históricas e correlações
+                entre eventos ao longo do tempo.
+              </p>
+            </div>
+
+            <div class="component">
+              <h3>Motores de Análise</h3>
+              <p>
+                Sistemas que processam os dados coletados usando múltiplas
+                técnicas analíticas, incluindo análise comportamental, machine
+                learning e regras determinísticas para identificar atividades
+                potencialmente maliciosas.
+              </p>
+            </div>
+
+            <div class="component">
+              <h3>Console de Gerenciamento</h3>
+              <p>
+                Interface centralizada para administradores e analistas que
+                proporciona configuração de políticas, visualização de alertas,
+                ferramentas de investigação, capacidades de resposta e geração
+                de relatórios.
+              </p>
+            </div>
+
+            <div class="component">
+              <h3>Integração com Ecossistema</h3>
+              <p>
+                APIs e conectores que permitem integração com outras ferramentas
+                de segurança como SIEM, SOAR, sandboxes, e ferramentas de
+                gerenciamento de vulnerabilidades para criar um ecossistema de
+                segurança coeso.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="benefits-section">
+          <h2 class="benefits-title">Benefícios do EDR</h2>
+
+          <div class="benefits-grid">
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-eye"></i>
+              </div>
+              <h3 class="benefit-title">Maior Visibilidade</h3>
+              <p class="benefit-desc">
+                Proporciona visibilidade sem precedentes sobre atividades em
+                endpoints, permitindo que equipes de segurança identifiquem
+                rapidamente comportamentos anormais e detectem ameaças que
+                poderiam passar despercebidas.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <h3 class="benefit-title">Detecção Avançada</h3>
+              <p class="benefit-desc">
+                Utiliza técnicas avançadas como análise comportamental e machine
+                learning para identificar ameaças que soluções tradicionais
+                baseadas em assinaturas não conseguem detectar, incluindo
+                ameaças zero-day e ataques sem arquivos.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-tachometer-alt"></i>
+              </div>
+              <h3 class="benefit-title">Tempo de Resposta Reduzido</h3>
+              <p class="benefit-desc">
+                Diminui significativamente o tempo médio de detecção (MTTD) e o
+                tempo médio de resposta (MTTR) a incidentes, permitindo
+                contenção rápida e reduzindo o potencial impacto de violações de
+                segurança.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <h3 class="benefit-title">Capacidades Forenses</h3>
+              <p class="benefit-desc">
+                Oferece ferramentas de investigação abrangentes que permitem aos
+                analistas de segurança entender completamente o escopo e o
+                impacto de um incidente, facilitando a prevenção de futuros
+                ataques similares.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-server"></i>
+              </div>
+              <h3 class="benefit-title">Proteção de Endpoints Remotos</h3>
+              <p class="benefit-desc">
+                Protege efetivamente dispositivos que operam fora do perímetro
+                tradicional da rede corporativa, essencial no contexto atual de
+                trabalho remoto, BYOD e ambientes de nuvem distribuídos.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h3 class="benefit-title">Automação</h3>
+              <p class="benefit-desc">
+                Automatiza tarefas repetitivas de investigação e resposta,
+                permitindo que equipes de segurança frequentemente
+                sobrecarregadas possam focar em atividades de maior valor e
+                análises mais complexas.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="implementation-section">
+          <h2 class="implementation-title">Implementação de EDR</h2>
+
+          <div class="implementation-steps">
+            <div class="implementation-step">
+              <h3>Avaliação de Requisitos</h3>
+              <p>
+                Avalie suas necessidades específicas, considerando fatores como
+                tamanho da organização, sensibilidade dos dados, requisitos
+                regulatórios, tipos de endpoints a serem protegidos e
+                capacidades da equipe de segurança. Defina objetivos claros e
+                métricas de sucesso para a implementação.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Seleção da Solução</h3>
+              <p>
+                Pesquise e avalie diferentes soluções EDR do mercado,
+                considerando fatores como capacidades de detecção, facilidade de
+                uso, impacto no desempenho, opções de implantação (on-premises
+                vs. nuvem), integrações com ferramentas existentes, suporte ao
+                fornecedor e custo total de propriedade.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Planejamento da Arquitetura</h3>
+              <p>
+                Planeje a arquitetura da solução EDR, incluindo a distribuição
+                de componentes, requisitos de infraestrutura, conectividade de
+                rede, considerações de balanceamento de carga e estratégias de
+                alta disponibilidade. Considere o dimensionamento adequado para
+                acomodar o crescimento futuro.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Projeto Piloto</h3>
+              <p>
+                Inicie com uma implementação piloto em um ambiente controlado ou
+                um subconjunto de endpoints para validar a solução, ajustar
+                configurações e identificar potenciais problemas antes da
+                implantação em grande escala. Utilize esta fase para treinar a
+                equipe e refinar processos.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Implantação Faseada</h3>
+              <p>
+                Implemente a solução EDR em fases, priorizando endpoints
+                críticos ou de alto risco. Desenvolva um cronograma de
+                implantação que minimize a interrupção das operações de negócios
+                e permita resolver problemas conforme surgirem, antes de avançar
+                para a próxima fase.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Configuração e Otimização</h3>
+              <p>
+                Configure políticas de segurança, regras de detecção e
+                configurações de agente de acordo com suas necessidades
+                específicas. Inicie com uma abordagem de monitoramento antes de
+                implementar bloqueios automáticos. Ajuste as configurações para
+                balancear segurança e usabilidade.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Integração com Ecossistema</h3>
+              <p>
+                Integre a solução EDR com outras ferramentas de segurança como
+                SIEM, SOAR, sistemas de gerenciamento de vulnerabilidades e
+                ferramentas de inteligência de ameaças para criar um ecossistema
+                de segurança unificado com visibilidade e controle
+                centralizados.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Treinamento e Conscientização</h3>
+              <p>
+                Treine a equipe de segurança nas operações da solução EDR,
+                incluindo monitoramento de alertas, triagem, investigação e
+                resposta a incidentes. Desenvolva playbooks para cenários comuns
+                e promova conscientização sobre o papel do EDR na estratégia de
+                segurança geral.
+              </p>
+            </div>
+
+            <div class="implementation-step">
+              <h3>Monitoramento e Melhoria Contínua</h3>
+              <p>
+                Estabeleça processos para monitoramento contínuo da eficácia da
+                solução EDR, revisão regular de alertas, ajuste de políticas e
+                regras de detecção, e atualização da plataforma. Mantenha-se
+                informado sobre novas ameaças e técnicas de detecção.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="use-cases-section">
+          <h2 class="use-cases-title">Casos de Uso</h2>
+
+          <div class="use-cases-grid">
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-virus"></i>
+              </div>
+              <h3 class="use-case-title">Detecção de Malware Avançado</h3>
+              <p class="use-case-desc">
+                Identificação de malware sofisticado que evade mecanismos
+                tradicionais de detecção, como malware sem arquivos, polimórfico
+                ou baseado em scripts, através da análise comportamental e
+                monitoramento de atividades suspeitas no sistema.
+              </p>
+              <div class="use-case-benefits">
+                <h4>Vantagens:</h4>
+                <ul class="benefits-list">
+                  <li>Detecção de ameaças zero-day sem assinaturas prévias</li>
+                  <li>Identificação de estágios iniciais de infecção</li>
+                  <li>Rastreamento da cadeia completa de execução</li>
+                  <li>Contenção rápida para prevenir propagação</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <h3 class="use-case-title">Detecção e Resposta a APTs</h3>
+              <p class="use-case-desc">
+                Identificação de Ameaças Persistentes Avançadas (APTs) que
+                operam furtivamente em ambientes comprometidos por longos
+                períodos, através da detecção de indicadores sutis de
+                comprometimento e comportamentos anômalos característicos destas
+                ameaças.
+              </p>
+              <div class="use-case-benefits">
+                <h4>Vantagens:</h4>
+                <ul class="benefits-list">
+                  <li>Detecção de atividades de reconhecimento interno</li>
+                  <li>Identificação de movimentação lateral entre sistemas</li>
+                  <li>Detecção de comunicações de comando e controle (C2)</li>
+                  <li>Identificação de técnicas de persistência avançadas</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-database"></i>
+              </div>
+              <h3 class="use-case-title">Prevenção de Ransomware</h3>
+              <p class="use-case-desc">
+                Detecção precoce e bloqueio de tentativas de ransomware antes
+                que consigam criptografar dados críticos, através do
+                monitoramento de comportamentos característicos como atividade
+                de criptografia em massa, modificações de volume shadow copy ou
+                alterações de registros.
+              </p>
+              <div class="use-case-benefits">
+                <h4>Vantagens:</h4>
+                <ul class="benefits-list">
+                  <li>Interrupção do ataque antes da criptografia de dados</li>
+                  <li>Identificação do ponto inicial de infecção</li>
+                  <li>Análise completa do vetor e da cadeia de ataque</li>
+                  <li>Prevenção de propagação para outros sistemas</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="use-case-card">
+              <div class="use-case-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <h3 class="use-case-title">
+                Investigação e Resposta a Incidentes
+              </h3>
+              <p class="use-case-desc">
+                Suporte a processos de investigação e resposta a incidentes,
+                fornecendo dados detalhados sobre a linha do tempo do ataque,
+                sistemas afetados, ações realizadas pelo atacante e impacto
+                potencial, acelerando análises forenses e tomada de decisões.
+              </p>
+              <div class="use-case-benefits">
+                <h4>Vantagens:</h4>
+                <ul class="benefits-list">
+                  <li>Reconstrução detalhada da linha do tempo do ataque</li>
+                  <li>Determinação precisa do escopo do comprometimento</li>
+                  <li>Identificação rápida de sistemas afetados</li>
+                  <li>Evidências detalhadas para análise pós-incidente</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="solutions-section">
+          <h2 class="solutions-title">Principais Soluções EDR no Mercado</h2>
+
+          <div class="solutions-grid">
+            <div class="solution-card">
+              <div class="solution-logo">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="solution-title">CrowdStrike Falcon</h3>
+              <p class="solution-desc">
+                Plataforma nativa em nuvem com agente leve e recursos avançados
+                de detecção, investigação e resposta baseada em machine learning
+                e inteligência de ameaças.
+              </p>
+            </div>
+
+            <div class="solution-card">
+              <div class="solution-logo">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="solution-title">Microsoft Defender for Endpoint</h3>
+              <p class="solution-desc">
+                Solução integrada ao ecossistema Microsoft com capacidades
+                avançadas de proteção, detecção e resposta para endpoints
+                Windows, macOS e Linux.
+              </p>
+            </div>
+
+            <div class="solution-card">
+              <div class="solution-logo">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="solution-title">SentinelOne Singularity</h3>
+              <p class="solution-desc">
+                Plataforma autônoma com IA integrada para detecção e resposta em
+                tempo real, recursos de rollback para recuperação automatizada e
+                baixa dependência de conectividade constante.
+              </p>
+            </div>
+
+            <div class="solution-card">
+              <div class="solution-logo">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="solution-title">Palo Alto Networks Cortex XDR</h3>
+              <p class="solution-desc">
+                Solução que combina EDR com detecção e resposta para redes e
+                nuvem, proporcionando proteção integrada através de analytics
+                avançado e automação.
+              </p>
+            </div>
+
+            <div class="solution-card">
+              <div class="solution-logo">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="solution-title">Sophos Intercept X</h3>
+              <p class="solution-desc">
+                Plataforma que combina tecnologia anti-exploit, anti-ransomware
+                e análise de comportamento com capacidades EDR para proteção
+                abrangente de endpoints.
+              </p>
+            </div>
+
+            <div class="solution-card">
+              <div class="solution-logo">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3 class="solution-title">Trend Micro Vision One</h3>
+              <p class="solution-desc">
+                Solução XDR que expande capacidades EDR com integração de
+                servidores, rede e nuvem para visibilidade e detecção unificadas
+                em todo o ambiente digital.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="resources">
+          <h2>Recursos Adicionais</h2>
+          <ul class="resource-list">
+            <li><a href="#">Guia Completo para Seleção de Soluções EDR</a></li>
+            <li><a href="#">Melhores Práticas para Implementação de EDR</a></li>
+            <li><a href="#">Frameworks MITRE ATT&CK e seu Uso com EDR</a></li>
+            <li>
+              <a href="#"
+                >Métricas para Avaliação de Eficácia de Soluções EDR</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                >Como Integrar EDR com outras Ferramentas de Segurança</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                >A Evolução de EDR para XDR: O que Você Precisa Saber</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <a href="../../index.html" class="back-btn"
+          ><i class="fas fa-arrow-left"></i> Voltar para Página de
+          Ferramentas</a
+        >
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <h4>CyberShield</h4>
+            <p>
+              Fornecendo soluções e conhecimento em cibersegurança para proteger
+              organizações de todos os tamanhos contra ameaças digitais.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="#inicio">Início</a></li>
+              <li><a href="#iso">ISO 27000</a></li>
+              <li><a href="#praticas">Práticas de Segurança</a></li>
+              <li><a href="#phishing">Phishing</a></li>
+              <li><a href="#lgpd">LGPD</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Recursos</h4>
+            <ul class="footer-links">
+              <li><a href="../../index.html">Blog</a></li>
+              <li><a href="../../index.html">E-books</a></li>
+              <li><a href="../../index.html">Webinars</a></li>
+              <li><a href="../../index.html">Ferramentas</a></li>
+              <li><a href="../../index.html">Glossário</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contato</h4>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Estacio, 1000 - Florianopolis, SC
+              </li>
+              <li><i class="fas fa-phone"></i> +55 (11) 1234-5678</li>
+              <li>
+                <i class="fas fa-envelope"></i> contato@cybershield.com.br
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 CyberShield. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Animação para elementos ao rolar a página
+        const animatedElements = document.querySelectorAll(
+          ".capability-card, .benefit-card, .implementation-step, .use-case-card, .solution-card, .component"
+        );
+
+        function checkScroll() {
+          animatedElements.forEach((element) => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (elementTop < windowHeight * 0.9) {
+              element.style.opacity = "1";
+              element.style.transform = "translateY(0)";
+            }
+          });
+        }
+
+        // Inicialmente, todos os elementos estão ocultos
+        animatedElements.forEach((element) => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(30px)";
+          element.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+        });
+
+        // Verificar no carregamento da página
+        checkScroll();
+
+        // Verificar ao fazer scroll
+        window.addEventListener("scroll", checkScroll);
+      });
+    </script>
+  </body>
+</html>

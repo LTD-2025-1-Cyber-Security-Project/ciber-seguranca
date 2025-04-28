@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberShield - Controle de Acesso</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #0a192f;
+        --secondary: #172a45;
+        --accent: #64ffda;
+        --text: #e6f1ff;
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --success: #2ed573;
+        --info: #70a1ff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--primary);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        position: relative;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      .logo i {
+        font-size: 2rem;
+      }
+
+      .nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-link {
+        color: var(--text);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: var(--accent);
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Content Section */
+      .content-section {
+        padding: 60px 0;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .page-title::after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 3px;
+        background-color: var(--accent);
+        bottom: -10px;
+        left: 0;
+      }
+
+      .overview {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--accent);
+      }
+
+      .overview h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: var(--accent);
+      }
+
+      .overview p {
+        margin-bottom: 15px;
+      }
+
+      /* Principles Grid */
+      .principles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .principle-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--accent);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .principle-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .principle-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .principle-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .principle-desc {
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 15px;
+      }
+
+      /* Detailed Section */
+      .detailed-section {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .detailed-section h2 {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .detailed-section h3 {
+        font-size: 1.4rem;
+        margin: 25px 0 15px 0;
+      }
+
+      .detailed-section p {
+        margin-bottom: 15px;
+      }
+
+      .detailed-section ul,
+      .detailed-section ol {
+        margin-bottom: 20px;
+        margin-left: 20px;
+      }
+
+      .detailed-section li {
+        margin-bottom: 10px;
+      }
+
+      /* Best Practices */
+      .best-practices {
+        margin-bottom: 40px;
+      }
+
+      .best-practices-title {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .practices-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        gap: 20px;
+      }
+
+      .practice-item {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .practice-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .practice-icon {
+        font-size: 1.5rem;
+        color: var(--accent);
+        background-color: rgba(100, 255, 218, 0.1);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .practice-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .practice-content p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      /* Implementation Steps */
+      .implementation-steps {
+        margin-bottom: 40px;
+      }
+
+      .step-list {
+        counter-reset: step-counter;
+        list-style-type: none;
+      }
+
+      .step-item {
+        position: relative;
+        padding-left: 50px;
+        margin-bottom: 30px;
+      }
+
+      .step-item::before {
+        content: counter(step-counter);
+        counter-increment: step-counter;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 35px;
+        height: 35px;
+        background-color: var(--accent);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .step-item h3 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+      }
+
+      /* Technologies Grid */
+      .technologies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .technology-card {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-bottom: 4px solid var(--accent);
+      }
+
+      .technology-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .tech-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .tech-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .tech-desc {
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 15px;
+      }
+
+      /* Comparison Table */
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 40px;
+        background-color: var(--secondary);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+      }
+
+      .comparison-table thead th {
+        background-color: rgba(100, 255, 218, 0.1);
+        color: var(--accent);
+        font-weight: bold;
+      }
+
+      .comparison-table tbody tr:hover {
+        background-color: rgba(100, 255, 218, 0.05);
+      }
+
+      /* Resources Section */
+      .resources {
+        background-color: var(--secondary);
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .resources h2 {
+        font-size: 1.8rem;
+        color: var(--accent);
+        margin-bottom: 20px;
+      }
+
+      .resource-list {
+        list-style-type: none;
+      }
+
+      .resource-list li {
+        margin-bottom: 15px;
+        padding-left: 25px;
+        position: relative;
+      }
+
+      .resource-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+      }
+
+      .resource-list a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .resource-list a:hover {
+        text-decoration: underline;
+      }
+
+      /* Back Button */
+      .back-btn {
+        display: inline-block;
+        background-color: transparent;
+        color: var(--accent);
+        padding: 10px 20px;
+        border: 2px solid var(--accent);
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .back-btn:hover {
+        background-color: rgba(100, 255, 218, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+/* Footer */
+      .footer {
+        background-color: var(--secondary);
+        padding: 50px 0 20px;
+        margin-top: 80px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h4 {
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-col h4::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background-color: var(--accent);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 15px;
+      }
+
+      .footer-links a {
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+        opacity: 1;
+        transform: translateX(5px);
+      }
+
+      .footer-social {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(100, 255, 218, 0.1);
+        color: var(--accent);
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background-color: var(--accent);
+        color: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .page-title {
+          font-size: 2rem;
+        }
+
+        .practices-list {
+          grid-template-columns: 1fr;
+        }
+
+        .practice-item {
+          flex-direction: column;
+        }
+
+        .practice-icon {
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>CyberShield</span>
+        </div>
+        <nav class="nav">
+          <a href="../../index.html" class="nav-link">Início</a>
+          <a href="#" class="nav-link">ISO 27000</a>
+          <a href="#" class="nav-link">Práticas</a>
+          <a href="#" class="nav-link">Phishing</a>
+          <a href="#" class="nav-link">LGPD</a>
+          <a href="#" class="nav-link">Ferramentas</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container">
+        <h1 class="page-title">Controle de Acesso</h1>
+
+        <div class="overview">
+          <h2>Visão Geral</h2>
+          <p>
+            O controle de acesso é um componente fundamental da segurança da
+            informação que assegura que apenas usuários autorizados tenham
+            acesso aos recursos necessários para desempenhar suas funções. Um
+            sistema eficaz de controle de acesso protege contra acessos não
+            autorizados, mantém a confidencialidade dos dados e ajuda a cumprir
+            requisitos regulatórios.
+          </p>
+          <p>
+            Implementar controles de acesso robustos envolve não apenas
+            tecnologias, mas também políticas, processos e práticas
+            organizacionais que trabalham em conjunto para proteger os ativos de
+            informação mais valiosos da empresa.
+          </p>
+        </div>
+
+        <div class="principles-grid">
+          <div class="principle-card">
+            <div class="principle-icon">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <h3 class="principle-title">Menor Privilégio</h3>
+            <p class="principle-desc">
+              Os usuários devem receber apenas o nível mínimo de acesso
+              necessário para desempenhar suas funções, limitando o potencial de
+              danos em caso de comprometimento de contas.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-icon">
+              <i class="fas fa-tasks"></i>
+            </div>
+            <h3 class="principle-title">Segregação de Funções</h3>
+            <p class="principle-desc">
+              Responsabilidades críticas devem ser divididas entre múltiplos
+              usuários para prevenir fraudes, erros e abusos de privilégios em
+              processos sensíveis.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-icon">
+              <i class="fas fa-user-lock"></i>
+            </div>
+            <h3 class="principle-title">Necessidade de Conhecer</h3>
+            <p class="principle-desc">
+              O acesso a informações sensíveis deve ser restrito apenas a
+              indivíduos que realmente precisam delas para realizar suas tarefas
+              específicas.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-icon">
+              <i class="fas fa-fingerprint"></i>
+            </div>
+            <h3 class="principle-title">Autenticação Forte</h3>
+            <p class="principle-desc">
+              Utilize múltiplos fatores para verificar a identidade dos
+              usuários, combinando algo que eles sabem, possuem e são.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-icon">
+              <i class="fas fa-user-clock"></i>
+            </div>
+            <h3 class="principle-title">Revisão Periódica</h3>
+            <p class="principle-desc">
+              Acessos e privilégios devem ser revisados regularmente para
+              garantir que continuam apropriados às funções atuais dos usuários.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-icon">
+              <i class="fas fa-user-cog"></i>
+            </div>
+            <h3 class="principle-title">Gestão de Ciclo de Vida</h3>
+            <p class="principle-desc">
+              Implementação de processos claros para provisionamento,
+              modificação e desprovisionamento de acessos em todas as etapas do
+              ciclo de vida do usuário.
+            </p>
+          </div>
+        </div>
+
+        <div class="detailed-section">
+          <h2>Componentes de uma Estratégia de Controle de Acesso</h2>
+
+          <h3>Modelo de Controle de Acesso</h3>
+          <p>
+            Um modelo de controle de acesso define a abordagem fundamental para
+            conceder ou negar acesso a recursos. Os modelos mais comuns incluem:
+          </p>
+          <ul>
+            <li>
+              <strong>Controle de Acesso Baseado em Funções (RBAC):</strong>
+              Acesso concedido com base nas funções ou cargos do usuário na
+              organização
+            </li>
+            <li>
+              <strong>Controle de Acesso Baseado em Atributos (ABAC):</strong>
+              Acesso determinado por múltiplos atributos do usuário, recurso e
+              ambiente
+            </li>
+            <li>
+              <strong>Controle de Acesso Discricionário (DAC):</strong> O
+              proprietário do recurso decide quem pode acessá-lo
+            </li>
+            <li>
+              <strong>Controle de Acesso Mandatório (MAC):</strong> Acesso
+              baseado em níveis de segurança predefinidos para usuários e
+              recursos
+            </li>
+          </ul>
+
+          <h3>Gerenciamento de Identidades</h3>
+          <p>
+            O gerenciamento de identidades envolve a criação, manutenção e
+            desativação de identidades digitais dos usuários:
+          </p>
+          <ul>
+            <li>Processo de integração (onboarding) de novos usuários</li>
+            <li>Alterações de permissões devido a mudanças de função</li>
+            <li>Processo de saída (offboarding) para remoção de acessos</li>
+            <li>
+              Federação de identidades para integração com aplicações externas
+            </li>
+            <li>
+              Single Sign-On (SSO) para simplificar a experiência do usuário
+            </li>
+          </ul>
+
+          <h3>Autenticação</h3>
+          <p>
+            A autenticação verifica a identidade alegada por um usuário, sistema
+            ou dispositivo:
+          </p>
+          <ul>
+            <li>
+              <strong>Senhas:</strong> Ainda o método mais comum, mas deve
+              seguir políticas fortes
+            </li>
+            <li>
+              <strong>Tokens de hardware:</strong> Dispositivos físicos como
+              smart cards ou tokens OTP
+            </li>
+            <li>
+              <strong>Biometria:</strong> Utilização de características físicas
+              como impressão digital ou reconhecimento facial
+            </li>
+            <li>
+              <strong>Autenticação Multifator (MFA):</strong> Combinação de dois
+              ou mais métodos de autenticação
+            </li>
+            <li>
+              <strong>Autenticação sem senha:</strong> Métodos como links
+              mágicos, autenticadores móveis, etc.
+            </li>
+          </ul>
+
+          <h3>Autorização</h3>
+          <p>
+            A autorização determina o que um usuário autenticado pode fazer
+            dentro de um sistema:
+          </p>
+          <ul>
+            <li>Definição de permissões granulares</li>
+            <li>Administração de grupos e funções</li>
+            <li>Políticas dinâmicas baseadas em contexto</li>
+            <li>Gerenciamento centralizado de políticas</li>
+          </ul>
+
+          <h3>Auditoria e Monitoramento</h3>
+          <p>
+            Acompanhamento e registro das atividades de acesso para detecção de
+            anomalias:
+          </p>
+          <ul>
+            <li>Registro detalhado de todas as tentativas de acesso</li>
+            <li>Monitoramento de comportamentos anômalos</li>
+            <li>Alertas para atividades suspeitas</li>
+            <li>Relatórios regulares de atividades de acesso</li>
+            <li>Análise de padrões para detecção de ameaças</li>
+          </ul>
+        </div>
+
+        <div class="best-practices">
+          <h2 class="best-practices-title">
+            Melhores Práticas de Implementação
+          </h2>
+
+          <div class="practices-list">
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Implemente o Princípio do Menor Privilégio</h3>
+                <p>
+                  Conceda apenas os privilégios mínimos necessários para os
+                  usuários realizarem suas funções. Revise e ajuste permissões
+                  quando funções mudam e utilize contas com privilégios elevados
+                  apenas quando necessário.
+                </p>
+              </div>
+            </div>
+
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-key"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Exija Autenticação Multifator (MFA)</h3>
+                <p>
+                  Implemente MFA para todos os acessos remotos e para acessos a
+                  sistemas e dados sensíveis. Priorize métodos como aplicativos
+                  autenticadores ou tokens de hardware ao invés de SMS.
+                </p>
+              </div>
+            </div>
+
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-user-times"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Automatize o Processo de Offboarding</h3>
+                <p>
+                  Implemente processos automatizados para revogar todos os
+                  acessos quando um colaborador deixa a organização. Isso evita
+                  o problema comum de contas órfãs que podem ser exploradas.
+                </p>
+              </div>
+            </div>
+
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Centralize a Gestão de Acessos</h3>
+                <p>
+                  Utilize soluções de Gestão de Identidade e Acesso (IAM) para
+                  centralizar a administração de acessos, facilitando a
+                  aplicação consistente de políticas e a auditoria.
+                </p>
+              </div>
+            </div>
+
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Implemente Acesso Just-in-Time</h3>
+                <p>
+                  Para funções administrativas e contas privilegiadas, considere
+                  conceder acesso temporário apenas quando necessário, com
+                  expiração automática após um período definido.
+                </p>
+              </div>
+            </div>
+
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Realize Certificações de Acesso</h3>
+                <p>
+                  Implemente revisões periódicas onde gestores certificam que
+                  seus subordinados possuem apenas os acessos necessários para
+                  suas funções atuais.
+                </p>
+              </div>
+            </div>
+
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Documente Políticas e Procedimentos</h3>
+                <p>
+                  Desenvolva políticas claras de controle de acesso e
+                  procedimentos para solicitação, aprovação, implementação e
+                  revisão de acessos, assegurando consistência e auditabilidade.
+                </p>
+              </div>
+            </div>
+
+            <div class="practice-item">
+              <div class="practice-icon">
+                <i class="fas fa-eye"></i>
+              </div>
+              <div class="practice-content">
+                <h3>Monitore Comportamentos Anômalos</h3>
+                <p>
+                  Implemente ferramentas de detecção de anomalias que possam
+                  identificar padrões incomuns de acesso, indicando potenciais
+                  comprometimentos de contas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="implementation-steps">
+          <h2 class="best-practices-title">Implementação Passo a Passo</h2>
+
+          <ol class="step-list">
+            <li class="step-item">
+              <h3>Realize um Inventário de Recursos</h3>
+              <p>
+                Identifique todos os sistemas, aplicações, dados e recursos que
+                requerem controle de acesso. Classifique-os de acordo com sua
+                sensibilidade e criticidade para o negócio.
+              </p>
+            </li>
+
+            <li class="step-item">
+              <h3>Defina o Modelo de Controle de Acesso</h3>
+              <p>
+                Escolha o modelo mais adequado para sua organização (RBAC, ABAC,
+                etc.) e defina a estrutura de funções, grupos ou atributos que
+                serão utilizados para controlar o acesso.
+              </p>
+            </li>
+
+            <li class="step-item">
+              <h3>Desenvolva Políticas e Procedimentos</h3>
+              <p>
+                Crie políticas detalhadas que definam regras para autenticação,
+                autorização, gestão de contas privilegiadas, revisões periódicas
+                e resposta a incidentes relacionados a acessos.
+              </p>
+            </li>
+
+            <li class="step-item">
+              <h3>Selecione e Implemente Tecnologias</h3>
+              <p>
+                Escolha as ferramentas e soluções que suportarão sua estratégia,
+                como sistemas de IAM, MFA, PAM e SIEM. Implemente-as de forma
+                gradual, priorizando sistemas críticos.
+              </p>
+            </li>
+
+            <li class="step-item">
+              <h3>Conduza Treinamentos</h3>
+              <p>
+                Treine administradores sobre as novas ferramentas e processos, e
+                eduque usuários finais sobre práticas seguras de autenticação e
+                a importância do controle de acesso.
+              </p>
+            </li>
+
+            <li class="step-item">
+              <h3>Implemente Revisões Periódicas</h3>
+              <p>
+                Estabeleça processos para revisão regular de acessos, incluindo
+                certificações por gestores, análise de contas inativas e
+                verificação de contas privilegiadas.
+              </p>
+            </li>
+
+            <li class="step-item">
+              <h3>Monitore e Melhore Continuamente</h3>
+              <p>
+                Monitore métricas de eficácia, como tempo de provisionamento,
+                incidentes de segurança relacionados a acessos, e resultados de
+                revisões periódicas. Ajuste e melhore a abordagem com base nos
+                resultados.
+              </p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="technologies-grid">
+          <h2 class="best-practices-title">Tecnologias e Soluções</h2>
+
+          <div class="technology-card">
+            <div class="tech-icon">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <h3 class="tech-title">Gestão de Identidade e Acesso (IAM)</h3>
+            <p class="tech-desc">
+              Plataformas que gerenciam todo o ciclo de vida de identidades
+              digitais, desde a criação até o desprovisionamento, com
+              administração centralizada de políticas de acesso.
+            </p>
+          </div>
+
+          <div class="technology-card">
+            <div class="tech-icon">
+              <i class="fas fa-sign-in-alt"></i>
+            </div>
+            <h3 class="tech-title">Single Sign-On (SSO)</h3>
+            <p class="tech-desc">
+              Permite que usuários acessem múltiplos sistemas com um único
+              conjunto de credenciais, melhorando a experiência do usuário e
+              reduzindo riscos de segurança.
+            </p>
+          </div>
+
+          <div class="technology-card">
+            <div class="tech-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3 class="tech-title">Autenticação Multifator (MFA)</h3>
+            <p class="tech-desc">
+              Sistemas que exigem múltiplas formas de verificação de identidade,
+              como senhas, tokens físicos, aplicativos autenticadores ou
+              biometria.
+            </p>
+          </div>
+
+          <div class="technology-card">
+            <div class="tech-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <h3 class="tech-title">Gestão de Acesso Privilegiado (PAM)</h3>
+            <p class="tech-desc">
+              Ferramentas especializadas para controlar, monitorar e auditar o
+              uso de contas com privilégios elevados, que apresentam maior risco
+              para a organização.
+            </p>
+          </div>
+
+          <div class="technology-card">
+            <div class="tech-icon">
+              <i class="fas fa-network-wired"></i>
+            </div>
+            <h3 class="tech-title">Controle de Acesso à Rede (NAC)</h3>
+            <p class="tech-desc">
+              Soluções que controlam quais dispositivos podem se conectar à rede
+              corporativa com base em políticas de segurança e estado de
+              conformidade.
+            </p>
+          </div>
+
+          <div class="technology-card">
+            <div class="tech-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="tech-title">Detecção de Anomalias</h3>
+            <p class="tech-desc">
+              Sistemas que utilizam machine learning para identificar
+              comportamentos de acesso incomuns que podem indicar
+              comprometimento de contas ou uso indevido.
+            </p>
+          </div>
+        </div>
+
+        <div class="detailed-section">
+          <h2>Comparação de Modelos de Controle de Acesso</h2>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>Descrição</th>
+                <th>Vantagens</th>
+                <th>Desvantagens</th>
+                <th>Casos de Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>RBAC (Controle de Acesso Baseado em Funções)</td>
+                <td>
+                  Acesso determinado pelas funções ou cargos do usuário na
+                  organização
+                </td>
+                <td>Simples de entender e administrar; Escalável</td>
+                <td>
+                  Pode levar à propagação de funções; Menos flexível para casos
+                  específicos
+                </td>
+                <td>
+                  Empresas médias e grandes com estrutura organizacional bem
+                  definida
+                </td>
+              </tr>
+              <tr>
+                <td>ABAC (Controle de Acesso Baseado em Atributos)</td>
+                <td>
+                  Acesso determinado por múltiplos atributos do usuário,
+                  recurso, ação e ambiente
+                </td>
+                <td>Altamente flexível; Políticas contextualmente ricas</td>
+                <td>
+                  Mais complexo de implementar e manter; Potencialmente mais
+                  difícil de auditar
+                </td>
+                <td>
+                  Ambientes que requerem decisões de acesso dinâmicas e
+                  contextuais
+                </td>
+              </tr>
+              <tr>
+                <td>DAC (Controle de Acesso Discricionário)</td>
+                <td>
+                  Proprietário do recurso controla quem pode acessá-lo e quais
+                  permissões possuem
+                </td>
+                <td>Flexível; Controle descentralizado</td>
+                <td>
+                  Difícil de gerenciar em escala; Risco de propagação excessiva
+                  de permissões
+                </td>
+                <td>
+                  Pequenas organizações; Ambientes colaborativos como
+                  compartilhamento de arquivos
+                </td>
+              </tr>
+              <tr>
+                <td>MAC (Controle de Acesso Mandatório)</td>
+                <td>
+                  Acesso baseado em rótulos de segurança para usuários e
+                  recursos, controlado centralmente
+                </td>
+                <td>
+                  Segurança rigorosa; Boa para informações altamente sensíveis
+                </td>
+                <td>Inflexível; Sobrecarga administrativa</td>
+                <td>
+                  Organizações governamentais; Setores altamente regulamentados;
+                  Informações classificadas
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="resources">
+          <h2>Recursos Adicionais</h2>
+          <ul class="resource-list">
+            <li><a href="#">ISO 27001: Controles de Acesso (Anexo A.9)</a></li>
+            <li>
+              <a href="#"
+                >NIST Special Publication 800-63: Digital Identity Guidelines</a
+              >
+            </li>
+            <li>
+              <a href="#">Guia de Implementação de Autenticação Multifator</a>
+            </li>
+            <li>
+              <a href="#"
+                >Melhores Práticas para Gestão de Contas Privilegiadas</a
+              >
+            </li>
+            <li><a href="#">Como Conduzir Revisões de Acesso Eficazes</a></li>
+            <li><a href="#">Ferramentas de IAM: Um Guia Comparativo</a></li>
+          </ul>
+        </div>
+
+        <a href="../../../index.html" class="back-btn"
+          ><i class="fas fa-arrow-left"></i> Voltar para Página Inicial</a
+        >
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <h4>CyberShield</h4>
+            <p>
+              Fornecendo soluções e conhecimento em cibersegurança para proteger
+              organizações de todos os tamanhos contra ameaças digitais.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Links Rápidos</h4>
+            <ul class="footer-links">
+              <li><a href="#inicio">Início</a></li>
+              <li><a href="#iso">ISO 27000</a></li>
+              <li><a href="#praticas">Práticas de Segurança</a></li>
+              <li><a href="#phishing">Phishing</a></li>
+              <li><a href="#lgpd">LGPD</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Recursos</h4>
+            <ul class="footer-links">
+              <li><a href="../../index.html">Blog</a></li>
+              <li><a href="../../index.html">E-books</a></li>
+              <li><a href="../../index.html">Webinars</a></li>
+              <li><a href="../../index.html">Ferramentas</a></li>
+              <li><a href="../../index.html">Glossário</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contato</h4>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Estacio, 1000 - Florianopolis, SC
+              </li>
+              <li><i class="fas fa-phone"></i> +55 (11) 1234-5678</li>
+              <li>
+                <i class="fas fa-envelope"></i> contato@cybershield.com.br
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 CyberShield. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
