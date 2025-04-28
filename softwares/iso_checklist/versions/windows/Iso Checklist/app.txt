@@ -1,0 +1,6 @@
+OutputDir=F:\ciberseguranca\iso\dist
+Iso Checklist
+https://www.ltdcybersec.com/
+
+Aplication Files -> Deve procurar o arquivo executavel
+
