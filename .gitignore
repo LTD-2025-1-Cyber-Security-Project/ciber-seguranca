@@ -1,0 +1,89 @@
+# Arquivos de configuração do Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Arquivos de execução/distribuição
+dist/
+build/
+*.spec
+
+# Dados e arquivos gerados
+data/
+*.json
+*.log
+logs/
+.coverage
+htmlcov/
+.pytest_cache/
+.coverage.*
+coverage.xml
+*.cover
+
+# Ambientes virtuais
+venv/
+ENV/
+env/
+.env
+.venv
+env.bak/
+venv.bak/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+._*
+
+# Arquivos de IDEs/editores
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.komodotools/
+.atom/
+.eclipse/
+.settings/
+.ipynb_checkpoints
+.spyderproject
+.spyproject
+.ropeproject
+.project
+.pydevproject
+
+# Específicos para Flask
+instance/
+.webassets-cache
+flask_session/
+
+# Arquivos temporários
+temp/
+tmp/
+
+# Arquivos específicos do projeto
+checklist_data.json
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

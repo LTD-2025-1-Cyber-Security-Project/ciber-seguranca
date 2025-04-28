@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gerador de senhas seguras conforme normas NIST e ISO/IEC 27002">
+  <title>Gerador de Senhas Seguras</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f0f4f8;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    h2 {
+      color: #1e3a8a;
+      margin-bottom: 24px;
+      font-size: 24px;
+    }
+    .password-container {
+      display: flex;
+      align-items: center;
+      background-color: #e5e7eb;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    .password {
+      font-size: 18px;
+      color: #1f2937;
+      word-break: break-all;
+      flex-grow: 1;
+      text-align: center;
+      min-height: 24px;
+    }
+    .copy-btn {
+      background-color: #60a5fa;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      margin-left: 12px;
+      color: white;
+      font-size: 16px;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+    .copy-btn:hover {
+      background-color: #2563eb;
+    }
+    .copy-btn:focus {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+    .options {
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .option input[type="checkbox"] {
+      display: none;
+    }
+    .option label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: #374151;
+      user-select: none;
+      font-size: 16px;
+    }
+    .option label::before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      border: 2px solid #60a5fa;
+      border-radius: 4px;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+    .option input[type="checkbox"]:checked + label::before {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+      content: '✔';
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .length-input {
+      width: 60px;
+      padding: 8px;
+      border: 2px solid #60a5fa;
+      border-radius: 8px;
+      margin-left: 12px;
+      color: #1f2937;
+      font-size: 16px;
+    }
+    .length-input:focus {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+    .generate-btn {
+      background-color: #3b82f6;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .generate-btn:hover {
+      background-color: #2563eb;
+    }
+    .generate-btn:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+    .generate-btn:focus {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+    #tempTextarea {
+      position: absolute;
+      opacity: 0;
+      z-index: -1;
+    }
+    .error {
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: 8px;
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Gerador de Senhas Seguras</h2>
+    <div class="password-container">
+      <div class="password" id="password" role="textbox" aria-label="Senha gerada"></div>
+      <button class="copy-btn" id="copyBtn" aria-label="Copiar senha">📋</button>
+    </div>
+    <div class="options">
+      <div class="option">
+        <span>Comprimento:</span>
+        <input type="number" id="length" class="length-input" value="16" min="8" max="64" aria-label="Comprimento da senha">
+      </div>
+      <div class="option">
+        <input type="checkbox" id="uppercase" checked>
+        <label for="uppercase">Letras maiúsculas (A-Z)</label>
+      </div>
+      <div class="option">
+        <input type="checkbox" id="lowercase" checked>
+        <label for="lowercase">Letras minúsculas (a-z)</label>
+      </div>
+      <div class="option">
+        <input type="checkbox" id="number" checked>
+        <label for="number">Números (0-9)</label>
+      </div>
+      <div class="option">
+        <input type="checkbox" id="special" checked>
+        <label for="special">Caracteres especiais (!@#$%)</label>
+      </div>
+    </div>
+    <button class="generate-btn" id="generateBtn" aria-label="Gerar nova senha">Gerar Senha</button>
+    <div class="error" id="errorMsg" role="alert"></div>
+  </div>
+  <textarea id="tempTextarea" aria-hidden="true"></textarea>
+
+  <script>
+    (function () {
+      const config = {
+        minLength: 8,
+        maxLength: 64,
+        defaultLength: 16,
+        charSets: {
+          uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+          lowercase: 'abcdefghijklmnopqrstuvwxyz',
+          number: '0123456789',
+          special: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+        }
+      };
+
+      const elements = {
+        password: document.getElementById('password'),
+        copyBtn: document.getElementById('copyBtn'),
+        lengthInput: document.getElementById('length'),
+        uppercase: document.getElementById('uppercase'),
+        lowercase: document.getElementById('lowercase'),
+        number: document.getElementById('number'),
+        special: document.getElementById('special'),
+        generateBtn: document.getElementById('generateBtn'),
+        errorMsg: document.getElementById('errorMsg'),
+        tempTextarea: document.getElementById('tempTextarea')
+      };
+
+      function showError(message) {
+        elements.errorMsg.textContent = message;
+        elements.errorMsg.style.display = 'block';
+        elements.generateBtn.disabled = true;
+        setTimeout(() => {
+          elements.errorMsg.style.display = 'none';
+          elements.errorMsg.textContent = '';
+          elements.generateBtn.disabled = false;
+        }, 3000);
+      }
+
+      function sanitizeInput(value) {
+        return String(value).replace(/[^0-9]/g, '');
+      }
+
+      function validateOptions() {
+        return elements.uppercase.checked ||
+               elements.lowercase.checked ||
+               elements.number.checked ||
+               elements.special.checked;
+      }
+
+      function getRandomChar(str) {
+        return str[Math.floor(Math.random() * str.length)];
+      }
+
+      function shuffleString(str) {
+        const arr = str.split('');
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr.join('');
+      }
+
+      function generatePassword() {
+        const rawLength = sanitizeInput(elements.lengthInput.value);
+        const length = parseInt(rawLength) || config.defaultLength;
+
+        if (length < config.minLength || length > config.maxLength) {
+          elements.lengthInput.value = config.defaultLength;
+          showError(`O comprimento deve estar entre ${config.minLength} e ${config.maxLength} caracteres`);
+          return;
+        }
+
+        if (!validateOptions()) {
+          showError('Selecione pelo menos uma opção de caracteres');
+          return;
+        }
+
+        let chars = '';
+        let password = '';
+
+        if (elements.uppercase.checked) chars += config.charSets.uppercase;
+        if (elements.lowercase.checked) chars += config.charSets.lowercase;
+        if (elements.number.checked) chars += config.charSets.number;
+        if (elements.special.checked) chars += config.charSets.special;
+
+        if (elements.uppercase.checked) password += getRandomChar(config.charSets.uppercase);
+        if (elements.lowercase.checked) password += getRandomChar(config.charSets.lowercase);
+        if (elements.number.checked) password += getRandomChar(config.charSets.number);
+        if (elements.special.checked) password += getRandomChar(config.charSets.special);
+
+        for (let i = password.length; i < length; i++) {
+          password += getRandomChar(chars);
+        }
+
+        password = shuffleString(password);
+        elements.password.textContent = password;
+      }
+
+      function copyPassword() {
+        const password = elements.password.textContent;
+        if (!password) {
+          showError('Nenhuma senha para copiar');
+          return;
+        }
+
+        const changeIcon = () => {
+          elements.copyBtn.textContent = '✅';
+          elements.copyBtn.setAttribute('aria-label', 'Senha copiada');
+          setTimeout(() => {
+            elements.copyBtn.textContent = '📋';
+            elements.copyBtn.setAttribute('aria-label', 'Copiar senha');
+          }, 1500);
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(password)
+            .then(changeIcon)
+            .catch(err => {
+              console.error('Erro ao copiar com navigator.clipboard:', err);
+              fallbackCopyPassword(password, changeIcon);
+            });
+        } else {
+          fallbackCopyPassword(password, changeIcon);
+        }
+      }
+
+      function fallbackCopyPassword(password, callback) {
+        elements.tempTextarea.value = password;
+        elements.tempTextarea.focus();
+        elements.tempTextarea.select();
+        try {
+          if (document.execCommand('copy')) {
+            callback();
+          } else {
+            showError('Falha ao copiar a senha');
+          }
+        } catch (err) {
+          console.error('Erro ao copiar com fallback:', err);
+          showError('Falha ao copiar a senha');
+        } finally {
+          elements.tempTextarea.value = '';
+        }
+      }
+
+      // Event Listeners
+      elements.generateBtn.addEventListener('click', generatePassword);
+      elements.copyBtn.addEventListener('click', copyPassword);
+      elements.lengthInput.addEventListener('input', () => {
+        const value = parseInt(sanitizeInput(elements.lengthInput.value));
+        elements.generateBtn.disabled = !validateOptions() || value < config.minLength || value > config.maxLength;
+      });
+      [elements.uppercase, elements.lowercase, elements.number, elements.special].forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          elements.generateBtn.disabled = !validateOptions();
+        });
+      });
+
+      // Inicialização
+      elements.lengthInput.value = config.defaultLength;
+      generatePassword();
+    })();
+  </script>
+</body>
+</html>
