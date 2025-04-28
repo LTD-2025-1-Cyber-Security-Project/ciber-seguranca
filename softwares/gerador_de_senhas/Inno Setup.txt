@@ -1,0 +1,9 @@
+OutputDir=F:\Documents\LTD\pass-guardian\app
+Gerador de Senhas
+My LTD
+https://www.ltdcybersec.com/
+
+Aplication Files -> Deve procurar o arquivo executavel
+
+Custom Compiler output folder:
+C:\Program Files

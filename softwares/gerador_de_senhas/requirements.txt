@@ -1,0 +1,40 @@
+# Framework principal
+Flask
+Werkzeug
+# Jinja
+MarkupSafe
+itsdangerous
+
+# Servidor WSGI para produção
+gunicorn
+gevent
+
+# Segurança
+Flask-Talisman   # Para implementação de CSP
+Flask-Limiter    # Para limitação de taxa
+python-dotenv    # Para variáveis de ambiente
+
+# Validação e Sanitização
+bleach           # Para sanitização de HTML
+email-validator  # Validação de formatos de email
+
+# Logging e Monitoramento
+structlog       # Logging estruturado
+python-json-logger
+
+# Testes
+pytest
+pytest-flask
+
+# Desenvolvimento
+black           # Formatador de código
+flake8           # Linting
+python-decouple  # Gerenciar configurações
+
+# Específicos para o gerador de senhas
+cryptography    # Para funções criptográficas avançadas
+zxcvbn-python   # Para análise de força de senhas (opcional)
+
+# Gerar arquivos executaveis
+pyinstaller
+pyinstaller-hooks-contrib

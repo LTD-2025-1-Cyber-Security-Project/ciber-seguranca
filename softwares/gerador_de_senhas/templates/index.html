@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gerador de Senhas Seguras | CyberForce</title>
+    <meta name="description" content="Gerador de senhas avançado com alta entropia e opções personalizáveis">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Prevenção de cache para arquivos sensíveis -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+</head>
+<body>
+    <div class="cyberpanel">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>CyberForce</h1>
+            </div>
+            <div class="theme-toggle">
+                <i class="fas fa-moon" id="theme-toggle-icon"></i>
+            </div>
+        </div>
+
+        <main class="container" role="main">
+            <div class="password-section">
+                <h2 class="section-title"><i class="fas fa-key"></i> Gerador de Senhas Quântico</h2>
+                
+                <div class="strength-meter">
+                    <div class="strength-bar">
+                        <div class="strength-fill" id="strength-fill"></div>
+                    </div>
+                    <div class="strength-text" id="strength-text">Força da Senha</div>
+                </div>
+
+                <div class="password-container">
+                    <label for="password-display" class="sr-only">Senha gerada</label>
+                    <input type="text" id="password-display" 
+                           class="password-display" 
+                           readonly 
+                           aria-live="polite"
+                           aria-label="Senha gerada" 
+                           tabindex="0">
+                    
+                    <div class="password-actions">
+                        <button id="regenerate-btn" class="btn icon-btn" aria-label="Regenerar senha">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button id="copy-btn" class="btn icon-btn" aria-label="Copiar senha">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button id="favorite-btn" class="btn icon-btn" aria-label="Salvar senha como favorita">
+                            <i class="far fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="feedback-message" class="feedback-message" aria-live="assertive" role="alert"></div>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="options">Opções</button>
+                    <button class="tab-btn" data-tab="saved">Senhas Salvas</button>
+                    <button class="tab-btn" data-tab="security">Segurança</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div id="options" class="tab-pane active">
+                        <div class="options-container">
+                            <div class="option-row">
+                                <div class="length-control">
+                                    <label for="password-length">Comprimento: <span id="length-display">16</span></label>
+                                    <div class="slider-container">
+                                        <input type="range" 
+                                               id="password-length" 
+                                               min="8" 
+                                               max="64" 
+                                               value="16" 
+                                               class="slider"
+                                               aria-valuemin="8" 
+                                               aria-valuemax="64" 
+                                               aria-valuenow="16" 
+                                               aria-valuetext="16 caracteres">
+                                        <div class="slider-marks">
+                                            <span>8</span>
+                                            <span>16</span>
+                                            <span>32</span>
+                                            <span>64</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="character-options">
+                                <div class="option">
+                                    <input type="checkbox" 
+                                           id="uppercase" 
+                                           name="uppercase" 
+                                           checked 
+                                           aria-label="Incluir letras maiúsculas">
+                                    <label for="uppercase">Letras maiúsculas (A-Z)</label>
+                                </div>
+                                
+                                <div class="option">
+                                    <input type="checkbox" 
+                                           id="lowercase" 
+                                           name="lowercase" 
+                                           checked 
+                                           aria-label="Incluir letras minúsculas">
+                                    <label for="lowercase">Letras minúsculas (a-z)</label>
+                                </div>
+                                
+                                <div class="option">
+                                    <input type="checkbox" 
+                                           id="numbers" 
+                                           name="numbers" 
+                                           checked 
+                                           aria-label="Incluir números">
+                                    <label for="numbers">Números (0-9)</label>
+                                </div>
+                                
+                                <div class="option">
+                                    <input type="checkbox" 
+                                           id="special" 
+                                           name="special" 
+                                           checked 
+                                           aria-label="Incluir caracteres especiais">
+                                    <label for="special">Caracteres especiais (!@#$%...)</label>
+                                </div>
+                                
+                                <div class="option">
+                                    <input type="checkbox" 
+                                           id="exclude-similar" 
+                                           name="exclude-similar" 
+                                           aria-label="Excluir caracteres semelhantes">
+                                    <label for="exclude-similar">Excluir semelhantes (i, l, 1, I, O, 0)</label>
+                                </div>
+                                
+                                <div class="option">
+                                    <input type="checkbox" 
+                                           id="exclude-ambiguous" 
+                                           name="exclude-ambiguous" 
+                                           aria-label="Excluir caracteres ambíguos">
+                                    <label for="exclude-ambiguous">Excluir ambíguos ({}, [], (), /\)</label>
+                                </div>
+                            </div>
+                            
+                            <div class="pattern-options">
+                                <label>Padrões:</label>
+                                <div class="pattern-types">
+                                    <button class="pattern-btn" data-pattern="easy-to-say">Fácil de falar</button>
+                                    <button class="pattern-btn" data-pattern="easy-to-read">Fácil de ler</button>
+                                    <button class="pattern-btn" data-pattern="all-chars">Todos os caracteres</button>
+                                    <button class="pattern-btn" data-pattern="pin">PIN</button>
+                                    <button class="pattern-btn" data-pattern="passphrase">Frase-senha</button>
+                                </div>
+                            </div>
+                            
+                            <button id="generate-btn" 
+                                    class="btn generate-btn" 
+                                    aria-label="Gerar nova senha">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                                Gerar Nova Senha
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="saved" class="tab-pane">
+                        <div class="saved-passwords">
+                            <h3>Senhas Salvas <span class="subtext">(armazenadas localmente)</span></h3>
+                            <div class="saved-list" id="saved-list">
+                                <div class="empty-state">
+                                    <i class="fas fa-folder-open"></i>
+                                    <p>Nenhuma senha salva ainda. Clique na estrela para salvar senhas.</p>
+                                </div>
+                                <!-- As senhas salvas serão adicionadas aqui via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="security" class="tab-pane">
+                        <div class="security-info">
+                            <div class="security-section">
+                                <h3><i class="fas fa-lightbulb"></i> Dicas de Segurança</h3>
+                                <ul class="security-tips">
+                                    <li>Use senhas únicas para cada serviço.</li>
+                                    <li>Quanto maior a senha, mais segura ela será.</li>
+                                    <li>Combine diferentes tipos de caracteres para maior segurança.</li>
+                                    <li>Evite palavras comuns, datas de nascimento ou sequências óbvias.</li>
+                                    <li>Considere usar um gerenciador de senhas para armazenar suas senhas de forma segura.</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="security-section">
+                                <h3><i class="fas fa-shield-alt"></i> Sobre este Gerador</h3>
+                                <p>Este gerador de senhas usa algoritmos de criptografia avançados para criar senhas verdadeiramente aleatórias com alta entropia. Todas as senhas são geradas localmente no seu dispositivo e nunca são enviadas pela internet.</p>
+                                <p>Nossas senhas seguem os padrões de segurança NIST SP 800-63B e ISO/IEC 27002:2022.</p>
+                                
+                                <div class="encryption-animation">
+                                    <div class="encryption-visual">
+                                        <span class="binary">01001010</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span class="encrypted">********</span>
+                                    </div>
+                                    <div class="encryption-label">Criptografia de ponta a ponta</div>
+                                </div>
+                            </div>
+                            
+                            <div class="security-section">
+                                <h3><i class="fas fa-clock"></i> Tempo para Quebrar</h3>
+                                <div class="cracking-time">
+                                    <div class="time-estimate" id="time-estimate">
+                                        <div class="time-value">Calculando...</div>
+                                        <div class="time-label">Tempo estimado para quebrar a senha atual</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div class="modal" id="tutorial-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-graduation-cap"></i> Como Usar o Gerador de Senhas</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="tutorial-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Personalize sua senha</h3>
+                            <p>Selecione quais tipos de caracteres deseja incluir e ajuste o comprimento usando o controle deslizante.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tutorial-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Gere sua senha</h3>
+                            <p>Clique no botão "Gerar Nova Senha" para criar uma senha aleatória com base nas suas configurações.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tutorial-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Copie para uso</h3>
+                            <p>Use o botão de cópia para transferir a senha para sua área de transferência.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tutorial-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Salve suas senhas</h3>
+                            <p>Clique no ícone de estrela para salvar senhas importantes localmente no seu navegador.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tips-section">
+                        <h3>Atalhos de Teclado</h3>
+                        <div class="keyboard-shortcuts">
+                            <div class="shortcut">
+                                <div class="keys"><span>Alt</span> + <span>G</span></div>
+                                <div class="action">Gerar nova senha</div>
+                            </div>
+                            <div class="shortcut">
+                                <div class="keys"><span>Alt</span> + <span>C</span></div>
+                                <div class="action">Copiar senha</div>
+                            </div>
+                            <div class="shortcut">
+                                <div class="keys"><span>Alt</span> + <span>S</span></div>
+                                <div class="action">Salvar senha</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label class="dont-show-again">
+                        <input type="checkbox" id="dont-show-tutorial">
+                        <span>Não mostrar novamente</span>
+                    </label>
+                    <button class="btn primary-btn" id="tutorial-close">Entendi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 - Desenvolvido com <i class="fas fa-lock"></i> segurança e <i class="fas fa-universal-access"></i> acessibilidade</p>
+            <div class="footer-links">
+                <a href="#" id="show-tutorial">Tutorial</a>
+                <a href="#" id="privacy-policy">Política de Privacidade</a>
+                <a href="https://github.com/your-username/password-generator" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
