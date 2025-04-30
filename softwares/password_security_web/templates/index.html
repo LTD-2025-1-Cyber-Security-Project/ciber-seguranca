@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}CyberSecurity - Proteção Digital{% endblock %}
+
+{% block content %}
+<div class="grid md:grid-cols-2 gap-8 items-center">
+    <!-- Coluna de Texto -->
+    <div>
+        <h1 class="text-4xl font-orbitron mb-6 glitch-text" data-text="Segurança Digital Avançada">
+            Segurança Digital Avançada
+        </h1>
+        
+        <div class="space-y-4 text-lg">
+            <p class="leading-relaxed">
+                Bem-vindo ao sistema de proteção digital mais avançado para prefeituras e órgãos públicos.
+            </p>
+            
+            <div class="bg-cyberpunk-secondary p-4 rounded-lg neon-border">
+                <h2 class="text-2xl font-orbitron mb-3 text-cyberpunk-primary">
+                    <i class="fas fa-shield-alt mr-2"></i>Nossos Serviços
+                </h2>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>Verificação de Força de Senhas</li>
+                    <li>Geração de Senhas Seguras</li>
+                    <li>Detecção de Vazamentos de Dados</li>
+                    <li>Análise de Vulnerabilidades</li>
+                </ul>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <a href="/verificar-senha" class="
+                    bg-cyberpunk-primary 
+                    text-cyberpunk-bg 
+                    py-3 
+                    px-6 
+                    rounded-lg 
+                    text-center 
+                    hover:bg-opacity-80 
+                    transition 
+                    duration-300 
+                    ease-in-out
+                    transform 
+                    hover:-translate-y-1
+                ">
+                    <i class="fas fa-lock mr-2"></i>Verificar Senha
+                </a>
+                
+                <a href="/verificar-vazamentos" class="
+                    border-2 
+                    border-cyberpunk-primary 
+                    text-cyberpunk-primary 
+                    py-3 
+                    px-6 
+                    rounded-lg 
+                    text-center 
+                    hover:bg-cyberpunk-primary 
+                    hover:text-cyberpunk-bg 
+                    transition 
+                    duration-300 
+                    ease-in-out
+                    transform 
+                    hover:-translate-y-1
+                ">
+                    <i class="fas fa-shield-alt mr-2"></i>Verificar Vazamentos
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Coluna de Visualização -->
+    <div class="hidden md:block">
+        <div class="
+            bg-cyberpunk-secondary 
+            rounded-lg 
+            p-6 
+            neon-border 
+            relative 
+            overflow-hidden
+        ">
+            <div class="absolute inset-0 opacity-10 bg-gradient-to-br from-cyberpunk-primary to-blue-600"></div>
+            
+            <div class="relative z-10">
+                <div class="grid grid-cols-3 gap-4">
+                    <!-- Ícones de Segurança Animados -->
+                    <div class="
+                        bg-cyberpunk-bg 
+                        rounded-lg 
+                        p-4 
+                        text-center 
+                        transform 
+                        hover:scale-105 
+                        transition 
+                        duration-300 
+                        ease-in-out
+                    ">
+                        <i class="fas fa-key text-4xl text-cyberpunk-primary mb-2"></i>
+                        <p class="text-xs">Senhas Seguras</p>
+                    </div>
+                    
+                    <div class="
+                        bg-cyberpunk-bg 
+                        rounded-lg 
+                        p-4 
+                        text-center 
+                        transform 
+                        hover:scale-105 
+                        transition 
+                        duration-300 
+                        ease-in-out
+                    ">
+                        <i class="fas fa-lock text-4xl text-green-400 mb-2"></i>
+                        <p class="text-xs">Criptografia</p>
+                    </div>
+                    
+                    <div class="
+                        bg-cyberpunk-bg 
+                        rounded-lg 
+                        p-4 
+                        text-center 
+                        transform 
+                        hover:scale-105 
+                        transition 
+                        duration-300 
+                        ease-in-out
+                    ">
+                        <i class="fas fa-shield-alt text-4xl text-red-400 mb-2"></i>
+                        <p class="text-xs">Proteção</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <div class="
+                        bg-gradient-to-r 
+                        from-cyberpunk-primary 
+                        to-blue-600 
+                        text-cyberpunk-bg 
+                        py-2 
+                        px-4 
+                        rounded-full 
+                        inline-block 
+                        animate-pulse
+                    ">
+                        Sistema de Segurança Digital
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Seção de Destaques -->
+<section class="mt-16">
+    <h2 class="text-3xl font-orbitron text-center mb-8 text-cyberpunk-primary">
+        Por que escolher nossa solução?
+    </h2>
+    
+    <div class="grid md:grid-cols-3 gap-6">
+        <div class="
+            bg-cyberpunk-secondary 
+            p-6 
+            rounded-lg 
+            neon-border 
+            text-center 
+            transform 
+            hover:scale-105 
+            transition 
+            duration-300 
+            ease-in-out
+        ">
+            <i class="fas fa-chart-line text-4xl text-cyberpunk-primary mb-4"></i>
+            <h3 class="text-xl font-orbitron mb-2">Análise Avançada</h3>
+            <p>Algoritmos de ponta para verificação de senhas</p>
+        </div>
+        
+        <div class="
+            bg-cyberpunk-secondary 
+            p-6 
+            rounded-lg 
+            neon-border 
+            text-center 
+            transform 
+            hover:scale-105 
+            transition 
+            duration-300 
+            ease-in-out
+        ">
+            <i class="fas fa-cloud text-4xl text-cyberpunk-primary mb-4"></i>
+            <h3 class="text-xl font-orbitron mb-2">Segurança em Nuvem</h3>
+            <p>Proteção moderna e escalável para sua infraestrutura</p>
+        </div>
+        
+        <div class="
+            bg-cyberpunk-secondary 
+            p-6 
+            rounded-lg 
+            neon-border 
+            text-center 
+            transform 
+            hover:scale-105 
+            transition 
+            duration-300 
+            ease-in-out
+        ">
+            <i class="fas fa-globe text-4xl text-cyberpunk-primary mb-4"></i>
+            <h3 class="text-xl font-orbitron mb-2">Cobertura Global</h3>
+            <p>Monitoramento de vazamentos em banco de dados mundial</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animações específicas da página inicial
+    document.addEventListener('DOMContentLoaded', function() {
+        const glitchText = document.querySelector('.glitch-text');
+        
+        // Efeito de digitalização adicional
+        function digitalizarTexto(elemento) {
+            const texto = elemento.textContent;
+            const caracteres = texto.split('');
+            
+            elemento.textContent = '';
+            caracteres.forEach((char, index) => {
+                setTimeout(() => {
+                    elemento.textContent += char;
+                }, 50 * index);
+            });
+        }
+        
+        digitalizarTexto(glitchText);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+flask==2.3.2
+zxcvbn
+requests==2.31.0
+beautifulsoup4==4.12.2
+urllib3==2.0.3
+flask-wtf==1.1.1
+email-validator==2.0.0
+# pybreached
+python-dotenv==1.0.0
+flask-wtf
+werkzeug

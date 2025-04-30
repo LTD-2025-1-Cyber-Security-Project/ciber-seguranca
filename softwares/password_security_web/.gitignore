@@ -1,0 +1,66 @@
+# Ambientes Virtuais
+venv/
+env/
+.env/
+.venv/
+
+# Arquivos de Compilação Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribuição e Compilação
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+security_app.log
+
+# Arquivos de Configuração Local
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de Sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos Sensíveis
+*.key
+*.pem
+*.der
+*.pfx
+
+# Dependências
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Testes e Cobertura
+.tox/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Executáveis
+*.exe
+*.out
+*.app
+
+# Backups
+*.bak
+*.backup
+
+# Credenciais
+.env
+.secret
+*secret*
+
+# Arquivos específicos de desenvolvimento
+dev_*.py
+test_*.py

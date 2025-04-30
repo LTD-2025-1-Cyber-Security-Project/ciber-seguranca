@@ -1,0 +1,42 @@
+LICENÇA PÚBLICA MUNICIPAL DE SOFTWARE
+
+Direitos Autorais (c) 2024 Prefeitura de Florianópolis/São José
+
+1. CONCESSÃO DE LICENÇA
+A Prefeitura concede uma licença não exclusiva, intransferível para uso do CyberSecurity Password Manager.
+
+2. TERMOS DE USO
+2.1. Uso permitido apenas para fins administrativos e de segurança municipal
+2.2. Proibida reprodução total ou parcial sem autorização
+2.3. Software distribuído "COMO ESTÁ", sem garantias
+
+3. RESTRIÇÕES
+3.1. Não é permitido:
+- Modificar o código-fonte sem autorização
+- Comercializar o software
+- Remover marcações de copyright
+- Usar para fins illegais
+
+4. RESPONSABILIDADES
+4.1. A prefeitura não se responsabiliza por:
+- Danos causados pelo uso do software
+- Vulnerabilidades de segurança não identificadas
+- Perdas de dados
+
+5. CONFIDENCIALIDADE
+5.1. O software contém informações confidenciais
+5.2. Usuários devem manter sigilo absoluto
+
+6. ATUALIZAÇÕES
+6.1. Atualizações podem ser realizadas sem aviso prévio
+6.2. Recomenda-se sempre manter a versão atualizada
+
+7. JURISDIÇÃO
+7.1. Qualquer disputa será resolvida nos tribunais de Florianópolis/SC
+
+Contato: 
+- E-mail: ti@pmf.sc.gov.br
+- Telefone: (48) XXXX-XXXX
+
+Versão da Licença: 1.0
+Data: [DATA_ATUAL]

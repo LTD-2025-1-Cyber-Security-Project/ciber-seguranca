@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Erro {{ codigo }}{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto text-center">
+    <div class="bg-cyberpunk-secondary p-12 rounded-lg neon-border">
+        <h1 class="text-6xl font-orbitron mb-6 text-red-400 glitch-text" data-text="Erro {{ codigo }}">
+            Erro {{ codigo }}
+        </h1>
+        
+        <p class="text-2xl text-cyberpunk-text mb-6">
+            {{ mensagem }}
+        </p>
+        
+        <div class="bg-cyberpunk-bg p-6 rounded-lg mb-6">
+            {% if codigo == 404 %}
+                <h2 class="text-xl font-orbitron mb-4 text-yellow-400">
+                    Página Não Encontrada
+                </h2>
+                <p class="text-cyberpunk-text">
+                    A página que você está procurando pode ter sido removida, 
+                    renomeada ou estar temporariamente indisponível.
+                </p>
+            {% elif codigo == 500 %}
+                <h2 class="text-xl font-orbitron mb-4 text-red-400">
+                    Erro Interno do Servidor
+                </h2>
+                <p class="text-cyberpunk-text">
+                    Ocorreu um problema inesperado em nossos sistemas. 
+                    Nossa equipe técnica já foi notificada.
+                </p>
+            {% endif %}
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <a href="/" class="
+                bg-cyberpunk-primary 
+                text-cyberpunk-bg 
+                py-3 
+                px-6 
+                rounded-lg 
+                hover:bg-opacity-80 
+                transition 
+                duration-300 
+                ease-in-out
+            ">
+                <i class="fas fa-home mr-2"></i>Página Inicial
+            </a>
+            
+            <a href="#" onclick="window.history.back();" class="
+                border-2 
+                border-cyberpunk-primary 
+                text-cyberpunk-primary 
+                py-3 
+                px-6 
+                rounded-lg 
+                hover:bg-cyberpunk-primary 
+                hover:text-cyberpunk-bg 
+                transition 
+                duration-300 
+                ease-in-out
+            ">
+                <i class="fas fa-arrow-left mr-2"></i>Voltar
+            </a>
+        </div>
+    </div>
+
+    <!-- Animação de Erro -->
+    <div class="mt-8 relative h-64 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-red-900 to-red-600 opacity-20 animate-pulse"></div>
+        <div class="relative z-10 flex justify-center items-center h-full">
+            <div class="
+                w-32 
+                h-32 
+                bg-red-600 
+                rounded-full 
+                animate-ping 
+                absolute
+            "></div>
+            <div class="
+                w-24 
+                h-24 
+                bg-red-500 
+                rounded-full 
+                absolute
+            "></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Efeito glitch para o título de erro
+        function aplicarGlitch(elemento) {
+            const texto = elemento.textContent;
+            
+            // Criar efeito de glitch
+            setInterval(() => {
+                const randomChars = 'ERRO404SISTEMADEERRO';
+                const glitchTexto = texto.split('').map((char, index) => {
+                    return Math.random() > 0.7 ? 
+                        randomChars[Math.floor(Math.random() * randomChars.length)] : 
+                        char;
+                }).join('');
+                
+                elemento.textContent = glitchTexto;
+            }, 100);
+
+            // Restaurar texto original periodicamente
+            setInterval(() => {
+                elemento.textContent = texto;
+            }, 500);
+        }
+
+        // Aplicar glitch no título
+        const tituloErro = document.querySelector('.glitch-text');
+        aplicarGlitch(tituloErro);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Instruções de Uso{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-cyberpunk-secondary p-8 rounded-lg neon-border">
+    <h1 class="text-4xl font-orbitron mb-8 text-cyberpunk-primary text-center">
+        <i class="fas fa-book-open mr-2"></i>Guia Completo de Uso
+    </h1>
+
+    <div class="space-y-8">
+        <!-- Seção 1: Verificação de Senha -->
+        <section class="bg-cyberpunk-bg p-6 rounded-lg">
+            <h2 class="text-2xl font-orbitron mb-4 text-cyberpunk-primary">
+                <i class="fas fa-lock mr-2"></i>Verificação de Força de Senha
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="text-xl mb-2 text-blue-400">Como Funciona</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Insira sua senha no campo designado</li>
+                        <li>Sistema analisa força e segurança</li>
+                        <li>Receba feedback instantâneo</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl mb-2 text-green-400">Critérios Avaliados</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Comprimento mínimo de 12 caracteres</li>
+                        <li>Combinação de maiúsculas e minúsculas</li>
+                        <li>Inclusão de números e caracteres especiais</li>
+                        <li>Verificação contra senhas comprometidas</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Gerador de Senhas -->
+        <section class="bg-cyberpunk-bg p-6 rounded-lg">
+            <h2 class="text-2xl font-orbitron mb-4 text-cyberpunk-primary">
+                <i class="fas fa-key mr-2"></i>Gerador de Senhas Seguras
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="text-xl mb-2 text-blue-400">Características</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Geração de senhas de 16 caracteres</li>
+                        <li>Uso de métodos criptográficos seguros</li>
+                        <li>Combinação aleatória de caracteres</li>
+                        <li>Garantia de alta complexidade</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl mb-2 text-green-400">Benefícios</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Senhas únicas para cada serviço</li>
+                        <li>Resistência a ataques de força bruta</li>
+                        <li>Proteção contra engenharia social</li>
+                        <li>Facilidade de geração</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 3: Verificação de Vazamentos -->
+        <section class="bg-cyberpunk-bg p-6 rounded-lg">
+            <h2 class="text-2xl font-orbitron mb-4 text-cyberpunk-primary">
+                <i class="fas fa-shield-alt mr-2"></i>Verificação de Vazamentos de Dados
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="text-xl mb-2 text-blue-400">Como Funciona</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Insira seu email para verificação</li>
+                        <li>Busca em bancos de dados de vazamentos</li>
+                        <li>Análise de múltiplas fontes</li>
+                        <li>Relatório detalhado instantâneo</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl mb-2 text-green-400">O Que Verificamos</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Presença em vazamentos conhecidos</li>
+                        <li>Tipos de dados comprometidos</li>
+                        <li>Datas de vazamentos</li>
+                        <li>Recomendações de segurança</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 4: Melhores Práticas -->
+        <section class="bg-cyberpunk-bg p-6 rounded-lg">
+            <h2 class="text-2xl font-orbitron mb-4 text-cyberpunk-primary">
+                <i class="fas fa-lightbulb mr-2"></i>Melhores Práticas de Segurança
+            </h2>
+            
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-cyberpunk-secondary p-4 rounded-lg">
+                    <h3 class="text-xl mb-2 text-yellow-400">Senhas</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Use senhas únicas</li>
+                        <li>Troque regularmente</li>
+                        <li>Evite informações pessoais</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-cyberpunk-secondary p-4 rounded-lg">
+                    <h3 class="text-xl mb-2 text-green-400">Autenticação</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Ative 2FA</li>
+                        <li>Use gerenciador de senhas</li>
+                        <li>Cuidado com phishing</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-cyberpunk-secondary p-4 rounded-lg">
+                    <h3 class="text-xl mb-2 text-blue-400">Dispositivos</h3>
+                    <ul class="list-disc list-inside space-y-2 text-cyberpunk-text">
+                        <li>Mantenha atualizados</li>
+                        <li>Use antivírus</li>
+                        <li>Proteja redes Wi-Fi</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Seção Final: Perguntas Frequentes -->
+    <section class="mt-12">
+        <h2 class="text-3xl font-orbitron mb-6 text-cyberpunk-primary text-center">
+            <i class="fas fa-question-circle mr-2"></i>Perguntas Frequentes
+        </h2>
+
+        <div class="space-y-4">
+            <!-- Pergunta 1 -->
+            <div class="bg-cyberpunk-bg p-6 rounded-lg">
+                <h3 class="text-xl font-orbitron mb-2 text-blue-400 cursor-pointer faq-toggle">
+                    <i class="fas fa-chevron-right mr-2 faq-icon transition-transform"></i>
+                    Minha senha é realmente segura?
+                </h3>
+                <div class="faq-content hidden text-cyberpunk-text">
+                    <p>
+                        A segurança de uma senha depende de vários fatores: comprimento, 
+                        complexidade, unicidade e se ela já foi comprometida em vazamentos anteriores. 
+                        Utilize nossa ferramenta de verificação de força de senha para uma análise detalhada.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pergunta 2 -->
+            <div class="bg-cyberpunk-bg p-6 rounded-lg">
+                <h3 class="text-xl font-orbitron mb-2 text-green-400 cursor-pointer faq-toggle">
+                    <i class="fas fa-chevron-right mr-2 faq-icon transition-transform"></i>
+                    Como criar uma senha forte?
+                </h3>
+                <div class="faq-content hidden text-cyberpunk-text">
+                    <p>
+                        Use nossa ferramenta de geração de senhas ou siga estas dicas:
+                    </p>
+                    <ul class="list-disc list-inside ml-4 mt-2">
+                        <li>Mínimo de 12 caracteres</li>
+                        <li>Combinação de maiúsculas, minúsculas, números e símbolos</li>
+                        <li>Evite palavras comuns ou informações pessoais</li>
+                        <li>Use frases-senha complexas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pergunta 3 -->
+            <div class="bg-cyberpunk-bg p-6 rounded-lg">
+                <h3 class="text-xl font-orbitron mb-2 text-yellow-400 cursor-pointer faq-toggle">
+                    <i class="fas fa-chevron-right mr-2 faq-icon transition-transform"></i>
+                    O que fazer se meu email foi comprometido?
+                </h3>
+                <div class="faq-content hidden text-cyberpunk-text">
+                    <p>Se descobrir que seu email foi comprometido, siga estes passos:</p>
+                    <ul class="list-disc list-inside ml-4 mt-2">
+                        <li>Altere imediatamente as senhas em todos os serviços</li>
+                        <li>Ative autenticação de dois fatores</li>
+                        <li>Monitore atividades suspeitas em suas contas</li>
+                        <li>Considere usar um gerenciador de senhas</li>
+                        <li>Fique atento a possíveis tentativas de phishing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Manipulação de Perguntas Frequentes
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                // Encontrar o conteúdo da FAQ
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('.faq-icon');
+                
+                // Alternar visibilidade
+                content.classList.toggle('hidden');
+                
+                // Animação do ícone
+                if (content.classList.contains('hidden')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-right');
+                } else {
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Animação de digitação para títulos
+        function digitalizarTexto(elemento) {
+            const texto = elemento.textContent;
+            const caracteres = texto.split('');
+            
+            elemento.textContent = '';
+            caracteres.forEach((char, index) => {
+                setTimeout(() => {
+                    elemento.textContent += char;
+                }, 50 * index);
+            });
+        }
+
+        // Aplicar digitalização em títulos principais
+        const titulosPrincipais = document.querySelectorAll('h1, h2');
+        titulosPrincipais.forEach(titulo => {
+            digitalizarTexto(titulo);
+        });
+    });
+</script>
+{% endblock %}

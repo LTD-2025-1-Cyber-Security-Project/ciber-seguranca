@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Análise de Senhas Comprometidas{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-cyberpunk-secondary p-8 rounded-lg neon-border">
+    <h1 class="text-3xl font-orbitron mb-6 text-cyberpunk-primary text-center">
+        <i class="fas fa-shield-alt mr-2"></i>Verificador de Vazamentos de Dados
+    </h1>
+
+    <form method="POST" class="space-y-4 mb-8">
+        {{ form.csrf_token }}
+        
+        <div>
+            {{ form.email.label(class="block text-cyberpunk-text mb-2") }}
+            {{ form.email(
+                class="w-full bg-cyberpunk-bg text-cyberpunk-text border-2 border-cyberpunk-primary rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyberpunk-primary", 
+                placeholder="Digite seu email"
+            ) }}
+            
+            {% if form.email.errors %}
+                <div class="text-red-500 mt-2">
+                    {% for error in form.email.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="text-center">
+            {{ form.submit(
+                class="bg-cyberpunk-primary text-cyberpunk-bg py-3 px-6 rounded-lg hover:bg-opacity-80 transition duration-300 ease-in-out"
+            ) }}
+        </div>
+    </form>
+
+    {% if resultado %}
+        <div class="bg-cyberpunk-bg p-6 rounded-lg">
+            {% if resultado.erro %}
+                <div class="bg-red-900 bg-opacity-30 p-4 rounded-lg mb-6">
+                    <h2 class="text-2xl font-orbitron mb-4 text-red-400">
+                      <i class="fas fa-exclamation-triangle mr-2"></i>Erro na Verificação
+                  </h2>
+                  <p class="text-red-300">{{ resultado.erro }}</p>
+                  
+                  {% if resultado.recomendacoes %}
+                      <div class="mt-4">
+                          <h3 class="text-xl font-orbitron mb-2 text-yellow-400">Recomendações:</h3>
+                          <ul class="list-disc list-inside text-yellow-300">
+                              {% for recomendacao in resultado.recomendacoes %}
+                                  <li>{{ recomendacao }}</li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  {% endif %}
+              </div>
+          {% elif resultado.comprometido %}
+              <div class="bg-red-900 bg-opacity-30 p-4 rounded-lg mb-6">
+                  <h2 class="text-2xl font-orbitron mb-4 text-red-400">
+                      <i class="fas fa-exclamation-triangle mr-2"></i>Vazamento Detectado
+                  </h2>
+                  <p class="text-red-300 mb-4">
+                      Seu email foi encontrado em {{ resultado.total_vazamentos }} 
+                      {% if resultado.total_vazamentos == 1 %}vazamento{% else %}vazamentos{% endif %} de dados.
+                  </p>
+                  
+                  <div class="space-y-4">
+                      <h3 class="text-xl font-orbitron text-yellow-400">Detalhes dos Vazamentos:</h3>
+                      {% for vazamento in resultado.detalhes_vazamentos %}
+                          <div class="bg-cyberpunk-secondary p-3 rounded-lg">
+                              <p class="font-bold text-cyberpunk-primary">{{ vazamento.nome }}</p>
+                              <p class="text-sm">Data do Vazamento: {{ vazamento.data }}</p>
+                              <div class="mt-2">
+                                  <span class="font-bold text-sm text-yellow-400">Tipos de Dados Comprometidos:</span>
+                                  <ul class="list-disc list-inside text-xs text-yellow-300">
+                                      {% for tipo_dado in vazamento.tipos_dados %}
+                                          <li>{{ tipo_dado }}</li>
+                                      {% endfor %}
+                                  </ul>
+                              </div>
+                          </div>
+                      {% endfor %}
+                  </div>
+                  
+                  <div class="mt-6">
+                      <h3 class="text-xl font-orbitron mb-2 text-yellow-400">
+                          <i class="fas fa-life-ring mr-2"></i>Recomendações Imediatas:
+                      </h3>
+                      <ul class="list-disc list-inside text-red-300 space-y-2">
+                          {% for recomendacao in resultado.recomendacoes %}
+                              <li>{{ recomendacao }}</li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+          {% else %}
+              <div class="bg-green-900 bg-opacity-30 p-4 rounded-lg mb-6">
+                  <h2 class="text-2xl font-orbitron mb-4 text-green-400">
+                      <i class="fas fa-check-circle mr-2"></i>Nenhum Vazamento Encontrado
+                  </h2>
+                  <p class="text-green-300 mb-4">
+                      Seu email não foi encontrado em nenhum vazamento conhecido.
+                  </p>
+                  
+                  <div class="mt-4">
+                      <h3 class="text-xl font-orbitron mb-2 text-blue-400">
+                          <i class="fas fa-shield-alt mr-2"></i>Recomendações de Segurança:
+                      </h3>
+                      <ul class="list-disc list-inside text-blue-300 space-y-2">
+                          {% for recomendacao in resultado.recomendacoes %}
+                              <li>{{ recomendacao }}</li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+          {% endif %}
+      </div>
+  {% endif %}
+
+  <!-- Vazamentos Recentes -->
+  {% if vazamentos_recentes %}
+      <div class="mt-8">
+          <h2 class="text-2xl font-orbitron mb-4 text-cyberpunk-primary text-center">
+              <i class="fas fa-globe mr-2"></i>Vazamentos Recentes de Segurança
+          </h2>
+          
+          <div class="space-y-4">
+              {% for vazamento in vazamentos_recentes %}
+                  <div class="
+                      bg-cyberpunk-bg 
+                      p-4 
+                      rounded-lg 
+                      border-l-4 
+                      border-red-500 
+                      hover:bg-opacity-80 
+                      transition 
+                      duration-300 
+                      ease-in-out
+                  ">
+                      <h3 class="text-lg font-orbitron text-cyberpunk-primary mb-2">
+                          {{ vazamento.titulo }}
+                      </h3>
+                      <p class="text-sm mb-2">{{ vazamento.descricao }}</p>
+                      <a href="{{ vazamento.link }}" 
+                         target="_blank" 
+                         class="
+                             text-blue-400 
+                             hover:text-blue-300 
+                             text-sm 
+                             inline-flex 
+                             items-center
+                         ">
+                          <i class="fas fa-external-link-alt mr-2"></i>Leia mais
+                      </a>
+                  </div>
+              {% endfor %}
+          </div>
+      </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const emailInput = document.querySelector('input[name="email"]');
+      
+      // Validação de email em tempo real
+      emailInput.addEventListener('input', function() {
+          const email = this.value;
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const feedbackDiv = document.createElement('div');
+          feedbackDiv.classList.add('text-sm', 'mt-2');
+          
+          if (email === '') {
+              feedbackDiv.textContent = '';
+          } else if (!emailRegex.test(email)) {
+              feedbackDiv.classList.add('text-red-400');
+              feedbackDiv.textContent = 'Formato de email inválido';
+          } else {
+              feedbackDiv.classList.add('text-green-400');
+              feedbackDiv.textContent = 'Formato de email válido';
+          }
+          
+          // Remover feedback anterior
+          const anteriorFeedback = document.querySelector('.text-sm.mt-2');
+          if (anteriorFeedback) {
+              anteriorFeedback.remove();
+          }
+          
+          // Adicionar novo feedback
+          emailInput.parentNode.appendChild(feedbackDiv);
+      });
+  });
+</script>
+{% endblock %}

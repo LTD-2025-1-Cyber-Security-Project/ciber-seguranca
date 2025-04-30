@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Gerador de Senhas Seguras{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-cyberpunk-secondary p-8 rounded-lg neon-border">
+    <h1 class="text-3xl font-orbitron mb-6 text-cyberpunk-primary text-center">
+        <i class="fas fa-key mr-2"></i>Gerador de Senhas Seguras
+    </h1>
+
+    <div class="bg-cyberpunk-bg p-6 rounded-lg mb-6">
+        <h2 class="text-2xl font-orbitron mb-4 text-cyberpunk-primary">
+            Senha Gerada
+        </h2>
+        
+        <div class="flex items-center justify-between">
+            <code id="senhaGerada" class="
+                text-lg 
+                font-mono 
+                bg-black 
+                bg-opacity-50 
+                p-3 
+                rounded 
+                flex-grow 
+                mr-4 
+                break-all
+            ">
+                {{ senha }}
+            </code>
+            
+            <button id="copiarSenha" class="
+                bg-cyberpunk-primary 
+                text-cyberpunk-bg 
+                py-2 
+                px-4 
+                rounded 
+                hover:bg-opacity-80 
+                transition 
+                duration-300 
+                ease-in-out
+                flex 
+                items-center
+            ">
+                <i class="fas fa-copy mr-2"></i>Copiar
+            </button>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-cyberpunk-bg p-4 rounded-lg">
+            <h3 class="text-xl font-orbitron mb-3 text-cyberpunk-primary">
+                <i class="fas fa-shield-alt mr-2"></i>Características
+            </h3>
+            <ul class="list-disc list-inside space-y-2">
+                <li>16 caracteres de comprimento</li>
+                <li>Mistura de maiúsculas e minúsculas</li>
+                <li>Números e caracteres especiais</li>
+                <li>Geração criptograficamente segura</li>
+            </ul>
+        </div>
+
+        <div class="bg-cyberpunk-bg p-4 rounded-lg">
+            <h3 class="text-xl font-orbitron mb-3 text-cyberpunk-primary">
+                <i class="fas fa-lock mr-2"></i>Nível de Segurança
+            </h3>
+            <div class="flex items-center mb-2">
+                {% for i in range(5) %}
+                    <span class="mr-1 text-2xl text-green-400">●</span>
+                {% endfor %}
+            </div>
+            <p class="text-sm">Senha de Alta Segurança</p>
+        </div>
+    </div>
+
+    <div class="mt-6 text-center">
+        <a href="/gerar-senha" class="
+            bg-cyberpunk-primary 
+            text-cyberpunk-bg 
+            py-3 
+            px-6 
+            rounded-lg 
+            hover:bg-opacity-80 
+            transition 
+            duration-300 
+            ease-in-out
+            inline-block
+        ">
+            <i class="fas fa-sync mr-2"></i>Gerar Nova Senha
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const senhaGerada = document.getElementById('senhaGerada');
+        const botaoCopiar = document.getElementById('copiarSenha');
+
+        // Função para copiar senha
+        botaoCopiar.addEventListener('click', function() {
+            // Copiar senha para área de transferência
+            navigator.clipboard.writeText(senhaGerada.textContent.trim()).then(function() {
+                // Feedback visual de cópia
+                botaoCopiar.innerHTML = '<i class="fas fa-check mr-2"></i>Copiado!';
+                botaoCopiar.classList.remove('bg-cyberpunk-primary');
+                botaoCopiar.classList.add('bg-green-500');
+
+                // Reverter após 2 segundos
+                setTimeout(function() {
+                    botaoCopiar.innerHTML = '<i class="fas fa-copy mr-2"></i>Copiar';
+                    botaoCopiar.classList.add('bg-cyberpunk-primary');
+                    botaoCopiar.classList.remove('bg-green-500');
+                }, 2000);
+            }, function(err) {
+                console.error('Erro ao copiar:', err);
+            });
+        });
+
+        // Animação de digitação da senha
+        function digitalizarSenha() {
+            const senha = senhaGerada.textContent.trim();
+            senhaGerada.textContent = '';
+            
+            senha.split('').forEach((char, index) => {
+                setTimeout(() => {
+                    senhaGerada.textContent += char;
+                }, 50 * index);
+            });
+        }
+
+        // Executar digitalização
+        digitalizarSenha();
+    });
+</script>
+{% endblock %}

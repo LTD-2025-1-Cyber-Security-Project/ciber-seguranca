@@ -1,0 +1,37 @@
+Instruções de Uso - CyberSecurity Password Manager
+
+Requisitos do Sistema:
+- Windows 10 ou superior
+- Processador: 1 GHz ou superior
+- Memória RAM: 2 GB ou mais
+- Espaço em disco: 100 MB livres
+
+Instalação:
+1. Execute o instalador CyberSecurity
+2. Siga os passos do assistente de instalação
+3. Escolha o diretório de instalação
+4. Clique em "Instalar"
+5. Aguarde a conclusão da instalação
+
+Primeiro Uso:
+1. Abra o aplicativo no menu Iniciar
+2. Aceite os termos de uso
+3. Configurar preferências iniciais
+
+Funcionalidades Principais:
+- Verificação de Força de Senha
+- Geração de Senhas Seguras
+- Análise de Vazamentos de Dados
+- Instruções de Segurança Cibernética
+
+Solução de Problemas:
+- Verifique se possui .NET Framework atualizado
+- Garanta conexão com a internet
+- Execute como Administrador se necessário
+
+Suporte:
+E-mail: suporte@ciberseguranca.gov.br
+Telefone: 0800-SEGURANCA
+
+Última Atualização: [DATA_ATUAL]
+Versão do Software: 1.0.0

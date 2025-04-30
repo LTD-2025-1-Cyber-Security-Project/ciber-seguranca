@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Verificar Força da Senha{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-cyberpunk-secondary p-8 rounded-lg neon-border">
+    <h1 class="text-3xl font-orbitron mb-6 text-cyberpunk-primary text-center">
+        <i class="fas fa-lock-open mr-2"></i>Verificador de Força de Senha
+    </h1>
+
+    <form method="POST" class="space-y-4">
+        {{ form.csrf_token }}
+        
+        <div>
+            {{ form.password.label(class="block text-cyberpunk-text mb-2") }}
+            {{ form.password(
+                class="w-full bg-cyberpunk-bg text-cyberpunk-text border-2 border-cyberpunk-primary rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyberpunk-primary", 
+                placeholder="Digite sua senha"
+            ) }}
+            
+            {% if form.password.errors %}
+                <div class="text-red-500 mt-2">
+                    {% for error in form.password.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="text-center">
+            {{ form.submit(
+                class="bg-cyberpunk-primary text-cyberpunk-bg py-3 px-6 rounded-lg hover:bg-opacity-80 transition duration-300 ease-in-out"
+            ) }}
+        </div>
+    </form>
+
+    {% if resultado %}
+        <div class="mt-8 bg-cyberpunk-bg p-6 rounded-lg">
+            <h2 class="text-2xl font-orbitron mb-4 text-cyberpunk-primary">
+                Resultado da Análise
+            </h2>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="font-bold">Status:</p>
+                    {% if resultado.valida %}
+                        <span class="text-green-400">
+                            <i class="fas fa-check-circle mr-2"></i>Senha Válida
+                        </span>
+                    {% else %}
+                        <span class="text-red-400">
+                            <i class="fas fa-times-circle mr-2"></i>Senha Inválida
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <p class="font-bold">Força da Senha:</p>
+                    <div class="flex items-center">
+                        {% for i in range(5) %}
+                            <span class="mr-1 text-xl
+                                {% if i < resultado.score %}
+                                    text-green-400
+                                {% else %}
+                                    text-gray-500
+                                {% endif %}
+                            ">
+                                ●
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {% if resultado.tempo_crack %}
+                <div class="mt-4">
+                    <p class="font-bold">Tempo estimado para quebra:</p>
+                    <p class="text-cyberpunk-primary">{{ resultado.tempo_crack }}</p>
+                </div>
+            {% endif %}
+
+            {% if resultado.avisos %}
+                <div class="mt-4 bg-red-900 bg-opacity-20 p-4 rounded-lg">
+                    <p class="font-bold text-red-400 mb-2">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Avisos:
+                    </p>
+                    <ul class="list-disc list-inside text-red-300">
+                        {% for aviso in resultado.avisos %}
+                            <li>{{ aviso }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if resultado.feedback %}
+                <div class="mt-4 bg-blue-900 bg-opacity-20 p-4 rounded-lg">
+                    <p class="font-bold text-blue-400 mb-2">
+                        <i class="fas fa-lightbulb mr-2"></i>Sugestões:
+                    </p>
+                    <ul class="list-disc list-inside text-blue-300">
+                        {% for dica in resultado.feedback %}
+                            <li>{{ dica }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const senhaInput = document.querySelector('input[name="password"]');
+        
+        // Adicionar feedback em tempo real
+        senhaInput.addEventListener('input', function() {
+            const comprimento = this.value.length;
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.classList.add('text-sm', 'mt-2');
+            
+            if (comprimento === 0) {
+                feedbackDiv.textContent = '';
+            } else if (comprimento < 8) {
+                feedbackDiv.classList.add('text-red-400');
+                feedbackDiv.textContent = 'Senha muito curta';
+            } else if (comprimento < 12) {
+                feedbackDiv.classList.add('text-yellow-400');
+                feedbackDiv.textContent = 'Senha fraca';
+            } else {
+                feedbackDiv.classList.add('text-green-400');
+                feedbackDiv.textContent = 'Força da senha boa';
+            }
+            
+            // Remover feedback anterior
+            const anteriorFeedback = document.querySelector('.text-sm.mt-2');
+            if (anteriorFeedback) {
+                anteriorFeedback.remove();
+            }
+            
+            // Adicionar novo feedback
+            senhaInput.parentNode.appendChild(feedbackDiv);
+        });
+    });
+</script>
+{% endblock %}
