@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Erro Interno do Servidor - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+        <div class="mt-5">
+            <h1 class="display-1 text-danger">500</h1>
+            <h2 class="mb-4">Erro Interno do Servidor</h2>
+            <p class="lead mb-5">
+                Algo deu errado do nosso lado. Nossa equipe técnica foi notificada e está trabalhando 
+                para resolver o problema o mais rápido possível.
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/" class="btn btn-primary px-4 me-sm-3">
+                    <i class="fas fa-home me-2"></i>Voltar ao Início
+                </a>
+                <button class="btn btn-outline-secondary px-4" onclick="window.location.reload()">
+                    <i class="fas fa-redo me-2"></i>Tentar Novamente
+                </button>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-5" role="alert">
+            <h5><i class="fas fa-info-circle me-2"></i>Informação Técnica:</h5>
+            <p class="mb-0">
+                Se o problema persistir, entre em contato com o suporte técnico e informe
+                o momento exato em que o erro ocorreu e as ações que estavam sendo realizadas.
+            </p>
+        </div>
+        
+        <div class="mt-5 pt-5">
+            <div style="font-size: 5rem; color: #dee2e6;">
+                <i class="fas fa-tools"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

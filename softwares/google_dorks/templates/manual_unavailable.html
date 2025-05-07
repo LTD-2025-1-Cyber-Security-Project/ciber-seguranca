@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Manual Temporariamente Indisponível - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+        <div class="mt-5 mb-5">
+            <i class="fas fa-book-reader fa-6x text-muted mb-4"></i>
+            <h1 class="mb-4">Manual Temporariamente Indisponível</h1>
+            <p class="lead mb-5">
+                Nosso Manual Completo de Google Dorks para Cibersegurança está em fase final de preparação 
+                e estará disponível em breve. Este recurso oferecerá informações detalhadas sobre técnicas 
+                avançadas de busca e suas aplicações éticas para profissionais de segurança.
+            </p>
+            
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-3">O que você encontrará no manual:</h2>
+                    <div class="row text-start">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Fundamentos de Google Dorks</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Operadores avançados de busca</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Técnicas para cibersegurança</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Descoberta de informações sensíveis</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Exemplos práticos detalhados</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Considerações éticas e legais</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Contramedidas e proteções</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Recursos para aprendizado contínuo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading"><i class="fas fa-bell me-2"></i>Receba uma Notificação</h4>
+                <p>Deixe seu e-mail abaixo para ser notificado quando o manual estiver disponível.</p>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form class="d-flex">
+                            <input type="email" class="form-control me-2" placeholder="Seu e-mail">
+                            <button type="submit" class="btn btn-primary">Notificar-me</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-5">
+                <a href="/guide" class="btn btn-outline-primary me-3">
+                    <i class="fas fa-book me-2"></i>Consultar Guia Online
+                </a>
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="fas fa-home me-2"></i>Voltar ao Início
+                </a>
+            </div>
+        </div>
+        
+        <div class="progress mt-5">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85% Concluído</div>
+        </div>
+        <p class="text-muted mt-2">Estimativa de conclusão: 2 semanas</p>
+    </div>
+</div>
+{% endblock %}

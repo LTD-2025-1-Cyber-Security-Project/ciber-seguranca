@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Página Não Encontrada - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+        <div class="mt-5">
+            <h1 class="display-1 text-muted">404</h1>
+            <h2 class="mb-4">Página Não Encontrada</h2>
+            <p class="lead mb-5">
+                A página que você está procurando não existe ou foi removida.
+                Talvez você queira usar nossa ferramenta de busca para encontrar o que procura?
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/" class="btn btn-primary px-4 me-sm-3">
+                    <i class="fas fa-home me-2"></i>Voltar ao Início
+                </a>
+                <a href="/search" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-search me-2"></i>Ir para Ferramenta de Busca
+                </a>
+            </div>
+        </div>
+        
+        <div class="mt-5 pt-5">
+            <div style="font-size: 5rem; color: #dee2e6;">
+                <i class="fas fa-search-minus"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

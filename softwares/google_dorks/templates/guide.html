@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Guia de Google Dorks - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="text-center mb-4">Guia Completo de Google Dorks</h1>
+        <p class="lead text-center mb-5">
+            Aprenda a utilizar técnicas avançadas de busca para encontrar 
+            informações públicas de forma eficiente e profissional.
+        </p>
+        
+        <div class="alert alert-primary mb-5" role="alert">
+            <div class="d-flex">
+                <div class="me-3">
+                    <i class="fas fa-info-circle fa-2x"></i>
+                </div>
+                <div>
+                    <h5>O que são Google Dorks?</h5>
+                    <p class="mb-0">
+                        "Google Dorks" são técnicas de busca avançada que utilizam operadores especiais
+                        do Google para localizar informações específicas que seriam difíceis de encontrar
+                        com buscas convencionais. Quando utilizados de forma ética e profissional, são
+                        ferramentas valiosas para funcionários públicos localizarem documentos e informações.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="mb-4">Operadores Básicos de Pesquisa</h2>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Aspas Duplas ("termo exato")</h5>
+            </div>
+            <div class="card-body">
+                <p>Busca pela frase ou expressão exata entre aspas.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>"ata de reunião do conselho municipal"</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Útil para encontrar documentos com 
+                    títulos específicos ou expressões exatas que aparecem em documentos oficiais.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Operador de Exclusão (-termo)</h5>
+            </div>
+            <div class="card-body">
+                <p>Exclui páginas que contenham o termo especificado após o sinal de menos.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>licitação prefeitura -encerrada</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Útil para filtrar resultados e 
+                    excluir documentos que não são relevantes para sua busca atual.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Operador OR (termo1 OR termo2)</h5>
+            </div>
+            <div class="card-body">
+                <p>Busca por páginas que contenham o primeiro OU o segundo termo.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>decreto OR portaria "secretaria de saúde" 2025</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Útil quando você precisa encontrar 
+                    documentos que podem ser classificados de diferentes formas.
+                </p>
+            </div>
+        </div>
+        
+        <h2 class="mb-4 mt-5">Operadores Avançados de Google Dorks</h2>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">site: (site:dominio.gov.br)</h5>
+            </div>
+            <div class="card-body">
+                <p>Restringe a busca a um domínio ou site específico.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>site:florianopolis.sc.gov.br "plano diretor" 2025</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Extremamente útil para pesquisar 
+                    dentro de sites oficiais de prefeituras, governos estaduais ou portais específicos.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">filetype: (filetype:pdf)</h5>
+            </div>
+            <div class="card-body">
+                <p>Busca apenas por arquivos de um tipo específico.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>filetype:pdf "edital de licitação" obras 2025 prefeitura</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Essencial para encontrar documentos 
+                    em formatos específicos como PDFs (documentos oficiais), XLS (planilhas orçamentárias), 
+                    DOC (editais), PPT (apresentações), etc.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">intitle: (intitle:licitação)</h5>
+            </div>
+            <div class="card-body">
+                <p>Busca páginas que tenham a palavra especificada no título.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>intitle:licitação intitle:abertura prefeitura</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Útil para encontrar páginas cujos 
+                    títulos contêm termos específicos relacionados a documentos administrativos.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">inurl: (inurl:transparencia)</h5>
+            </div>
+            <div class="card-body">
+                <p>Busca páginas que tenham a palavra especificada na URL.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>inurl:transparencia inurl:contratos prefeitura</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Muito eficaz para encontrar seções 
+                    específicas de sites governamentais, como portais de transparência ou áreas de documentos.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">intext: (intext:"código tributário")</h5>
+            </div>
+            <div class="card-body">
+                <p>Busca páginas que contenham o termo especificado no conteúdo da página.</p>
+                <div class="bg-light p-3 rounded">
+                    <code>intext:"código tributário municipal" filetype:pdf 2025</code>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <strong>Aplicação na Administração Pública:</strong> Útil para localizar documentos que 
+                    mencionam termos específicos em seu conteúdo, mesmo que não estejam no título.
+                </p>
+            </div>
+        </div>
+        
+        <h2 class="mb-4 mt-5">Combinações Avançadas para Administração Pública</h2>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Localizar Editais de Licitação Ativos</h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-3 rounded">
+                    <code>site:gov.br filetype:pdf intitle:edital -encerrado -cancelado -revogado -suspensa after:2025-01-01</code>
+                </div>
+                <p class="mt-3 mb-0">
+                    <strong>Explicação:</strong> Esta consulta busca por editais em formato PDF em sites 
+                    governamentais, excluindo aqueles que foram encerrados, cancelados ou revogados, 
+                    e filtrando apenas os publicados após 01/01/2025.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Encontrar Relatórios de Gestão Fiscal</h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-3 rounded">
+                    <code>site:gov.br (filetype:pdf OR filetype:xls) "relatório de gestão fiscal" "quadrimestre" 2025</code>
+                </div>
+                <p class="mt-3 mb-0">
+                    <strong>Explicação:</strong> Esta consulta busca relatórios de gestão fiscal do ano de 2025
+                    em formatos PDF ou Excel (XLS) em sites governamentais, que mencionem "quadrimestre".
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Buscar Atas de Reuniões de Conselhos Municipais</h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-3 rounded">
+                    <code>site:florianopolis.sc.gov.br "ata de reunião" (conselho OR comitê) (filetype:pdf OR filetype:doc) 2025</code>
+                </div>
+                <p class="mt-3 mb-0">
+                    <strong>Explicação:</strong> Esta consulta busca atas de reuniões de conselhos ou comitês 
+                    municipais no site da prefeitura de Florianópolis, em formatos PDF ou DOC, publicadas em 2025.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Localizar Planos Municipais Específicos</h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-3 rounded">
+                    <code>site:gov.br intitle:("plano municipal" OR "plano diretor") (saúde OR educação OR mobilidade) filetype:pdf</code>
+                </div>
+                <p class="mt-3 mb-0">
+                    <strong>Explicação:</strong> Esta consulta busca planos municipais ou planos diretores 
+                    relacionados à saúde, educação ou mobilidade em sites governamentais, em formato PDF.
+                </p>
+            </div>
+        </div>
+        
+        <h2 class="mb-4 mt-5">Considerações de Uso Ético e Legal</h2>
+        
+        <div class="alert alert-warning" role="alert">
+            <h5><i class="fas fa-exclamation-triangle me-2"></i>Importante:</h5>
+            <ul>
+                <li>Utilize estas técnicas apenas para acessar informações públicas e que você tenha 
+                    direito legal de acessar.</li>
+                <li>Respeite a privacidade e as informações protegidas por sigilo.</li>
+                <li>Não utilize para explorar vulnerabilidades em sistemas ou obter acesso não autorizado.</li>
+                <li>Lembre-se que todas as buscas realizadas podem ser rastreadas até o seu IP.</li>
+                <li>O uso indevido destas técnicas pode ter consequências legais.</li>
+            </ul>
+        </div>
+        
+        <div class="card mb-5 shadow-sm border-success">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Uso Profissional e Responsável</h5>
+            </div>
+            <div class="card-body">
+                <p>
+                    As técnicas de Google Dorks são ferramentas legítimas e valiosas para profissionais
+                    da administração pública que precisam localizar documentos e informações de forma eficiente.
+                    Quando utilizadas de forma ética e profissional, estas técnicas podem:
+                </p>
+                <ul>
+                    <li>Aumentar a eficiência do serviço público</li>
+                    <li>Reduzir o tempo gasto em buscas manuais</li>
+                    <li>Facilitar a localização de precedentes e documentos históricos</li>
+                    <li>Auxiliar no cumprimento de prazos legais</li>
+                    <li>Melhorar a transparência e o acesso à informação</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="text-center mb-5">
+            <a href="/search" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-search-plus me-2"></i>Ir para a Ferramenta de Busca
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

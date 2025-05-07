@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Manual de Google Dorks - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="text-center mb-4">Manual Completo de Google Dorks para Cibersegurança</h1>
+        
+        <div class="alert alert-success" role="alert">
+            <div class="d-flex">
+                <div class="me-3">
+                    <i class="fas fa-check-circle fa-2x"></i>
+                </div>
+                <div>
+                    <h4 class="alert-heading">Manual Disponível!</h4>
+                    <p class="mb-0">O manual completo está disponível para download. Baixe agora para ter acesso às técnicas avançadas de Google Dorks para cibersegurança.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-5">
+            <div class="card-body p-4">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4 mb-md-0">
+                        <div class="manual-cover p-3 bg-light rounded">
+                            <i class="fas fa-book fa-6x text-primary mb-3"></i>
+                            <div class="mt-2">
+                                <span class="badge bg-danger">PDF</span>
+                                <span class="badge bg-secondary">88 páginas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h2 class="h4 mb-3">Manual Técnico Avançado</h2>
+                        <p class="text-muted mb-3">Versão 2.0 • Maio de 2025</p>
+                        <p>Este manual abrangente contém técnicas avançadas de Google Dorks para profissionais de segurança da informação, explicações detalhadas sobre operadores de busca e estratégias para identificação de vulnerabilidades.</p>
+                        
+                        <h5 class="mt-4 mb-3">O manual inclui:</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Fundamentos de Google Dorks</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Operadores avançados de busca</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Técnicas para cibersegurança</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Descoberta de informações sensíveis</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Exemplos práticos detalhados</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Considerações éticas e legais</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Contramedidas e proteções</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Recursos para aprendizado contínuo</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="{{ url_for('download_manual') }}" class="btn btn-primary btn-lg" target="_blank">
+                                <i class="fas fa-download me-2"></i>Baixar Manual em PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info" role="alert">
+            <div class="d-flex">
+                <div class="me-3">
+                    <i class="fas fa-info-circle fa-2x"></i>
+                </div>
+                <div>
+                    <h4 class="alert-heading">Uso Educacional</h4>
+                    <p>Este manual foi desenvolvido para fins educacionais e de treinamento profissional. As técnicas descritas devem ser aplicadas apenas em ambientes autorizados e no contexto de atividades legítimas de segurança da informação.</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="h3 mt-5 mb-4">Sumário do Manual</h2>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 1: Introdução às Google Dorks</h3>
+                <p class="ms-4 mb-0 text-muted">O que são Google Dorks, histórico, relevância para cibersegurança, aplicação ética vs. uso malicioso...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 2: Fundamentos dos Operadores de Busca</h3>
+                <p class="ms-4 mb-0 text-muted">Operadores básicos, operadores avançados, operadores temporais e geográficos, combinação de operadores...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 3: Técnicas Avançadas para Descoberta de Informações</h3>
+                <p class="ms-4 mb-0 text-muted">Descoberta de diretórios expostos, identificação de painéis administrativos, detecção de credenciais, localização de dispositivos IoT...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 4: Google Dorks para Avaliação de Vulnerabilidades</h3>
+                <p class="ms-4 mb-0 text-muted">Detecção de aplicações web vulneráveis, identificação de configurações incorretas, interfaces de gerenciamento expostas...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 5: Aplicações Práticas em Red Team Assessments</h3>
+                <p class="ms-4 mb-0 text-muted">Reconhecimento passivo, integração com ferramentas OSINT, automatização de buscas, documentação e relatórios...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 6: Defesa Contra Google Dorks</h3>
+                <p class="ms-4 mb-0 text-muted">Protegendo seu site, verificando exposição, monitoramento contínuo, melhores práticas de configuração...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 7: Google Dorks em Investigações de Segurança</h3>
+                <p class="ms-4 mb-0 text-muted">Uso ético em investigações forenses, identificação de campanhas de phishing, localização de dados vazados...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 8: Considerações Legais e Éticas</h3>
+                <p class="ms-4 mb-0 text-muted">Aspectos legais, framework ético, políticas organizacionais, divulgação responsável de vulnerabilidades...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 9: Tendências Futuras e Evoluções</h3>
+                <p class="ms-4 mb-0 text-muted">Evoluções nas técnicas, contramedidas emergentes, futuro do Google Dorking na segurança da informação...</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="h5 text-primary">Capítulo 10: Recursos e Referências</h3>
+                <p class="ms-4 mb-0 text-muted">Recursos para aprendizado, glossário de termos, referências bibliográficas, índice de dorks por categoria...</p>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <p class="lead mb-4">Acesse este conhecimento avançado e aperfeiçoe suas habilidades em segurança da informação.</p>
+            <a href="{{ url_for('download_manual') }}" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-download me-2"></i>Baixar o Manual Completo
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .manual-cover {
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+{% endblock %}

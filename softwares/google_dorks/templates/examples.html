@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+
+{% block title %}Exemplos de Uso - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="text-center mb-4">Exemplos de Uso para Funcionários Públicos</h1>
+        <p class="lead text-center mb-5">
+            Casos práticos de como utilizar o DorkOptimizer para otimizar suas 
+            buscas no dia a dia da administração pública.
+        </p>
+        
+        <!-- Seção de Exemplos por Departamento -->
+        <ul class="nav nav-pills mb-4 justify-content-center" id="departmentTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="licitacoes-tab" data-bs-toggle="tab" data-bs-target="#licitacoes" type="button" role="tab" aria-controls="licitacoes" aria-selected="true">
+                    Licitações
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="juridico-tab" data-bs-toggle="tab" data-bs-target="#juridico" type="button" role="tab" aria-controls="juridico" aria-selected="false">
+                    Jurídico
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="financeiro-tab" data-bs-toggle="tab" data-bs-target="#financeiro" type="button" role="tab" aria-controls="financeiro" aria-selected="false">
+                    Financeiro
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="obras-tab" data-bs-toggle="tab" data-bs-target="#obras" type="button" role="tab" aria-controls="obras" aria-selected="false">
+                    Obras
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="rh-tab" data-bs-toggle="tab" data-bs-target="#rh" type="button" role="tab" aria-controls="rh" aria-selected="false">
+                    RH
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="departmentTabsContent">
+            <!-- Conteúdo da aba Licitações -->
+            <div class="tab-pane fade show active" id="licitacoes" role="tabpanel" aria-labelledby="licitacoes-tab">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Exemplo 1: Localizar Editais de Pregão Eletrônico</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Consulta Natural:</h6>
+                                <div class="p-3 bg-light rounded mb-3">
+                                    Preciso encontrar editais de pregão eletrônico publicados nos últimos 3 meses para 
+                                    aquisição de equipamentos de informática para prefeituras de Santa Catarina
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Consulta Otimizada:</h6>
+                                <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                    site:sc.gov.br filetype:pdf "pregão eletrônico" "edital" "equipamentos de informática" 
+                                    ("computador" OR "notebook" OR "servidor") after:2025-02-01
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <h6>Por que é útil:</h6>
+                            <p>
+                              Esta consulta ajuda o setor de licitações a encontrar rapidamente exemplos de editais semelhantes
+                              aos que estão elaborando, permitindo padronização e adoção de melhores práticas, além de 
+                              verificar preços praticados por outros órgãos públicos.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 2: Verificar Atas de Registro de Preços</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Encontrar atas de registro de preços para contratação de serviços de manutenção 
+                                  predial vigentes em prefeituras do sul do Brasil
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:(rs.gov.br OR sc.gov.br OR pr.gov.br) 
+                                  filetype:pdf "ata de registro de preços" "manutenção predial" 
+                                  "vigência" 2025 -vencida
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Permite ao departamento de compras e licitações verificar os preços praticados
+                              por outras prefeituras em contratos similares, ajudando a estabelecer parâmetros
+                              de preços de referência para novas licitações e garantir a economicidade.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Conteúdo da aba Jurídico -->
+          <div class="tab-pane fade" id="juridico" role="tabpanel" aria-labelledby="juridico-tab">
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 1: Localizar Pareceres Jurídicos sobre Tema Específico</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Preciso encontrar pareceres jurídicos de procuradorias municipais sobre possibilidade 
+                                  de reequilíbrio econômico-financeiro em contratos administrativos
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:gov.br filetype:pdf intitle:(parecer OR "procuradoria municipal") 
+                                  "reequilíbrio econômico-financeiro" "contratos administrativos"
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Auxilia procuradores municipais a encontrar precedentes jurídicos e fundamentação
+                              legal para elaboração de novos pareceres sobre temas semelhantes, economizando tempo
+                              de pesquisa e garantindo consistência nas decisões administrativas.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 2: Buscar Decisões de Tribunais de Contas</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Encontrar decisões recentes do TCU e TCE-SC sobre contratações emergenciais 
+                                  sem licitação por prefeituras municipais
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  (site:tcu.gov.br OR site:tce.sc.gov.br) (acórdão OR decisão) 
+                                  "contratação emergencial" "dispensa de licitação" "art. 24" 
+                                  município after:2024-01-01
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Permite aos departamentos jurídicos identificar o entendimento atual dos órgãos
+                              de controle sobre contratações emergenciais, auxiliando na tomada de decisões
+                              e na construção de argumentos jurídicos sólidos em processos administrativos.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Conteúdo da aba Financeiro -->
+          <div class="tab-pane fade" id="financeiro" role="tabpanel" aria-labelledby="financeiro-tab">
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 1: Localizar Relatórios de Gestão Fiscal</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Buscar relatórios de gestão fiscal do último quadrimestre de municípios 
+                                  com população semelhante à nossa para comparar percentuais de gastos com pessoal
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:gov.br filetype:pdf "relatório de gestão fiscal" "RGF" 
+                                  "3º quadrimestre" 2024 "despesa com pessoal" "limite prudencial" 
+                                  "artigo 22 LRF"
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Auxilia gestores financeiros a comparar indicadores fiscais com outros municípios
+                              semelhantes, permitindo avaliar a situação fiscal relativa e identificar tendências
+                              regionais de gastos públicos para o planejamento orçamentário.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 2: Encontrar Planos Plurianuais</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Encontrar planos plurianuais (PPA) atualizados de municípios similares ao nosso 
+                                  para referência na elaboração do próximo PPA
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:gov.br filetype:pdf intitle:"plano plurianual" "PPA" 
+                                  "2026-2029" "lei municipal" "orçamento"
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Facilita a obtenção de modelos e referências para a elaboração do plano plurianual
+                              municipal, permitindo identificar estratégias orçamentárias e programas implementados
+                              por outros municípios que possam ser adaptados à realidade local.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Conteúdo da aba Obras -->
+          <div class="tab-pane fade" id="obras" role="tabpanel" aria-labelledby="obras-tab">
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 1: Localizar Projetos de Infraestrutura Urbana</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Encontrar projetos recentes de mobilidade urbana em cidades médias com ciclovias
+                                  e integração com transporte público
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:gov.br filetype:pdf ("projeto de mobilidade urbana" OR 
+                                  "plano de mobilidade") "ciclovia" "integração" "transporte público" 
+                                  after:2023-01-01 -cartilha
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Ajuda a Secretaria de Obras a encontrar referências de projetos similares implementados
+                              por outros municípios, possibilitando o benchmarking de soluções e otimizando
+                              o planejamento de novos projetos urbanos com base em experiências bem-sucedidas.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 2: Buscar Termos de Referência para Contratação de Obras</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Preciso de termos de referência para contratação de empresa especializada em 
+                                  pavimentação asfáltica para vias urbanas municipais
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:gov.br filetype:pdf "termo de referência" "pavimentação asfáltica" 
+                                  ("CBUQ" OR "concreto betuminoso") "vias urbanas" 
+                                  -aditivo -emendas
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Facilita a elaboração de novos termos de referência para licitações de obras,
+                              economizando tempo na redação técnica e garantindo que especificações importantes
+                              não sejam omitidas, reduzindo riscos de problemas na execução contratual.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Conteúdo da aba RH -->
+          <div class="tab-pane fade" id="rh" role="tabpanel" aria-labelledby="rh-tab">
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 1: Localizar Editais de Concursos Públicos</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Encontrar editais recentes de concursos públicos para cargos técnicos na área 
+                                  de tecnologia da informação em prefeituras
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:gov.br filetype:pdf intitle:(edital "concurso público") 
+                                  ("analista de sistemas" OR "técnico em informática" OR "desenvolvedor") 
+                                  prefeitura after:2024-01-01
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Auxilia o departamento de RH a elaborar novos editais de concursos públicos
+                              com base em exemplos recentes, identificando tendências em requisitos, conteúdos
+                              programáticos e critérios de avaliação para cargos técnicos específicos.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="card mb-4 shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">Exemplo 2: Buscar Planos de Cargos e Salários</h5>
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <h6>Consulta Natural:</h6>
+                              <div class="p-3 bg-light rounded mb-3">
+                                  Preciso encontrar exemplos de planos de cargos e salários atualizados de municípios 
+                                  de médio porte para revisão do nosso PCCS
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <h6>Consulta Otimizada:</h6>
+                              <div class="p-3 bg-light rounded mb-3 font-monospace">
+                                  site:gov.br filetype:pdf ("plano de cargos" "carreiras e salários" OR 
+                                  "PCCS" OR "plano de carreira") "lei municipal" "servidores públicos" 
+                                  "tabela salarial" after:2023-01-01
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <h6>Por que é útil:</h6>
+                          <p>
+                              Permite ao departamento de Recursos Humanos comparar estruturas de carreiras,
+                              faixas salariais e critérios de progressão funcional de outros municípios para
+                              subsidiar a modernização do plano de cargos local com referências atualizadas.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <div class="alert alert-info mt-5" role="alert">
+          <div class="d-flex">
+              <div class="me-3">
+                  <i class="fas fa-lightbulb fa-2x"></i>
+              </div>
+              <div>
+                  <h5>Dica Importante:</h5>
+                  <p class="mb-0">
+                      Estes são apenas exemplos básicos. Nossa ferramenta de busca automatizada pode criar 
+                      consultas muito mais complexas e específicas baseadas em suas necessidades particulares.
+                      Experimente descrever detalhadamente o que precisa encontrar e deixe a inteligência 
+                      artificial otimizar sua busca!
+                  </p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="text-center my-5">
+          <a href="/search" class="btn btn-primary btn-lg px-5">
+              <i class="fas fa-search-plus me-2"></i>Experimentar a Ferramenta
+          </a>
+      </div>
+  </div>
+</div>
+{% endblock %}

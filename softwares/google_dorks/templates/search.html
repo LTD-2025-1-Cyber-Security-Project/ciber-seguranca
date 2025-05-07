@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+
+{% block title %}Ferramenta de Busca - DorkOptimizer{% endblock %}
+
+{% block extra_css %}
+<style>
+    .loading-spinner {
+        display: none;
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .result-card {
+        display: none;
+        margin-top: 30px;
+    }
+    
+    .dork-explanation {
+        background-color: #f8f9fa;
+        border-left: 4px solid #0d6efd;
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 0 4px 4px 0;
+    }
+    
+    .feature-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .tooltip-icon {
+        cursor: help;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="text-center mb-4">Ferramenta de Busca Avançada</h1>
+        <p class="lead text-center mb-5">
+            Descreva o que você está procurando em linguagem natural. 
+            Nossa IA transformará sua consulta em uma busca otimizada com Google Dorks.
+        </p>
+        
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form id="searchForm">
+                    <div class="mb-4">
+                        <label for="queryInput" class="form-label fw-bold">Consulta de Busca</label>
+                        <textarea 
+                            class="form-control" 
+                            id="queryInput" 
+                            rows="4" 
+                            placeholder="Ex: Preciso encontrar editais de licitação de obras da prefeitura de Florianópolis publicados nos últimos 3 meses em formato PDF"
+                            required
+                        ></textarea>
+                        <div class="form-text">
+                            Descreva detalhadamente o que você está procurando para melhores resultados.
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="fileTypeSelect" class="form-label fw-bold">
+                                Tipo de Arquivo
+                                <i class="fas fa-question-circle tooltip-icon" data-bs-toggle="tooltip" 
+                                   title="Selecione o formato de arquivo que deseja encontrar"></i>
+                            </label>
+                            <select class="form-select" id="fileTypeSelect">
+                                <option value="">Qualquer tipo</option>
+                                <option value="pdf">PDF</option>
+                                <option value="doc">DOC/DOCX</option>
+                                <option value="xls">XLS/XLSX</option>
+                                <option value="ppt">PPT/PPTX</option>
+                                <option value="txt">TXT</option>
+                                <option value="html">HTML</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="contextSelect" class="form-label fw-bold">
+                                Contexto da Busca
+                                <i class="fas fa-question-circle tooltip-icon" data-bs-toggle="tooltip" 
+                                   title="Escolha o contexto para otimizar os resultados"></i>
+                            </label>
+                            <select class="form-select" id="contextSelect">
+                                <option value="geral">Busca Geral</option>
+                                <option value="licitacoes">Licitações e Contratos</option>
+                                <option value="legislacao">Legislação Municipal</option>
+                                <option value="documentos">Documentos Administrativos</option>
+                                <option value="transparencia">Portal de Transparência</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Dica:</strong> Quanto mais específica for sua consulta, melhores serão os resultados.
+                        Inclua detalhes como datas, locais, e termos específicos relacionados ao que busca.
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic me-2"></i>Otimizar e Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-2">Processando sua consulta com IA...</p>
+        </div>
+        
+        <div class="card result-card shadow-sm" id="resultCard">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-search-plus me-2"></i>Resultado da Otimização
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <h6>Consulta Original:</h6>
+                    <p id="originalQuery" class="border-bottom pb-2"></p>
+                </div>
+                
+                <div class="mb-4">
+                    <h6>Consulta Otimizada:</h6>
+                    <div class="input-group">
+                        <input type="text" class="form-control font-monospace" id="optimizedQuery" readonly>
+                        <button class="btn btn-outline-secondary" type="button" id="copyButton" title="Copiar consulta">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="dork-explanation">
+                    <h6><i class="fas fa-lightbulb me-2 text-warning"></i>Entendendo a Consulta Otimizada:</h6>
+                    <p id="queryExplanation" class="mb-0 small">
+                        A consulta foi otimizada com operadores avançados do Google para melhorar a precisão dos resultados.
+                    </p>
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <a href="#" class="btn btn-success" id="googleSearchButton" target="_blank">
+                        <i class="fas fa-search me-2"></i>Executar Busca no Google
+                    </a>
+                    <button class="btn btn-outline-secondary" id="newSearchButton">
+                        <i class="fas fa-redo me-2"></i>Nova Consulta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-lg-10 mx-auto">
+        <h2 class="text-center mb-4">Dicas para Consultas Eficientes</h2>
+        
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-calendar-alt text-primary me-2"></i>
+                            Especifique Períodos
+                        </h5>
+                        <p class="card-text">
+                            Mencione datas ou períodos específicos para filtrar documentos
+                            por data de publicação (ex: "últimos 3 meses", "entre janeiro e março de 2025").
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                            Localize Geograficamente
+                        </h5>
+                        <p class="card-text">
+                            Inclua nomes de municípios, bairros ou regiões específicas para restringir os 
+                            resultados a uma área geográfica determinada.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-file text-primary me-2"></i>
+                            Tipos de Documentos
+                        </h5>
+                        <p class="card-text">
+                            Especifique o tipo de documento que procura: "edital", "decreto", "portaria", 
+                            "ofício", etc. para resultados mais relevantes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-sitemap text-primary me-2"></i>
+                            Hierarquia Organizacional
+                        </h5>
+                        <p class="card-text">
+                            Mencione o departamento ou setor específico (ex: "Secretaria de Obras", 
+                            "Departamento de Licitações") para filtrar por órgão emissor.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-hashtag text-primary me-2"></i>
+                            Numeração e Códigos
+                        </h5>
+                        <p class="card-text">
+                            Inclua números de referência, processos ou identificadores quando disponíveis
+                            para encontrar documentos específicos (ex: "Processo 2025/123").
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-user-tie text-primary me-2"></i>
+                            Pessoas Relacionadas
+                        </h5>
+                        <p class="card-text">
+                            Mencione nomes de autoridades, gestores ou responsáveis para encontrar 
+                            documentos associados a determinadas pessoas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-warning mt-5" role="alert">
+    <div class="d-flex">
+        <div class="me-3">
+            <i class="fas fa-exclamation-triangle fa-2x"></i>
+        </div>
+        <div>
+            <h5>Aviso de Uso Responsável</h5>
+            <p class="mb-0">
+                Esta ferramenta foi desenvolvida para auxiliar na localização de informações públicas.
+                Utilize-a de forma ética e responsável, respeitando a privacidade e as leis aplicáveis.
+                Não é permitido o uso para fins ilícitos ou para obter acesso a informações restritas.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Formulário de busca
+    const searchForm = document.getElementById('searchForm');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultCard = document.getElementById('resultCard');
+    const originalQueryEl = document.getElementById('originalQuery');
+    const optimizedQueryEl = document.getElementById('optimizedQuery');
+    const queryExplanationEl = document.getElementById('queryExplanation');
+    const googleSearchButton = document.getElementById('googleSearchButton');
+    const copyButton = document.getElementById('copyButton');
+    const newSearchButton = document.getElementById('newSearchButton');
+    
+    // Função para explicar operadores utilizados
+    function explainDorkOperators(query) {
+        let explanation = "Esta consulta utiliza os seguintes operadores de Google Dorks:";
+        
+        if (query.includes('site:')) {
+            explanation += "<br>• <code>site:</code> - Restringe a busca a domínios ou sites específicos";
+        }
+        if (query.includes('filetype:') || query.includes('ext:')) {
+            explanation += "<br>• <code>filetype:</code> - Busca apenas arquivos de um tipo específico";
+        }
+        if (query.includes('intitle:')) {
+            explanation += "<br>• <code>intitle:</code> - Busca páginas que tenham a palavra especificada no título";
+        }
+        if (query.includes('inurl:')) {
+            explanation += "<br>• <code>inurl:</code> - Busca páginas que tenham a palavra especificada na URL";
+        }
+        if (query.includes('intext:')) {
+            explanation += "<br>• <code>intext:</code> - Busca páginas que tenham a palavra especificada no conteúdo";
+        }
+        if (query.includes('"')) {
+            explanation += "<br>• <code>\"termo exato\"</code> - Busca pela expressão exata entre aspas";
+        }
+        if (query.includes('-')) {
+            explanation += "<br>• <code>-termo</code> - Exclui páginas que contenham o termo especificado";
+        }
+        if (query.includes('OR') || query.includes('|')) {
+            explanation += "<br>• <code>OR</code> ou <code>|</code> - Busca por um termo OU outro";
+        }
+        if (query.includes('after:') || query.includes('before:')) {
+            explanation += "<br>• <code>after:/before:</code> - Filtra por data de publicação";
+        }
+        
+        return explanation;
+    }
+    
+    // Evento de submissão do formulário
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const query = document.getElementById('queryInput').value.trim();
+        const fileType = document.getElementById('fileTypeSelect').value;
+        const context = document.getElementById('contextSelect').value;
+        
+        if (!query) {
+            alert('Por favor, digite uma consulta para continuar.');
+            return;
+        }
+        
+        // Mostrar o spinner de carregamento
+        loadingSpinner.style.display = 'block';
+        resultCard.style.display = 'none';
+        
+        // Fazer a requisição para a API
+        fetch('/api/optimize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: query,
+                file_type: fileType,
+                context: context
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na requisição');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Preencher os resultados
+            originalQueryEl.textContent = data.original_query;
+            optimizedQueryEl.value = data.optimized_query;
+            queryExplanationEl.innerHTML = explainDorkOperators(data.optimized_query);
+            
+            // Definir URL para busca no Google
+            googleSearchButton.href = data.search_url;
+            
+            // Esconder o spinner e mostrar o resultado
+            loadingSpinner.style.display = 'none';
+            resultCard.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            loadingSpinner.style.display = 'none';
+            
+            // Criar um alerta mais amigável
+            const alertElement = document.createElement('div');
+            alertElement.className = 'alert alert-danger mt-4';
+            alertElement.innerHTML = `
+                <h5><i class="fas fa-exclamation-circle me-2"></i>Ocorreu um erro ao processar sua consulta</h5>
+                <p>Nosso serviço está enfrentando dificuldades temporárias para se conectar à API. 
+                   Estamos processando sua consulta com nossa otimização básica.</p>
+                <p class="mb-0">Por favor, tente novamente em alguns instantes ou continue com os 
+                   resultados fornecidos pela otimização básica.</p>
+            `;
+            
+            // Adicionar o alerta acima do spinner
+            loadingSpinner.parentNode.insertBefore(alertElement, loadingSpinner);
+            
+            // Esconder o spinner
+            loadingSpinner.style.display = 'none';
+            
+            // Mostrar o resultado mesmo assim com otimização básica
+            const query = document.getElementById('queryInput').value.trim();
+            const fileType = document.getElementById('fileTypeSelect').value;
+            
+            // Aplicar otimização básica localmente
+            let optimizedQuery = query;
+            
+            // Adicionar filetype se selecionado
+            if (fileType) {
+                optimizedQuery += ` filetype:${fileType}`;
+            }
+            
+            // Colocar termos importantes entre aspas
+            const words = query.split(' ');
+            if (words.length > 3) {
+                for (let i = 0; i < words.length - 1; i++) {
+                    if (words[i].length > 3 && words[i+1].length > 3) {
+                        const phrase = `${words[i]} ${words[i+1]}`;
+                        if (optimizedQuery.includes(phrase) && !optimizedQuery.includes(`"${phrase}"`)) {
+                            optimizedQuery = optimizedQuery.replace(phrase, `"${phrase}"`);
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // Definir a URL do Google Search
+            const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(optimizedQuery)}`;
+            
+            // Preencher os resultados
+            originalQueryEl.textContent = query;
+            optimizedQueryEl.value = optimizedQuery;
+            queryExplanationEl.innerHTML = "Esta é uma otimização básica aplicada à sua consulta. Para resultados aprimorados, tente novamente quando nosso serviço de IA estiver disponível.";
+            googleSearchButton.href = googleSearchUrl;
+            
+            // Mostrar o resultado
+            resultCard.style.display = 'block';
+            
+            // Remover o alerta após 10 segundos
+            setTimeout(() => {
+                alertElement.remove();
+            }, 10000);
+        });
+    });
+    
+    // Botão para copiar a consulta otimizada
+    copyButton.addEventListener('click', function() {
+        optimizedQueryEl.select();
+        document.execCommand('copy');
+        
+        // Mostrar feedback de cópia
+        const originalText = copyButton.innerHTML;
+        copyButton.innerHTML = '<i class="fas fa-check"></i>';
+        
+        setTimeout(function() {
+            copyButton.innerHTML = originalText;
+        }, 2000);
+    });
+    
+    // Botão para nova consulta
+    newSearchButton.addEventListener('click', function() {
+        resultCard.style.display = 'none';
+        document.getElementById('queryInput').value = '';
+        document.getElementById('queryInput').focus();
+    });
+});
+</script>
+{% endblock %}

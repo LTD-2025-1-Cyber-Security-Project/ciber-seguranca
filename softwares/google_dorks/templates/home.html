@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}DorkOptimizer - Buscas Inteligentes para Administração Pública{% endblock %}
+
+{% block content %}
+<div class="row align-items-center mb-5">
+    <div class="col-lg-6">
+        <h1 class="display-4 fw-bold text-primary mb-3">DorkOptimizer</h1>
+        <h2 class="h3 mb-4">Transforme suas consultas em buscas avançadas com inteligência artificial</h2>
+        <p class="lead mb-4">
+            Sistema especializado para funcionários públicos localizarem documentos 
+            e informações com eficiência utilizando técnicas avançadas de Google Dorks.
+        </p>
+        <div class="d-grid gap-2 d-md-flex">
+            <a href="/search" class="btn btn-primary btn-lg px-4 me-md-2">
+                <i class="fas fa-search me-2"></i>Começar a Buscar
+            </a>
+            <a href="/guide" class="btn btn-outline-secondary btn-lg px-4">
+                <i class="fas fa-book me-2"></i>Aprender mais
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-6 mt-5 mt-lg-0 text-center">
+        <img src="{{ url_for('static', filename='img/search-illustration.svg') }}" alt="Ilustração de busca avançada" class="img-fluid" style="max-height: 400px;">
+    </div>
+</div>
+
+<hr class="my-5">
+
+<div class="row g-4 py-4">
+    <h2 class="text-center mb-4">Como o DorkOptimizer Funciona</h2>
+    
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                    <i class="fas fa-brain fa-2x p-3"></i>
+                </div>
+                <h3 class="card-title h5">Inteligência Artificial</h3>
+                <p class="card-text">
+                    Nosso sistema utiliza a API do Google Gemini para processar consultas 
+                    complexas e transformá-las em buscas otimizadas.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                    <i class="fas fa-search-plus fa-2x p-3"></i>
+                </div>
+                <h3 class="card-title h5">Google Dorks Automatizados</h3>
+                <p class="card-text">
+                    O sistema aplica automaticamente operadores avançados de busca 
+                    para encontrar exatamente o que você precisa.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-3">
+                    <i class="fas fa-file-alt fa-2x p-3"></i>
+                </div>
+                <h3 class="card-title h5">Personalizado para Docs Públicos</h3>
+                <p class="card-text">
+                    Especializado para funcionários municipais encontrarem documentos
+                    públicos, licitações e informações governamentais.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+
+<div class="row my-5">
+    <div class="col-lg-8 mx-auto text-center">
+        <h2 class="mb-4">Para Quem Foi Desenvolvido?</h2>
+        <p class="lead">
+            O DorkOptimizer foi criado especialmente para funcionários da administração pública
+            que precisam localizar documentos e informações de forma rápida e eficiente,
+            sem necessidade de conhecimentos técnicos avançados.
+        </p>
+        
+        <div class="row mt-5 g-4">
+            <div class="col-md-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-user-tie text-primary me-3 fa-2x"></i>
+                    <h4 class="h5 mb-0">Gestores Públicos</h4>
+                </div>
+                <p class="text-start">Encontre relatórios e documentos administrativos rapidamente.</p>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-gavel text-primary me-3 fa-2x"></i>
+                    <h4 class="h5 mb-0">Setor Jurídico</h4>
+                </div>
+                <p class="text-start">Localize legislações e documentos legais específicos.</p>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-file-invoice-dollar text-primary me-3 fa-2x"></i>
+                    <h4 class="h5 mb-0">Licitações</h4>
+                </div>
+                <p class="text-start">Busque editais, contratos e documentos de licitação.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row my-5 bg-light p-5 rounded-3">
+    <div class="col-lg-10 mx-auto">
+        <h2 class="text-center mb-4">Benefícios do Sistema</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">
+                            <i class="fas fa-tachometer-alt text-primary me-2"></i>
+                            Eficiência Aprimorada
+                        </h3>
+                        <p class="card-text">
+                            Reduza o tempo gasto em buscas manuais com nossas consultas otimizadas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">
+                            <i class="fas fa-user-shield text-primary me-2"></i>
+                            Segurança e Ética
+                        </h3>
+                        <p class="card-text">
+                            Sistema projetado com limites para garantir buscas seguras e éticas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">
+                            <i class="fas fa-graduation-cap text-primary me-2"></i>
+                            Aprendizado Contínuo
+                        </h3>
+                        <p class="card-text">
+                            Guia educacional completo sobre técnicas avançadas de busca.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">
+                            <i class="fas fa-magic text-primary me-2"></i>
+                            Automação Inteligente
+                        </h3>
+                        <p class="card-text">
+                            Transformação automática de consultas em comandos avançados de busca.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center my-5">
+    <h2 class="mb-4">Comece Agora Mesmo</h2>
+    <p class="lead mb-4">
+        Experimente a ferramenta e descubra como ela pode transformar a forma como você encontra informações.
+    </p>
+    <a href="/search" class="btn btn-primary btn-lg px-5">
+        <i class="fas fa-rocket me-2"></i>Iniciar Busca Otimizada
+    </a>
+</div>
+{% endblock %}

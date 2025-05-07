@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Administração - Gerar Manual PDF - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-lock me-2"></i>Área Administrativa - Geração de Manual PDF
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Acesso Restrito:</strong> Esta área é reservada para administradores do sistema.
+                </div>
+                
+                <p>Esta ferramenta permite gerar o Manual Completo de Google Dorks para Cibersegurança em formato PDF a partir dos arquivos LaTeX do sistema.</p>
+                
+                <h5 class="mt-4 mb-3">Informações do Processo:</h5>
+                <ul>
+                    <li>A compilação completa pode levar alguns minutos</li>
+                    <li>O arquivo será salvo em <code>/static/docs/manual_google_dorks.pdf</code></li>
+                    <li>Qualquer versão anterior será substituída</li>
+                    <li>Um registro detalhado será gerado em <code>/logs/latex_compile.log</code></li>
+                </ul>
+                
+                <form action="{{ url_for('generate_manual') }}" method="post" class="mt-4">
+                    <div class="mb-3">
+                        <label for="admin_password" class="form-label">Senha de Administrador</label>
+                        <input type="password" class="form-control" id="admin_password" name="admin_password" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="manual_version" class="form-label">Versão do Manual</label>
+                        <input type="text" class="form-control" id="manual_version" name="manual_version" value="1.2.0" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="include_watermark" name="include_watermark" checked>
+                            <label class="form-check-label" for="include_watermark">
+                                Incluir marca d'água "Apenas para Uso Interno"
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-cog me-2"></i>Gerar Manual PDF
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <a href="/" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Voltar para o Sistema
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Manual PDF Gerado - DorkOptimizer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header {% if success %}bg-success{% else %}bg-danger{% endif %} text-white">
+                <h5 class="mb-0">
+                    {% if success %}
+                    <i class="fas fa-check-circle me-2"></i>Manual PDF Gerado com Sucesso
+                    {% else %}
+                    <i class="fas fa-exclamation-circle me-2"></i>Erro na Geração do Manual PDF
+                    {% endif %}
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                {% if success %}
+                <div class="text-center mb-4">
+                    <i class="fas fa-file-pdf fa-5x text-success mb-3"></i>
+                    <h2 class="h4">O Manual foi gerado com sucesso!</h2>
+                    <p class="text-muted">O arquivo PDF do manual está agora disponível para download.</p>
+                </div>
+                
+                <div class="alert alert-info" role="alert">
+                    <h5><i class="fas fa-info-circle me-2"></i>Detalhes da Operação:</h5>
+                    <ul class="mb-0">
+                        <li><strong>Arquivo:</strong> manual_google_dorks.pdf</li>
+                        <li><strong>Tamanho:</strong> 3.2 MB</li>
+                        <li><strong>Localização:</strong> /static/docs/</li>
+                        <li><strong>Data de geração:</strong> {{ now.strftime('%d/%m/%Y %H:%M:%S') }}</li>
+                    </ul>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('download_manual') }}" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-download me-2"></i>Baixar o Manual PDF
+                    </a>
+                    <a href="{{ url_for('manual_pdf') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-eye me-2"></i>Visualizar Página do Manual
+                    </a>
+                </div>
+                {% else %}
+                <div class="text-center mb-4">
+                    <i class="fas fa-exclamation-triangle fa-5x text-danger mb-3"></i>
+                    <h2 class="h4">Ocorreu um erro na geração do manual</h2>
+                    <p class="text-muted">Não foi possível completar o processo de geração do PDF.</p>
+                </div>
+                
+                <div class="alert alert-danger" role="alert">
+                    <h5><i class="fas fa-bug me-2"></i>Detalhes do Erro:</h5>
+                    <p class="mb-0">{{ error }}</p>
+                </div>
+                
+                <div class="alert alert-info" role="alert">
+                    <h5><i class="fas fa-info-circle me-2"></i>Sugestões:</h5>
+                    <ul class="mb-0">
+                        <li>Verifique se o arquivo LaTeX fonte está correto</li>
+                        <li>Confirme se todas as dependências do LaTeX estão instaladas</li>
+                        <li>Verifique permissões de escrita no diretório /static/docs/</li>
+                        <li>Consulte os logs detalhados em /logs/latex_compile.log</li>
+                    </ul>
+                </div>
+                
+                <div class="d-grid">
+                    <a href="{{ url_for('generate_manual') }}" class="btn btn-primary">
+                        <i class="fas fa-redo me-2"></i>Tentar Novamente
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <a href="/" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-2"></i>Voltar para o Início
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

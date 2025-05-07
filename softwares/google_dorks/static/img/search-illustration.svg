@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo -->
+  <rect x="0" y="0" width="800" height="600" fill="#f8f9fa" rx="20" ry="20"/>
+  
+  <!-- Monitor/Computador -->
+  <rect x="250" y="100" width="300" height="220" rx="10" ry="10" fill="#ffffff" stroke="#0056b3" stroke-width="8"/>
+  <rect x="270" y="120" width="260" height="160" rx="5" ry="5" fill="#f0f5ff"/>
+  
+  <!-- Base do Monitor -->
+  <rect x="350" y="320" width="100" height="20" fill="#0056b3"/>
+  <rect x="370" y="340" width="60" height="30" fill="#0056b3"/>
+  
+  <!-- Tela do Monitor - Barra de Busca -->
+  <rect x="290" y="150" width="220" height="35" rx="5" ry="5" fill="#ffffff" stroke="#0056b3" stroke-width="3"/>
+  <circle cx="490" cy="167" r="10" fill="#0056b3"/>
+  <path d="M495 172 L505 182" stroke="#0056b3" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Elementos da Tela - Resultados de Busca -->
+  <rect x="290" y="200" width="220" height="10" rx="2" ry="2" fill="#ccdcff"/>
+  <rect x="290" y="220" width="180" height="10" rx="2" ry="2" fill="#ccdcff"/>
+  <rect x="290" y="240" width="200" height="10" rx="2" ry="2" fill="#ccdcff"/>
+  
+  <!-- Lupa Grande -->
+  <circle cx="150" cy="250" r="80" fill="none" stroke="#0056b3" stroke-width="12"/>
+  <path d="M210 310 L250 350" stroke="#0056b3" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="150" cy="250" r="65" fill="#e6efff"/>
+  
+  <!-- Documentos Voando -->
+  <!-- Documento 1 -->
+  <g transform="rotate(-15, 500, 400)">
+    <rect x="480" y="380" width="80" height="100" fill="#ffffff" stroke="#0056b3" stroke-width="2"/>
+    <line x1="500" y1="400" x2="540" y2="400" stroke="#0056b3" stroke-width="2"/>
+    <line x1="500" y1="420" x2="540" y2="420" stroke="#0056b3" stroke-width="2"/>
+    <line x1="500" y1="440" x2="530" y2="440" stroke="#0056b3" stroke-width="2"/>
+  </g>
+  
+  <!-- Documento 2 -->
+  <g transform="rotate(10, 580, 350)">
+    <rect x="550" y="320" width="80" height="100" fill="#ffffff" stroke="#0056b3" stroke-width="2"/>
+    <line x1="570" y1="340" x2="610" y2="340" stroke="#0056b3" stroke-width="2"/>
+    <line x1="570" y1="360" x2="610" y2="360" stroke="#0056b3" stroke-width="2"/>
+    <line x1="570" y1="380" x2="600" y2="380" stroke="#0056b3" stroke-width="2"/>
+  </g>
+  
+  <!-- Documento 3 -->
+  <g transform="rotate(-5, 400, 470)">
+    <rect x="370" y="430" width="80" height="100" fill="#ffffff" stroke="#0056b3" stroke-width="2"/>
+    <line x1="390" y1="450" x2="430" y2="450" stroke="#0056b3" stroke-width="2"/>
+    <line x1="390" y1="470" x2="430" y2="470" stroke="#0056b3" stroke-width="2"/>
+    <line x1="390" y1="490" x2="420" y2="490" stroke="#0056b3" stroke-width="2"/>
+  </g>
+  
+  <!-- Engrenagens - Automação -->
+  <g transform="translate(650, 200)">
+    <!-- Engrenagem Grande -->
+    <circle cx="0" cy="0" r="40" fill="#e6efff" stroke="#0056b3" stroke-width="3"/>
+    <circle cx="0" cy="0" r="15" fill="#ffffff" stroke="#0056b3" stroke-width="2"/>
+    
+    <!-- Dentes da Engrenagem -->
+    <g>
+      <rect x="-5" y="-50" width="10" height="20" fill="#0056b3"/>
+      <rect x="-5" y="30" width="10" height="20" fill="#0056b3"/>
+      <rect x="-50" y="-5" width="20" height="10" fill="#0056b3"/>
+      <rect x="30" y="-5" width="20" height="10" fill="#0056b3"/>
+      
+      <!-- Dentes diagonais -->
+      <g transform="rotate(45, 0, 0)">
+        <rect x="-5" y="-50" width="10" height="20" fill="#0056b3"/>
+        <rect x="-5" y="30" width="10" height="20" fill="#0056b3"/>
+        <rect x="-50" y="-5" width="20" height="10" fill="#0056b3"/>
+        <rect x="30" y="-5" width="20" height="10" fill="#0056b3"/>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Engrenagem pequena -->
+  <g transform="translate(700, 250)">
+    <circle cx="0" cy="0" r="20" fill="#e6efff" stroke="#0056b3" stroke-width="2"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" stroke="#0056b3" stroke-width="1.5"/>
+    
+    <!-- Dentes da Engrenagem Pequena -->
+    <g>
+      <rect x="-3" y="-25" width="6" height="10" fill="#0056b3"/>
+      <rect x="-3" y="15" width="6" height="10" fill="#0056b3"/>
+      <rect x="-25" y="-3" width="10" height="6" fill="#0056b3"/>
+      <rect x="15" y="-3" width="10" height="6" fill="#0056b3"/>
+      
+      <!-- Dentes diagonais -->
+      <g transform="rotate(45, 0, 0)">
+        <rect x="-3" y="-25" width="6" height="10" fill="#0056b3"/>
+        <rect x="-3" y="15" width="6" height="10" fill="#0056b3"/>
+        <rect x="-25" y="-3" width="10" height="6" fill="#0056b3"/>
+        <rect x="15" y="-3" width="10" height="6" fill="#0056b3"/>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Cérebro/IA - Representando a Inteligência Artificial -->
+  <g transform="translate(150, 450)">
+    <!-- Cérebro - Forma Básica -->
+    <path d="M0,0 C20,-20 40,-15 50,0 C60,15 80,20 70,40 C60,60 30,70 10,60 C-10,50 -30,40 -20,20 C-10,0 -20,-20 0,0 Z" 
+          fill="#e6efff" stroke="#0056b3" stroke-width="3"/>
+    
+    <!-- Detalhes do Cérebro -->
+    <path d="M0,10 C10,0 30,5 25,20 C20,35 0,30 0,10 Z" fill="none" stroke="#0056b3" stroke-width="2"/>
+    <path d="M30,15 C40,10 50,20 40,30 C30,40 20,30 30,15 Z" fill="none" stroke="#0056b3" stroke-width="2"/>
+    <path d="M-10,30 C0,25 10,35 0,45 C-10,55 -20,40 -10,30 Z" fill="none" stroke="#0056b3" stroke-width="2"/>
+    
+    <!-- Linhas de Conexão Neural -->
+    <line x1="35" y1="25" x2="45" y2="10" stroke="#0056b3" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="15" y1="40" x2="35" y2="45" stroke="#0056b3" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="-5" y1="20" x2="-15" y2="5" stroke="#0056b3" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="10" y1="15" x2="30" y2="15" stroke="#0056b3" stroke-width="1" stroke-dasharray="2,2"/>
+  </g>
+  
+  <!-- Texto/Legenda "DorkOptimizer" -->
+  <text x="400" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#0056b3">DorkOptimizer</text>
+  <text x="400" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#0056b3">Buscas Inteligentes com Google Dorks</text>
+</svg>

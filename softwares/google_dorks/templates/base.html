@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DorkOptimizer - Buscas Inteligentes{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-search-plus me-2"></i>DorkOptimizer
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
+                            <i class="fas fa-home me-1"></i> Início
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/search' %}active{% endif %}" href="/search">
+                            <i class="fas fa-search me-1"></i> Ferramenta de Busca
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/guide' %}active{% endif %}" href="/guide">
+                            <i class="fas fa-book me-1"></i> Guia de Google Dorks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/examples' %}active{% endif %}" href="/examples">
+                            <i class="fas fa-list me-1"></i> Exemplos de Uso
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/manual' %}active{% endif %}" href="/manual">
+                            <i class="fas fa-file-pdf me-1"></i> Manual Completo
+                            <span class="badge rounded-pill bg-danger ms-1">PDF</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <main class="container py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">
+                &copy; 2025 DorkOptimizer - Sistema de Otimização de Buscas para Funcionários Públicos
+            </p>
+            <p class="text-muted small mt-2">
+                Desenvolvido para auxiliar a administração pública na localização eficiente de documentos.
+                <br>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Termos de Uso</a> |
+                <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal de Termos de Uso -->
+    <div class="modal fade" id="termsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Termos de Uso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Uso Responsável</h6>
+                    <p>
+                        O DorkOptimizer foi desenvolvido para auxiliar funcionários públicos na localização
+                        de documentos e informações públicas de forma eficiente. O uso desta ferramenta para
+                        fins ilegais ou antiéticos é estritamente proibido.
+                    </p>
+                    <h6>Limitações de Responsabilidade</h6>
+                    <p>
+                        Não nos responsabilizamos pelo uso indevido da ferramenta ou por quaisquer consequências
+                        resultantes das buscas realizadas através do sistema.
+                    </p>
+                    <h6>Conduta do Usuário</h6>
+                    <p>
+                        Os usuários concordam em utilizar o DorkOptimizer apenas para fins profissionais legítimos,
+                        respeitando as leis de privacidade e proteção de dados.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Política de Privacidade -->
+    <div class="modal fade" id="privacyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Política de Privacidade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Coleta de Dados</h6>
+                    <p>
+                        O DorkOptimizer coleta apenas as consultas feitas pelos usuários para fins de melhoria do
+                        serviço.
+                        Não armazenamos informações pessoais dos usuários.
+                    </p>
+                    <h6>Uso de Cookies</h6>
+                    <p>
+                        Utilizamos cookies apenas para manter a sessão do usuário ativa e melhorar a experiência de uso.
+                    </p>
+                    <h6>Compartilhamento de Dados</h6>
+                    <p>
+                        Não compartilhamos os dados de consulta com terceiros, exceto quando exigido por lei.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
